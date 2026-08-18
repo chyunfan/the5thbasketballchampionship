@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>富阳农商银行第五届职工篮球赛</title>
+<style>
+  :root{
+    --bg1:#0b1220; --bg2:#111a2e; --bg3:#0e1626;
+    --card:rgba(255,255,255,.06);
+    --card-brd:rgba(255,255,255,.10);
+    --txt:#e8edf6; --txt-dim:#9fb0c8; --txt-mute:#6b7c95;
+    --gold:#f59e0b; --gold-soft:rgba(245,158,11,.16);
+    --win:#34d399;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",system-ui,sans-serif;
+    background:radial-gradient(1200px 600px at 50% -10%, #1b2b4a 0%, var(--bg1) 55%), var(--bg1);
+    color:var(--txt); overflow:hidden;
+  }
+  #app{max-width:540px;margin:0 auto;height:100vh;display:flex;flex-direction:column;
+       position:relative;background:linear-gradient(180deg,var(--bg2),var(--bg3));
+       box-shadow:0 0 60px rgba(0,0,0,.5);}
+  /* ---- top bar ---- */
+  .topbar{display:flex;align-items:center;gap:10px;padding:12px 14px;
+          background:linear-gradient(180deg,rgba(245,158,11,.14),transparent);
+          border-bottom:1px solid var(--card-brd);flex:0 0 auto;z-index:20;}
+  .hamb{width:42px;height:42px;border-radius:12px;border:1px solid var(--card-brd);
+        background:var(--card);color:var(--txt);font-size:22px;line-height:1;cursor:pointer;
+        display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .hamb:active{transform:scale(.94);}
+  .titles{display:flex;flex-direction:column;line-height:1.15;min-width:0;}
+  .titles .kick{font-size:11px;color:var(--gold);letter-spacing:2px;font-weight:600;}
+  .titles .main{font-size:16px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  /* ---- content ---- */
+  #content{flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 14px 30px;}
+  .page-title{font-size:18px;font-weight:800;margin:2px 2px 14px;display:flex;align-items:center;gap:8px;}
+  .page-title .bar{width:4px;height:18px;background:var(--gold);border-radius:3px;}
+  .page-sub{font-size:12px;color:var(--txt-mute);font-weight:400;margin-left:auto;}
+  /* ---- drawer ---- */
+  .scrim{position:absolute;inset:0;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;
+         transition:opacity .25s;z-index:40;}
+  .scrim.open{opacity:1;pointer-events:auto;}
+  .drawer{position:absolute;top:0;left:0;height:100%;width:74%;max-width:300px;
+          background:linear-gradient(180deg,#16223c,#0d1626);border-right:1px solid var(--card-brd);
+          transform:translateX(-102%);transition:transform .28s ease;z-index:50;display:flex;flex-direction:column;}
+  .drawer.open{transform:translateX(0);}
+  .drawer-head{padding:22px 18px 14px;border-bottom:1px solid var(--card-brd);}
+  .drawer-head .k{font-size:11px;color:var(--gold);letter-spacing:2px;font-weight:700;}
+  .drawer-head .t{font-size:15px;font-weight:700;margin-top:4px;}
+  .menu{list-style:none;margin:0;padding:8px;flex:1 1 auto;overflow-y:auto;}
+  .menu li{display:flex;align-items:center;gap:12px;padding:14px 14px;border-radius:12px;
+           font-size:15px;font-weight:600;cursor:pointer;color:var(--txt);}
+  .menu li .ico{font-size:18px;width:24px;text-align:center;}
+  .menu li.active{background:var(--gold-soft);color:var(--gold);}
+  .menu li:active{background:rgba(255,255,255,.07);}
+  .drawer-foot{padding:12px;border-top:1px solid var(--card-brd);}
+  .mini-btn{width:100%;padding:11px;border-radius:10px;border:1px solid var(--card-brd);
+            background:var(--card);color:var(--txt-dim);font-size:13px;font-weight:600;cursor:pointer;}
+  .mini-btn:active{transform:scale(.98);}
+  .mini-btn.danger{color:#fca5a5;border-color:rgba(252,165,165,.3);}
+  /* ---- generic cards / sections ---- */
+  .section{margin-bottom:18px;}
+  .section-h{font-size:13px;color:var(--txt-dim);font-weight:700;margin:6px 4px 10px;
+             display:flex;align-items:center;gap:8px;}
+  .section-h .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);}
+  /* match card (schedule) */
+  .match{background:var(--card);border:1px solid var(--card-brd);border-radius:16px;
+         padding:10px 10px;margin-bottom:12px;overflow:hidden;}
+  .match-row{display:flex;align-items:center;justify-content:space-between;gap:6px;}
+  .match-info{flex:0 0 auto;min-width:30px;display:flex;flex-direction:row;align-items:center;gap:4px;flex-wrap:wrap;}
+  .m-time{font-size:11px;font-weight:700;color:var(--txt);line-height:1.1;}
+  .m-tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;display:inline-block;width:fit-content;line-height:1;}
+  .m-tag.rr{background:rgba(148,163,184,.18);color:#cbd5e1;}
+  .m-tag.fin{background:rgba(245,158,11,.2);color:var(--gold);}
+  .match-board{flex:1 1 auto;display:flex;align-items:center;justify-content:center;gap:4px;min-width:0;}
+  .sb-team{flex:1 1 0;display:flex;align-items:center;gap:4px;min-width:0;}
+  .sb-team.left{justify-content:flex-end;text-align:right;}
+  .sb-team.right{justify-content:flex-start;}
+  .sb-name{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .sb-chip{width:4px;height:22px;border-radius:3px;flex:0 0 auto;}
+  .sb-score{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;min-width:28px;text-align:center;}
+  .sb-score.zero{color:var(--txt-mute);}
+  .sb-colon{font-size:14px;font-weight:700;color:var(--txt-mute);}
+  .sb-team.win .sb-name{color:var(--win);}
+  .sb-team.win .sb-score{color:var(--win);}
+  .m-data-btn{flex:0 0 auto;font-size:11px;font-weight:700;color:var(--gold);
+              background:transparent;border:1px solid rgba(245,158,11,.4);border-radius:20px;
+              padding:4px 8px;cursor:pointer;}
+  .m-data-btn:active{transform:scale(.95);}
+  /* placeholder keeps same width so boards align with/without data button */
+  .m-data-ph{flex:0 0 auto;font-size:11px;font-weight:700;color:transparent;
+             background:transparent;border:1px solid transparent;border-radius:20px;
+             padding:4px 8px;visibility:hidden;user-select:none;}
+  /* match data panel */
+  .m-panel{margin-top:8px;border-top:1px solid var(--card-brd);padding-top:10px;display:none;}
+  .m-panel.show{display:block;}
+  .mp-detail{background:rgba(0,0,0,.18);border-radius:14px;padding:10px;}
+  .mp-heads{display:flex;gap:8px;margin-bottom:10px;}
+  .mp-head{flex:1 1 50%;border-radius:10px;padding:8px 10px;display:flex;align-items:center;justify-content:space-between;color:#fff;font-weight:700;font-size:13px;min-width:0;}
+  .mp-hname{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .mp-hscore{font-weight:800;font-variant-numeric:tabular-nums;flex:0 0 auto;margin-left:6px;}
+  .mp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .mp-col{display:flex;flex-direction:column;gap:4px;}
+  .mp-row{display:flex;align-items:center;gap:6px;font-size:12px;}
+  .mp-no{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+          font-size:12px;font-weight:800;flex:0 0 auto;font-family:"Arial","Helvetica Neue",sans-serif;
+          box-shadow:inset 0 1px 0 rgba(255,255,255,.30), inset 0 -2px 4px rgba(0,0,0,.18);}
+  .mp-name{width:54px;flex:0 0 auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--txt);font-size:13px;letter-spacing:.5px;}
+  .mp-bar{flex:1 1 auto;height:8px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;min-width:20px;}
+  .mp-bar span{display:block;height:100%;border-radius:999px;transition:width .3s;}
+  .mp-sc{width:28px;text-align:right;font-weight:800;font-variant-numeric:tabular-nums;flex:0 0 auto;color:#fff;font-size:15px;font-family:"Arial","Helvetica Neue",sans-serif;}
+  .mp-empty{text-align:center;color:var(--txt-mute);font-size:12px;padding:10px 0;}
+  @media (max-width:380px){
+    .mp-name{width:40px;font-size:11px;}
+    .mp-no{width:20px;height:20px;font-size:9px;}
+  }
+  /* daily results */
+  .day-card{background:var(--card);border:1px solid var(--card-brd);border-radius:16px;
+            padding:12px 14px;margin-bottom:14px;}
+  .day-h{font-size:15px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .day-h .badge{font-size:11px;font-weight:700;color:var(--gold);background:var(--gold-soft);
+                padding:2px 9px;border-radius:20px;}
+  .day-match{display:flex;align-items:stretch;position:relative;gap:0;padding:0;border-radius:14px;overflow:hidden;min-height:54px;}
+  .day-match + .day-match{border-top:1px dashed rgba(255,255,255,.08);}
+  .dm-team{flex:1 1 50%;display:flex;align-items:center;min-width:0;padding:12px 10px;}
+  .dm-team.left{justify-content:flex-start;padding-right:52px;}
+  .dm-team.right{justify-content:flex-end;padding-left:52px;text-align:right;}
+  .dm-name{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+           color:var(--txt);}
+  .dm-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:4px;z-index:2;}
+  .dm-score{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;min-width:30px;text-align:center;}
+  .dm-colon{color:var(--txt-mute);font-weight:700;font-size:14px;}
+  .dm-w .dm-score{color:var(--win);}
+  .day-match-wrap{background:var(--card);border:1px solid var(--card-brd);border-radius:16px;
+                  padding:12px 14px;margin-bottom:10px;transition:all .2s;}
+  .day-match-wrap.expanded{border-color:rgba(245,158,11,.35);box-shadow:0 8px 24px rgba(0,0,0,.22);}
+  .day-match{cursor:pointer;}
+  .dm-arrow{width:8px;height:8px;border-right:2px solid var(--txt-mute);border-bottom:2px solid var(--txt-mute);
+            position:absolute;right:12px;top:50%;transform:translateY(-50%) rotate(45deg);transition:transform .2s;z-index:3;}
+  .day-match-wrap.expanded .dm-arrow{transform:translateY(-50%) rotate(-135deg);}
+  .dm-detail{margin-top:12px;}
+  .dpp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .dpp-col{background:rgba(0,0,0,.18);border-radius:12px;overflow:hidden;padding:8px 10px;}
+  .dpp-body{padding:0;}
+  .dpp-row{display:flex;align-items:center;gap:6px;padding:4px 0;font-size:12px;}
+  .dpp-no{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;
+          font-size:10px;font-weight:700;color:#fff;flex:0 0 auto;}
+  .dpp-name{width:48px;flex:0 0 auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--txt);}
+  .dpp-bar{flex:1 1 auto;height:6px;background:rgba(255,255,255,.10);border-radius:3px;overflow:hidden;min-width:20px;}
+  .dpp-bar span{display:block;height:100%;border-radius:3px;transition:width .3s;}
+  .dpp-sc{width:24px;text-align:right;font-weight:800;font-variant-numeric:tabular-nums;flex:0 0 auto;}
+  .dpp-empty{text-align:center;color:var(--txt-mute);font-size:12px;padding:10px 0;}
+  @media (max-width:380px){
+    .dpp-name{width:40px;font-size:11px;}
+    .dpp-no{width:20px;height:20px;font-size:9px;}
+  }
+  /* rankings */
+  .toggle{display:flex;background:var(--card);border:1px solid var(--card-brd);border-radius:12px;
+          padding:4px;margin-bottom:14px;}
+  .toggle button{flex:1;border:none;background:transparent;color:var(--txt-dim);font-size:14px;
+                 font-weight:700;padding:9px;border-radius:9px;cursor:pointer;}
+  .toggle button.on{background:var(--gold);color:#1a1205;}
+  .rk-table{background:var(--card);border:1px solid var(--card-brd);border-radius:16px;overflow:hidden;}
+  .rk-row{display:flex;align-items:center;gap:10px;padding:13px 14px;}
+  .rk-row + .rk-row{border-top:1px solid rgba(255,255,255,.07);}
+  .rk-pos{width:30px;font-size:17px;font-weight:800;text-align:center;flex:0 0 auto;}
+  .rk-pos.c1{color:#fde047;} .rk-pos.c2{color:#e2e8f0;} .rk-pos.c3{color:#fdba74;}
+  .rk-name{flex:1 1 auto;font-size:15px;font-weight:700;display:flex;align-items:center;gap:9px;}
+  .rk-dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto;}
+  .rk-stats{display:flex;gap:14px;font-size:13px;color:var(--txt-dim);}
+  .rk-stats b{color:var(--txt);font-size:15px;font-variant-numeric:tabular-nums;}
+  .rk-pts{font-size:20px;font-weight:800;color:var(--gold);min-width:38px;text-align:right;}
+  .podium{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+  .pod{background:var(--card);border:1px solid var(--card-brd);border-radius:16px;padding:16px 12px;
+       text-align:center;}
+  .pod .medal{font-size:30px;}
+  .pod .lab{font-size:12px;color:var(--txt-mute);margin-top:2px;}
+  .pod .pn{font-size:16px;font-weight:800;margin-top:8px;}
+  .pod.gold{border-color:rgba(245,158,11,.5);background:rgba(245,158,11,.10);}
+  .note{font-size:12px;color:var(--txt-mute);background:var(--card);border:1px dashed var(--card-brd);
+        border-radius:12px;padding:14px;text-align:center;line-height:1.6;}
+  /* players */
+  .filters{position:sticky;top:-14px;z-index:5;background:var(--bg3);
+           padding:14px 14px 10px;margin:0 -14px 12px;}
+  .f-row{display:flex;gap:8px;margin-bottom:8px;}
+  .f-row select,.f-row input{flex:1;min-width:0;background:var(--card);border:1px solid var(--card-brd);
+            color:var(--txt);font-size:14px;padding:11px 10px;border-radius:11px;outline:none;}
+  .f-row select option{background:#1e293b;color:var(--txt);}
+  .f-row input::placeholder{color:var(--txt-mute);}
+  .pl-card{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--card-brd);
+           border-radius:14px;padding:11px 14px;margin-bottom:10px;}
+  .pl-rank{width:30px;font-size:15px;font-weight:800;color:var(--txt-mute);text-align:center;flex:0 0 auto;}
+  .pl-rank.top{color:var(--gold);}
+  .pl-no{font-size:12px;color:var(--txt-mute);width:30px;flex:0 0 auto;text-align:center;}
+  .pl-info{flex:1 1 auto;min-width:0;}
+  .pl-name{font-size:15px;font-weight:700;}
+  .pl-team{font-size:12px;font-weight:600;margin-top:2px;}
+  .pl-score{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--gold);
+            min-width:48px;text-align:right;}
+  .pl-score.zero{color:var(--txt-mute);font-size:18px;}
+  .loadtip{text-align:center;color:var(--txt-mute);font-size:12px;padding:14px 0;}
+  .empty{text-align:center;color:var(--txt-mute);padding:40px 0;font-size:14px;}
+  /* toast */
+  #toast{position:absolute;left:50%;bottom:30px;transform:translateX(-50%) translateY(20px);
+         background:rgba(20,30,50,.96);border:1px solid var(--card-brd);color:var(--txt);
+         padding:11px 18px;border-radius:24px;font-size:13px;font-weight:600;opacity:0;
+         transition:all .25s;z-index:60;pointer-events:none;max-width:80%;text-align:center;}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  .hidden-input{display:none;}
+  /* player detail modal */
+  .modal{position:absolute;inset:0;z-index:55;display:none;flex-direction:column;}
+  .modal.show{display:flex;}
+  .modal-bg{position:absolute;inset:0;background:rgba(0,0,0,.6);}
+  .modal-card{position:relative;margin:auto 14px;width:auto;max-height:80vh;background:var(--bg2);border:1px solid var(--card-brd);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+  .modal-head{padding:16px 50px 12px 18px;border-bottom:1px solid var(--card-brd);background:rgba(0,0,0,.15);}
+  .modal-head .h-name{font-size:18px;font-weight:800;}
+  .modal-head .h-meta{font-size:13px;color:var(--txt-dim);margin-top:4px;}
+  .modal-body{padding:10px 14px 18px;overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1;}
+  .modal-close{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;border:1px solid var(--card-brd);background:var(--card);color:var(--txt);font-size:22px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .modal-close:active{transform:scale(.95);}
+  /* snapshot list */
+  .snap-item{background:var(--card);border:1px solid var(--card-brd);border-radius:14px;padding:12px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+  .snap-info{flex:1 1 auto;min-width:0;}
+  .snap-time{font-size:15px;font-weight:800;color:var(--txt);font-variant-numeric:tabular-nums;}
+  .snap-sub{font-size:12px;color:var(--txt-dim);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .snap-acts{display:flex;gap:8px;flex:0 0 auto;}
+  .snap-restore{font-size:13px;font-weight:700;color:#0b1220;background:var(--gold);border:none;border-radius:10px;padding:8px 14px;cursor:pointer;}
+  .snap-restore:active{transform:scale(.96);}
+  .snap-del{font-size:13px;font-weight:700;color:#fca5a5;border:1px solid rgba(252,165,165,.3);background:transparent;border-radius:10px;padding:8px 12px;cursor:pointer;}
+  .snap-del:active{transform:scale(.96);}
+  .snap-empty{color:var(--txt-dim);font-size:13px;text-align:center;padding:24px 0;}
+  .pm-item{background:var(--card);border:1px solid var(--card-brd);border-radius:14px;padding:12px 14px;margin-bottom:10px;cursor:pointer;}
+  .pm-item:active{transform:scale(.99);}
+  .pm-row{display:flex;align-items:center;gap:8px;}
+  .pm-tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(148,163,184,.18);color:#cbd5e1;flex:0 0 auto;}
+  .pm-tag.fin{background:rgba(245,158,11,.2);color:var(--gold);}
+  .pm-vs{flex:1 1 auto;font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
+  .pm-score{font-size:18px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--gold);flex:0 0 auto;}
+  .pm-score.zero{color:var(--txt-mute);}
+  .pm-detail{display:none;margin-top:10px;border-top:1px solid var(--card-brd);padding-top:10px;}
+  .pm-detail.show{display:block;}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="topbar">
+    <button class="hamb" id="hambBtn" aria-label="菜单">&#9776;</button>
+    <div class="titles">
+      <span class="kick">富阳农商银行</span>
+      <span class="main">第五届职工篮球赛</span>
+    </div>
+  </div>
+
+  <div id="content"></div>
+
+  <div class="scrim" id="scrim"></div>
+  <div class="drawer" id="drawer">
+    <div class="drawer-head">
+      <div class="k">MENU</div>
+      <div class="t">赛事中心</div>
+    </div>
+    <ul class="menu" id="menu">
+      <li data-page="schedule"><span class="ico">&#128197;</span>赛程</li>
+      <li data-page="rankings"><span class="ico">&#127942;</span>阶段排名</li>
+      <li data-page="players"><span class="ico">&#127936;</span>球员</li>
+    </ul>
+    <div class="drawer-foot">
+      <button class="mini-btn" id="adminBtn">管理员</button>
+      <div id="adminActions" style="display:none;">
+        <button class="mini-btn" id="importBtn" style="margin-top:8px;">导入每日战况</button>
+        <button class="mini-btn" id="snapSaveBtn" style="margin-top:8px;">保存快照</button>
+        <button class="mini-btn" id="snapOpenBtn" style="margin-top:8px;">恢复至快照</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+  <input type="file" id="fileInput" class="hidden-input" accept=".xlsx,.xls" />
+
+  <div class="modal" id="playerModal">
+    <div class="modal-bg" id="modalBg"></div>
+    <div class="modal-card">
+      <div class="modal-head">
+        <div class="h-name" id="modalName">球员</div>
+        <div class="h-meta" id="modalMeta">球队</div>
+      </div>
+      <button class="modal-close" id="modalClose">&times;</button>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="snapModal">
+  <div class="modal-bg" id="snapBg"></div>
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="h-name">数据快照</div>
+      <div class="h-meta" id="snapMeta">保存后可随时恢复（多版本）</div>
+    </div>
+    <button class="modal-close" id="snapClose">&times;</button>
+    <div class="modal-body" id="snapList"></div>
+  </div>
+</div>
+
+<script src="xlsx.full.min.js"></script>
+<script src="data.js"></script>
+<script>
+"use strict";
+const BASE = window.APP_DATA;
+const LS_KEY = "fyns_basketball_v1";
+const SNAP_KEY = "fyns_basketball_snaps_v1";   // 多版本数据快照
+const ADMIN_KEY = "fyns2026";             // 管理员导入密钥，可在此修改
+let D = Object.assign({}, BASE);          // working data (may be replaced by import)
+let imported = false;
+
+// try load imported data
+try{
+  const raw = localStorage.getItem(LS_KEY);
+  if(raw){ const obj = JSON.parse(raw); Object.assign(D, obj); imported = true; }
+}catch(e){}
+
+const state = {
+  page: "schedule",
+  expanded: {},          // seq -> bool (schedule data panel)
+  dailyExpanded: {},     // seq -> bool (daily match detail)
+  rankingsView: D.meta && D.meta.hasFinal ? "final" : "rr",
+  player: { scope:"all", team:"all", name:"" },
+  playerList: [],
+  playerCount: 0,
+};
+
+/* ---------- helpers ---------- */
+function hexToRgba(hex,a){
+  hex=hex.replace("#","");
+  const r=parseInt(hex.substr(0,2),16),g=parseInt(hex.substr(2,2),16),b=parseInt(hex.substr(4,2),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+function tColor(t){ return (D.teamColors&&D.teamColors[t]) || "#94a3b8"; }
+function contrastColor(hex){
+  const h = hex.replace("#","");
+  const r=parseInt(h.substr(0,2),16), g=parseInt(h.substr(2,2),16), b=parseInt(h.substr(4,2),16);
+  const yiq = ((r*299)+(g*587)+(b*114))/1000;
+  return yiq>=150 ? "#1f2937" : "#ffffff";
+}
+function rgbaColor(hex,a){
+  const h = hex.replace("#","");
+  const r=parseInt(h.substr(0,2),16), g=parseInt(h.substr(2,2),16), b=parseInt(h.substr(4,2),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function teamScore(date,time,team){
+  const arr = D.matchPlayers[date+"|"+time+"|"+team];
+  if(!arr) return 0;
+  return arr.reduce((s,p)=>s+(p.score||0),0);
+}
+function displayTeams(m){
+  if(m.isFinal){
+    const actual = Object.keys(D.matchPlayers)
+      .filter(k=>k.startsWith(m.date+"|"+m.time+"|"))
+      .map(k=>k.split("|")[2]);
+    if(actual.length>=2) return actual.slice(0,2);
+  }
+  return [m.home,m.away];
+}
+function matchHasData(m){
+  return Object.keys(D.matchPlayers).some(k=>k.startsWith(m.date+"|"+m.time+"|"));
+}
+function matchWinner(m){
+  const t = displayTeams(m);
+  if(t.length<2) return null;
+  const a = teamScore(m.date,m.time,t[0]), b = teamScore(m.date,m.time,t[1]);
+  if(a===b) return null;
+  return a>b ? t[0] : t[1];
+}
+
+/* ---------- toast ---------- */
+let toastT;
+function toast(msg){
+  const el=document.getElementById("toast");
+  el.textContent=msg; el.classList.add("show");
+  clearTimeout(toastT);
+  toastT=setTimeout(()=>el.classList.remove("show"),2200);
+}
+
+/* ---------- render: schedule ---------- */
+function renderSchedule(){
+  const dates = [...new Set(D.schedule.map(m=>m.date))];
+  let html = `<div class="page-title"><span class="bar"></span>赛程
+     <span class="page-sub">点击"数据"查看球员得分</span></div>`;
+  dates.forEach(date=>{
+    const ms = D.schedule.filter(m=>m.date===date);
+    const allFinal = ms.every(m=>m.isFinal);
+    const dayTag = allFinal ? `<span class="m-tag fin">决赛</span>` : `<span class="m-tag rr">循环赛</span>`;
+    html += `<div class="section"><div class="section-h"><span class="dot"></span>${esc(date)}${dayTag}</div>`;
+    ms.forEach(m=>{
+      const res = D.results[m.seq] || {};
+      const hasData = matchHasData(m);
+      const winTeam = matchWinner(m);
+      const teams = displayTeams(m);
+      let title;
+      if(m.isFinal){
+        title = m.seq===12 ? "决赛 · 冠亚军" : "决赛 · 三四名";
+      }else{
+        title = esc(m.time);
+      }
+      const t1 = teams[0] || "", t2 = teams[1] || "";
+      const isPH1 = m.isFinal && (!hasData || !t1);
+      const isPH2 = m.isFinal && (!hasData || !t2);
+      const name1 = isPH1 ? "待定" : esc(t1);
+      const name2 = isPH2 ? "待定" : esc(t2);
+      const sc1 = !hasData ? "—" : teamScore(m.date,m.time,t1);
+      const sc2 = !hasData ? "—" : teamScore(m.date,m.time,t2);
+      const w1 = hasData && winTeam===t1;
+      const w2 = hasData && winTeam===t2;
+      const col1 = isPH1 ? "#64748b" : tColor(t1);
+      const col2 = isPH2 ? "#64748b" : tColor(t2);
+      const open = state.expanded[m.seq] ? "show":"";
+      html += `<div class="match">
+          <div class="match-row">
+            <div class="match-info">
+              <span class="m-time">${title}</span>
+            </div>
+            <div class="match-board">
+              <div class="sb-team left ${w1?'win':''}">
+                <span class="sb-name" style="color:${isPH1?'var(--txt-mute)':col1}">${name1}</span>
+                <span class="sb-chip" style="background:${col1}"></span>
+              </div>
+              <span class="sb-score ${sc1==='—'?'zero':''}" style="color:${w1?col1:'var(--txt)'}">${sc1}</span>
+              <span class="sb-colon">:</span>
+              <span class="sb-score ${sc2==='—'?'zero':''}" style="color:${w2?col2:'var(--txt)'}">${sc2}</span>
+              <div class="sb-team right ${w2?'win':''}">
+                <span class="sb-chip" style="background:${col2}"></span>
+                <span class="sb-name" style="color:${isPH2?'var(--txt-mute)':col2}">${name2}</span>
+              </div>
+            </div>
+            ${hasData ? `<button class="m-data-btn" data-seq="${m.seq}">数据</button>` : `<span class="m-data-ph">数据</span>`}
+          </div>
+          <div class="m-panel ${open}" id="panel-${m.seq}">${renderMatchPanel(m)}</div>
+        </div>`;
+    });
+    html += `</div>`;
+  });
+  document.getElementById("content").innerHTML = html;
+}
+
+function renderMatchPanel(m){
+  const teams = displayTeams(m);
+  const res = D.results[m.seq]||{};
+  const realKeys = Object.keys(D.matchPlayers).filter(k=>k.startsWith(m.date+"|"+m.time+"|"));
+  if(!res.hasData && realKeys.length===0){
+    if(m.isFinal) return `<div class="mp-empty">决赛数据尚未导入</div>`;
+    return `<div class="mp-empty">本场暂无得分数据</div>`;
+  }
+  const c1 = tColor(teams[0]), c2 = tColor(teams[1]);
+  const total1 = teamScore(m.date,m.time,teams[0]);
+  const total2 = teamScore(m.date,m.time,teams[1]);
+  function teamBlock(tm,col){
+    const arr = D.matchPlayers[m.date+"|"+m.time+"|"+tm] || [];
+    const max = Math.max(1, ...arr.map(p=>p.score));
+    let rows = arr.length? "" : `<div class="mp-empty">暂无</div>`;
+    arr.forEach(p=>{
+      const pct = (p.score/max)*100;
+      rows += `<div class="mp-row">
+          <span class="mp-no" style="background:${rgbaColor(col,0.20)};color:${col};border:1px solid ${rgbaColor(col,0.45)}">${p.number}</span>
+          <span class="mp-name">${esc(p.name)}</span>
+          <div class="mp-bar"><span style="width:${pct}%;background:linear-gradient(90deg, ${rgbaColor(col,0.55)}, ${col});box-shadow:0 0 8px ${col}"></span></div>
+          <span class="mp-sc">${p.score}</span>
+        </div>`;
+    });
+    return `<div class="mp-col">${rows}</div>`;
+  }
+  return `<div class="mp-detail">
+      <div class="mp-heads">
+        <div class="mp-head" style="background:linear-gradient(135deg, ${rgbaColor(c1,0.85)}, ${c1})"><span class="mp-hname">${esc(teams[0])}</span><span class="mp-hscore">${total1} 分</span></div>
+        <div class="mp-head" style="background:linear-gradient(135deg, ${rgbaColor(c2,0.85)}, ${c2})"><span class="mp-hname">${esc(teams[1])}</span><span class="mp-hscore">${total2} 分</span></div>
+      </div>
+      <div class="mp-grid">${teamBlock(teams[0],c1)}${teamBlock(teams[1],c2)}</div>
+    </div>`;
+}
+
+/* ---------- render: daily ---------- */
+function renderDailyMatchDetail(m){
+  const teams = displayTeams(m);
+  const c1 = tColor(teams[0]), c2 = tColor(teams[1]);
+  const s1 = teamScore(m.date,m.time,teams[0]);
+  const s2 = teamScore(m.date,m.time,teams[1]);
+  const winTeam = matchWinner(m);
+
+  function teamBlock(tm, col, sc, isWin){
+    const arr = D.matchPlayers[`${m.date}|${m.time}|${tm}`] || [];
+    const max = Math.max(1, ...arr.map(p=>p.score));
+    const total = arr.reduce((a,p)=>a+p.score,0);
+    let rows = arr.length ? "" : `<div class="dpp-empty">暂无</div>`;
+    arr.forEach(p=>{
+      const pct = (p.score/max)*100;
+      rows += `<div class="dpp-row">
+          <span class="dpp-no" style="background:${col}">${p.number}</span>
+          <span class="dpp-name">${esc(p.name)}</span>
+          <div class="dpp-bar"><span style="width:${pct}%;background:${col}"></span></div>
+          <span class="dpp-sc">${p.score}</span>
+        </div>`;
+    });
+    return `<div class="dpp-col">
+        <div class="dpp-body">${rows}</div>
+      </div>`;
+  }
+
+  return `<div class="dm-detail">
+      <div class="dpp-grid">${teamBlock(teams[0],c1,s1,winTeam===teams[0])}${teamBlock(teams[1],c2,s2,winTeam===teams[1])}</div>
+    </div>`;
+}
+
+function renderDaily(){
+  const dates = [...new Set(D.schedule.map(m=>m.date))].reverse();
+  let html = `<div class="page-title"><span class="bar"></span>每日战况
+     <span class="page-sub">各比赛日对阵得分</span></div>`;
+  let any=false;
+
+  // default expand latest match with data if none selected
+  const allWithData = [];
+  dates.forEach(date=>{
+    allWithData.push(...D.schedule.filter(m=>m.date===date && matchHasData(m)));
+  });
+  if(allWithData.length && Object.keys(state.dailyExpanded).length===0){
+    state.dailyExpanded[allWithData[allWithData.length-1].seq] = true;
+  }
+
+  dates.forEach(date=>{
+    const ms = D.schedule.filter(m=>m.date===date);
+    const withData = ms.filter(m=>matchHasData(m));
+    if(!withData.length) return;
+    any=true;
+    html += `<div class="day-card"><div class="day-h">${esc(date)}
+        <span class="badge">${withData.length} 场</span></div>`;
+    withData.forEach(m=>{
+      const teams = displayTeams(m);
+      const hasData = matchHasData(m);
+      const winTeam = matchWinner(m);
+      const isPH = m.isFinal && !hasData;
+      const t1 = isPH?"待定":teams[0], t2 = isPH?"待定":teams[1];
+      const s1 = isPH?"—":teamScore(m.date,m.time,teams[0]);
+      const s2 = isPH?"—":teamScore(m.date,m.time,teams[1]);
+      const w1 = !isPH && winTeam===teams[0];
+      const w2 = !isPH && winTeam===teams[1];
+      const c1 = isPH?"#64748b":tColor(teams[0]);
+      const c2 = isPH?"#64748b":tColor(teams[1]);
+      const expanded = !!state.dailyExpanded[m.seq];
+      const detail = expanded ? renderDailyMatchDetail(m) : "";
+      html += `<div class="day-match-wrap ${expanded?'expanded':''}" data-seq="${m.seq}">
+          <div class="day-match">
+            <div class="dm-team left ${w1?'dm-w':''}" style="background:${rgbaColor(c1,0.18)};">
+              <span class="dm-name" style="color:${c1};">${esc(t1)}</span>
+            </div>
+            <div class="dm-center">
+              <span class="dm-score" style="color:${c1};">${s1}</span>
+              <span class="dm-colon">:</span>
+              <span class="dm-score" style="color:${c2};">${s2}</span>
+            </div>
+            <div class="dm-team right ${w2?'dm-w':''}" style="background:${rgbaColor(c2,0.18)};">
+              <span class="dm-name" style="color:${c2};">${esc(t2)}</span>
+            </div>
+            <span class="dm-arrow"></span>
+          </div>
+          ${detail}
+        </div>`;
+    });
+    html += `</div>`;
+  });
+  if(!any) html += `<div class="empty">暂无比赛得分数据</div>`;
+  document.getElementById("content").innerHTML = html;
+}
+
+/* ---------- render: rankings ---------- */
+function renderRankings(){
+  const hasFinal = !!(D.final);
+  let toggle = `<div class="toggle">
+      <button data-v="rr" class="${state.rankingsView==='rr'?'on':''}">循环赛</button>
+      <button data-v="final" class="${state.rankingsView==='final'?'on':''}" ${hasFinal?'':'disabled style="opacity:.4"'}>决赛</button>
+    </div>`;
+  let html = `<div class="page-title"><span class="bar"></span>阶段排名
+     <span class="page-sub">${hasFinal?'已导入决赛数据':'当前为循环赛'}</span></div>${toggle}`;
+
+  if(state.rankingsView==="final"){
+    if(!hasFinal){
+      html += `<div class="note">决赛数据尚未导入。<br>导入 8月30日 决赛每日对战信息后，将在此展示冠、亚、季、第四名最终名次。</div>`;
+    }else{
+      const f=D.final;
+      html += `<div class="podium">
+          <div class="pod gold"><div class="medal">&#127942;</div><div class="lab">冠军</div>
+             <div class="pn" style="color:${tColor(f.champion)}">${esc(f.champion||'—')}</div></div>
+          <div class="pod"><div class="medal">&#129944;</div><div class="lab">亚军</div>
+             <div class="pn" style="color:${tColor(f.runner)}">${esc(f.runner||'—')}</div></div>
+          <div class="pod"><div class="medal">&#129945;</div><div class="lab">季军</div>
+             <div class="pn" style="color:${tColor(f.third)}">${esc(f.third||'—')}</div></div>
+          <div class="pod"><div class="medal">&#10022;</div><div class="lab">第四名</div>
+             <div class="pn" style="color:${tColor(f.fourth)}">${esc(f.fourth||'—')}</div></div>
+        </div>`;
+      // remaining teams by round robin
+      const top4 = new Set([f.champion,f.runner,f.third,f.fourth].filter(Boolean));
+      const rest = D.rrStandings.filter(s=>!top4.has(s.team));
+      if(rest.length){
+        html += `<div class="section-h"><span class="dot"></span>其余名次（按循环赛）</div><div class="rk-table">`;
+        rest.forEach((s,i)=>{
+          html += rkRow(i+5, s);
+        });
+        html += `</div>`;
+      }
+    }
+  }else{
+    html += `<div class="rk-table">`;
+    D.rrStandings.forEach((s,i)=>{ html += rkRow(i+1, s); });
+    html += `</div>
+      <div class="note" style="margin-top:12px;">每胜一场积 2 分，负一场积 1 分；积分相等按相互间胜负排名。</div>`;
+  }
+  document.getElementById("content").innerHTML = html;
+}
+function rkRow(pos, s){
+  const col=tColor(s.team);
+  const cls = pos<=3?`c${pos}`:"";
+  return `<div class="rk-row">
+      <span class="rk-pos ${cls}">${pos}</span>
+      <span class="rk-name"><span class="rk-dot" style="background:${col}"></span>${esc(s.team)}</span>
+      <span class="rk-stats"><span>胜 <b>${s.win}</b></span><span>负 <b>${s.loss}</b></span></span>
+      <span class="rk-pts">${s.points}</span>
+    </div>`;
+}
+
+/* ---------- render: players ---------- */
+const PAGE_SIZE = 15;
+function computePlayerList(){
+  const sc = state.player.scope;
+  let list = D.players.map(p=>({
+    name:p.name, number:p.number, team:p.team,
+    score: sc==="rr"?p.rr : sc==="final"?p.final : p.total
+  }));
+  if(state.player.team!=="all") list = list.filter(p=>p.team===state.player.team);
+  if(state.player.name.trim()){
+    const q=state.player.name.trim();
+    list = list.filter(p=>p.name.includes(q));
+  }
+  list.sort((a,b)=> b.score-a.score || a.team.localeCompare(b.team) || a.number-b.number);
+  return list;
+}
+function renderPlayersPage(){
+  const teams = D.teamOrder || (D.teams||[]).map(t=>t.name);
+  let opts = `<option value="all">全部球队</option>` + teams.map(t=>`<option value="${esc(t)}" ${state.player.team===t?'selected':''}>${esc(t)}</option>`).join("");
+  const html = `<div class="page-title"><span class="bar"></span>球员得分榜
+     <span class="page-sub" id="plTotal"></span></div>
+     <div class="filters">
+       <div class="f-row">
+         <select id="fScope">
+           <option value="all" ${state.player.scope==='all'?'selected':''}>全部</option>
+           <option value="rr" ${state.player.scope==='rr'?'selected':''}>循环赛</option>
+           <option value="final" ${state.player.scope==='final'?'selected':''}>决赛</option>
+         </select>
+         <select id="fTeam">${opts}</select>
+       </div>
+       <div class="f-row">
+         <input id="fName" type="text" placeholder="搜索球员姓名" value="${esc(state.player.name)}" />
+       </div>
+     </div>
+     <div id="plList"></div>
+     <div class="loadtip" id="loadtip"></div>`;
+  document.getElementById("content").innerHTML = html;
+  renderPlayerList();
+}
+function renderPlayerList(){
+  const list = computePlayerList();
+  state.playerList = list;
+  const total = list.length;
+  const show = list.slice(0, state.playerCount + PAGE_SIZE);
+  state.playerCount = show.length;
+  const totalEl = document.getElementById("plTotal");
+  if(totalEl) totalEl.textContent = `含未得分球员 · 共 ${total} 人`;
+  const listEl = document.getElementById("plList");
+  if(show.length===0){
+    listEl.innerHTML = `<div class="empty">没有符合条件的球员</div>`;
+  }else{
+    listEl.innerHTML = show.map((p,i)=>{
+      const col=tColor(p.team);
+      const rank = i+1;
+      return `<div class="pl-card" data-team="${esc(p.team)}" data-number="${p.number}" data-name="${esc(p.name)}">
+          <span class="pl-rank ${rank<=3?'top':''}">${rank}</span>
+          <span class="pl-no">#${p.number}</span>
+          <div class="pl-info">
+            <div class="pl-name">${esc(p.name)}</div>
+            <div class="pl-team" style="color:${col}">${esc(p.team)}</div>
+          </div>
+          <span class="pl-score ${p.score===0?'zero':''}">${p.score}</span>
+        </div>`;
+    }).join("");
+  }
+  const tip=document.getElementById("loadtip");
+  if(state.playerCount < total) tip.textContent="上划加载更多…";
+  else if(total>0) tip.textContent=`已显示全部 ${total} 名球员`;
+}
+
+/* ---------- player detail modal ---------- */
+function getPlayerMatches(team, number){
+  const out=[];
+  D.schedule.forEach(m=>{
+    if(m.home!==team && m.away!==team) return;
+    if(!matchHasData(m)) return;
+    const isHome = m.home===team;
+    const opponent = isHome?m.away:m.home;
+    const arr = D.matchPlayers[`${m.date}|${m.time}|${team}`]||[];
+    const p = arr.find(x=>x.number===number);
+    const tScore = teamScore(m.date,m.time,team);
+    const oScore = teamScore(m.date,m.time,opponent);
+    out.push({
+      date:m.date, time:m.time, seq:m.seq, isFinal:m.isFinal,
+      opponent, teamScore:tScore, oppScore:oScore,
+      playerScore:p?p.score:0, isWin:tScore>oScore
+    });
+  });
+  return out;
+}
+function openPlayerModal(team, number, name){
+  const modal = document.getElementById("playerModal");
+  const matches = getPlayerMatches(team, number);
+  document.getElementById("modalName").textContent = esc(name);
+  document.getElementById("modalMeta").textContent = `${esc(team)} · #${number} · 共 ${matches.length} 场`;
+  const body = document.getElementById("modalBody");
+  if(matches.length===0){
+    body.innerHTML = `<div class="empty">该球员暂无得分数据</div>`;
+  }else{
+    body.innerHTML = `<div class="pm-list">`+ matches.map(m=>`
+      <div class="pm-item" data-seq="${m.seq}">
+        <div class="pm-row">
+          <span class="pm-tag ${m.isFinal?'fin':''}">${m.isFinal?(m.seq===12?'决赛':'三四名'):'循环赛'}</span>
+          <span class="pm-vs">${esc(m.date)} ${esc(m.time)} vs ${esc(m.opponent)}</span>
+          <span class="pm-score ${m.playerScore===0?'zero':''}">${m.playerScore} 分</span>
+        </div>
+        <div class="pm-detail" id="pmd-${m.seq}"></div>
+      </div>`).join("")+`</div>`;
+  }
+  modal.classList.add("show");
+}
+function closePlayerModal(){
+  document.getElementById("playerModal").classList.remove("show");
+}
+
+/* ---------- page switch ---------- */
+function setPage(p){
+  state.page = p;
+  state.expanded = {};
+  document.querySelectorAll("#menu li").forEach(li=>li.classList.toggle("active", li.dataset.page===p));
+  if(p==="schedule") renderSchedule();
+  else if(p==="daily"){ state.dailyExpanded={}; renderDaily(); }
+  else if(p==="rankings") renderRankings();
+  else if(p==="players"){ state.playerCount=0; renderPlayersPage(); }
+  const c=document.getElementById("content");
+  c.scrollTop=0;
+}
+
+/* ---------- events ---------- */
+document.getElementById("hambBtn").addEventListener("click", ()=>{
+  document.getElementById("drawer").classList.add("open");
+  document.getElementById("scrim").classList.add("open");
+});
+document.getElementById("scrim").addEventListener("click", closeDrawer);
+function closeDrawer(){
+  document.getElementById("drawer").classList.remove("open");
+  document.getElementById("scrim").classList.remove("open");
+  // collapse admin actions when drawer closes
+  const adminBtn = document.getElementById("adminBtn");
+  const adminActions = document.getElementById("adminActions");
+  if(adminBtn && adminActions){
+    adminBtn.style.display = "block";
+    adminActions.style.display = "none";
+  }
+}
+document.getElementById("menu").addEventListener("click", e=>{
+  const li=e.target.closest("li"); if(!li) return;
+  setPage(li.dataset.page); closeDrawer();
+});
+
+// schedule data button & player modal (delegated)
+document.getElementById("content").addEventListener("click", e=>{
+  const btn=e.target.closest(".m-data-btn");
+  if(btn){
+    const seq=+btn.dataset.seq;
+    state.expanded[seq]=!state.expanded[seq];
+    const panel=document.getElementById("panel-"+seq);
+    const m=D.schedule.find(x=>x.seq===seq);
+    panel.innerHTML = renderMatchPanel(m);
+    panel.classList.toggle("show", state.expanded[seq]);
+    return;
+  }
+  const tg=e.target.closest(".toggle button");
+  if(tg){ state.rankingsView=tg.dataset.v; renderRankings(); return; }
+  const card=e.target.closest(".pl-card");
+  if(card && e.target.closest(".pl-name")){
+    openPlayerModal(card.dataset.team, +card.dataset.number, card.dataset.name);
+    return;
+  }
+  const dm=e.target.closest(".day-match-wrap");
+  if(dm){
+    const seq=+dm.dataset.seq;
+    state.dailyExpanded[seq]=!state.dailyExpanded[seq];
+    renderDaily();
+    return;
+  }
+});
+
+// players filters (delegated, on change/input)
+document.getElementById("content").addEventListener("change", e=>{
+  if(e.target.id==="fScope"){ state.player.scope=e.target.value; state.playerCount=0; renderPlayerList(); }
+  if(e.target.id==="fTeam"){ state.player.team=e.target.value; state.playerCount=0; renderPlayerList(); }
+});
+document.getElementById("content").addEventListener("input", e=>{
+  if(e.target.id==="fName"){
+    clearTimeout(window._nmT);
+    window._nmT=setTimeout(()=>{ state.player.name=e.target.value; state.playerCount=0; renderPlayerList(); }, 250);
+  }
+});
+
+// infinite scroll on content
+let loadingMore=false;
+document.getElementById("content").addEventListener("scroll", ()=>{
+  if(state.page!=="players") return;
+  const c=document.getElementById("content");
+  if(c.scrollTop + c.clientHeight >= c.scrollHeight - 60){
+    loadMorePlayers();
+  }
+});
+// touch swipe-up to load more
+let touchStartY=0;
+document.getElementById("content").addEventListener("touchstart", e=>{ touchStartY=e.touches[0].clientY; }, {passive:true});
+document.getElementById("content").addEventListener("touchend", e=>{
+  if(state.page!=="players") return;
+  const c=document.getElementById("content");
+  const moved = touchStartY - e.changedTouches[0].clientY;
+  if(moved>40 && c.scrollTop + c.clientHeight >= c.scrollHeight - 120){
+    loadMorePlayers();
+  }
+});
+function loadMorePlayers(){
+  if(loadingMore) return;
+  if(state.playerCount >= state.playerList.length) return;
+  loadingMore=true;
+  // append next page
+  const list=state.playerList;
+  const next = list.slice(state.playerCount, state.playerCount+PAGE_SIZE);
+  state.playerCount += next.length;
+  const listEl=document.getElementById("plList");
+  const frag = next.map((p,i)=>{
+    const col=tColor(p.team); const rank=state.playerCount-next.length+i+1;
+    return `<div class="pl-card" data-team="${esc(p.team)}" data-number="${p.number}" data-name="${esc(p.name)}">
+        <span class="pl-rank ${rank<=3?'top':''}">${rank}</span>
+        <span class="pl-no">#${p.number}</span>
+        <div class="pl-info"><div class="pl-name">${esc(p.name)}</div>
+          <div class="pl-team" style="color:${col}">${esc(p.team)}</div></div>
+        <span class="pl-score ${p.score===0?'zero':''}">${p.score}</span></div>`;
+  }).join("");
+  listEl.insertAdjacentHTML("beforeend", frag);
+  const tip=document.getElementById("loadtip");
+  if(state.playerCount>=state.playerList.length){
+    if(tip) tip.textContent = `已显示全部 ${state.playerList.length} 名球员`;
+  }
+  setTimeout(()=>loadingMore=false,120);
+}
+
+/* ---------- player modal events ---------- */
+document.getElementById("modalBg").addEventListener("click", closePlayerModal);
+document.getElementById("modalClose").addEventListener("click", closePlayerModal);
+document.getElementById("modalBody").addEventListener("click", e=>{
+  const item=e.target.closest(".pm-item");
+  if(!item) return;
+  const seq=+item.dataset.seq;
+  const det=document.getElementById("pmd-"+seq);
+  if(!det.classList.contains("show")){
+    const m=D.schedule.find(x=>x.seq===seq);
+    det.innerHTML = renderMatchPanel(m);
+  }
+  det.classList.toggle("show");
+});
+
+/* ---------- admin import (SheetJS) ---------- */
+// admin gate: only reveal import/reset after key verified
+document.getElementById("adminBtn").addEventListener("click", ()=>{
+  const key = prompt("请输入管理员密钥：");
+  if(key !== ADMIN_KEY){ toast("密钥错误"); return; }
+  document.getElementById("adminBtn").style.display = "none";
+  document.getElementById("adminActions").style.display = "block";
+});
+document.getElementById("importBtn").addEventListener("click", ()=>{
+  closeDrawer();
+  document.getElementById("fileInput").click();
+});
+document.getElementById("fileInput").addEventListener("change", e=>{
+  const file=e.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload = ev=>{
+    try{
+      const wb = XLSX.read(ev.target.result, {type:"array"});
+      const parsed = parseWorkbook(wb);
+      if(!parsed || parsed.dailySheets.length===0) throw new Error("未识别到每日对战信息表（请确认 sheet 名为比赛日期）");
+      // merge: keep previously imported days, overwrite (whole match) for days in this file
+      const existing = matchPlayersArrToObj(D.matchPlayers || {});
+      const merged = Object.assign({}, existing);
+      Object.keys(parsed.matchPlayer).forEach(mk=>{ merged[mk] = parsed.matchPlayer[mk]; });
+      const dyn = rebuildFromMatchPlayer(merged, parsed.dailySheets);
+      Object.assign(D, dyn);
+      imported=true;
+      localStorage.setItem(LS_KEY, JSON.stringify(dyn));
+      if(D.meta) D.meta.hasFinal = !!dyn.final;
+      state.rankingsView = dyn.final ? "final" : "rr";
+      setPage(state.page==="players"?"players":state.page);
+      toast("导入成功：" + parsed.dailySheets.join("、") + (dyn.final?"（含决赛数据）":""));
+    }catch(err){
+      toast("导入失败：" + err.message);
+      console.error(err);
+    }
+    e.target.value="";
+  };
+  reader.readAsArrayBuffer(file);
+});
+/* ---------- data snapshots (multi-version, with timestamp) ---------- */
+function currentDynamic(){
+  return {
+    results: D.results, rrStandings: D.rrStandings, final: D.final,
+    players: D.players, matchPlayers: D.matchPlayers,
+    dailySheets: D.dailySheets, meta: D.meta
+  };
+}
+function loadSnaps(){
+  try{ const raw=localStorage.getItem(SNAP_KEY); return raw?JSON.parse(raw):[]; }catch(e){ return []; }
+}
+function saveSnaps(arr){ localStorage.setItem(SNAP_KEY, JSON.stringify(arr)); }
+function fmtTime(iso){
+  const d=new Date(iso), p=n=>String(n).padStart(2,"0");
+  return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+function saveSnap(){
+  const snaps=loadSnaps();
+  const now=new Date();
+  const id=String(now.getTime());
+  snaps.unshift({ id, time:now.toISOString(), data:currentDynamic() });
+  saveSnaps(snaps);
+  toast("已保存快照：" + fmtTime(now.toISOString()));
+  return id;
+}
+function renderSnapList(){
+  const snaps=loadSnaps();
+  const box=document.getElementById("snapList");
+  if(snaps.length===0){ box.innerHTML=`<div class="snap-empty">暂无快照，点击"保存快照"创建</div>`; return; }
+  box.innerHTML = snaps.map(s=>{
+    const ds=(s.data.dailySheets||[]);
+    const sub = ds.length ? "含："+ds.join("、") : "初始数据";
+    return `<div class="snap-item">
+        <div class="snap-info">
+          <div class="snap-time">${fmtTime(s.time)}</div>
+          <div class="snap-sub">${esc(sub)}</div>
+        </div>
+        <div class="snap-acts">
+          <button class="snap-restore" data-id="${s.id}">恢复</button>
+          <button class="snap-del" data-id="${s.id}">删除</button>
+        </div>
+      </div>`;
+  }).join("");
+  box.querySelectorAll(".snap-restore").forEach(b=>b.addEventListener("click",()=>{
+    if(confirm("确定恢复到该快照吗？当前未单独保存的数据将被覆盖。")) restoreSnap(b.dataset.id);
+  }));
+  box.querySelectorAll(".snap-del").forEach(b=>b.addEventListener("click",()=>deleteSnap(b.dataset.id)));
+}
+function openSnapModal(){ renderSnapList(); document.getElementById("snapModal").classList.add("show"); }
+function closeSnapModal(){ document.getElementById("snapModal").classList.remove("show"); }
+function restoreSnap(id){
+  const s=loadSnaps().find(x=>x.id===id);
+  if(!s){ toast("快照不存在"); return; }
+  Object.assign(D, s.data);
+  localStorage.setItem(LS_KEY, JSON.stringify(s.data));
+  imported=true;
+  state.rankingsView = (s.data.meta && s.data.meta.hasFinal) ? "final" : "rr";
+  closeSnapModal();
+  closeDrawer();
+  setPage(state.page);
+  toast("已恢复快照：" + fmtTime(s.time));
+}
+function deleteSnap(id){
+  saveSnaps(loadSnaps().filter(x=>x.id!==id));
+  renderSnapList();
+  toast("已删除快照");
+}
+document.getElementById("snapSaveBtn").addEventListener("click", ()=>{ closeDrawer(); saveSnap(); });
+document.getElementById("snapOpenBtn").addEventListener("click", ()=>{
+  closeDrawer();
+  if(loadSnaps().length === 0){ toast("暂无快照，请先点击\"保存快照\""); return; }
+  openSnapModal();
+});
+document.getElementById("snapClose").addEventListener("click", closeSnapModal);
+document.getElementById("snapBg").addEventListener("click", closeSnapModal);
+
+/* recompute dynamic data from a daily workbook (mirrors build_data.py) */
+function recompute(wb){
+  const teamOrder = BASE.teamOrder;
+  const schedule = BASE.schedule;
+  const roster = (BASE.players||[]).map(p=>({team:p.team,number:p.number,name:p.name}));
+  const ALIAS={};
+  teamOrder.forEach(t=>{ ALIAS[t]=t; if(t.endsWith("战队"))ALIAS[t.slice(0,-2)]=t; if(t.endsWith("队"))ALIAS[t.slice(0,-1)]=t; });
+  function normTeam(n){ if(n==null)return null; n=String(n).trim(); if(ALIAS[n])return ALIAS[n];
+    for(const t of teamOrder){ if(n.includes(t)||t.includes(n)) return t; } return n; }
+  function sheetLabel(name){
+    name=String(name).trim();
+    if(name.includes("月")&&name.includes("日")) return name;
+    for(const sep of [".","/","-"]){ if(name.includes(sep)){ const p=name.split(sep);
+      if(p.length===2 && /^\d+$/.test(p[0]) && /^\d+$/.test(p[1])) return `${+p[0]}月${+p[1]}日`; } }
+    return name;
+  }
+  const schedByDate={}; schedule.forEach(m=>{ (schedByDate[m.date]=schedByDate[m.date]||[]).push(m); });
+  const matchPlayer={};          // "date|time|team" -> {number:score}
+  const playerAll={}, playerRR={}, playerFinal={};
+  const dailySheets=[];
+  wb.SheetNames.forEach(sname=>{
+    const ws=wb.Sheets[sname];
+    const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:null,raw:true});
+    let hIdx=-1;
+    for(let i=0;i<rows.length;i++){ if(rows[i]&&rows[i].some(c=>typeof c==="string"&&c.includes("场次"))){hIdx=i;break;} }
+    if(hIdx<0) return;
+    const header=rows[hIdx];
+    const ciField=header.findIndex(h=>h==="场次");
+    const ciTeam=header.findIndex(h=>h==="队名");
+    const ciNo=header.findIndex(h=>typeof h==="string"&&h.includes("队内号码"));
+    const ciScore=header.findIndex(h=>h==="得分");
+    if(ciField<0||ciTeam<0||ciNo<0||ciScore<0) return;
+    const dateLabel=sheetLabel(sname); dailySheets.push(dateLabel);
+    for(let i=hIdx+1;i<rows.length;i++){
+      const r=rows[i]; if(!r||r[ciField]==null) continue;
+      const ftime=String(r[ciField]).trim();
+      const team=normTeam(r[ciTeam]);
+      let no, sc;
+      try{ no=parseInt(r[ciNo]); sc=r[ciScore]==null?0:parseInt(r[ciScore]); }catch(e){ continue; }
+      if(isNaN(no)) continue;
+      let seq=null;
+      (schedByDate[dateLabel]||[]).forEach(m=>{ if(m.time===ftime) seq=m.seq; });
+      const isFinal = (seq!=null && seq>=11);
+      const mk=`${dateLabel}|${ftime}|${team}`;
+      const mp=matchPlayer[mk]||(matchPlayer[mk]={});
+      mp[no]=(mp[no]||0)+ (isNaN(sc)?0:sc);
+      const pk=`${team}|${no}`;
+      playerAll[pk]=(playerAll[pk]||0)+(isNaN(sc)?0:sc);
+      if(isFinal) playerFinal[pk]=(playerFinal[pk]||0)+(isNaN(sc)?0:sc);
+      else playerRR[pk]=(playerRR[pk]||0)+(isNaN(sc)?0:sc);
+    }
+  });
+  // results
+  const results={};
+  schedule.forEach(m=>{
+    const mkH=`${m.date}|${m.time}|${m.home}`, mkA=`${m.date}|${m.time}|${m.away}`;
+    function sum(mk){ const o=matchPlayer[mk]; if(!o) return 0; return Object.values(o).reduce((s,v)=>s+v,0); }
+    const hScore=sum(mkH), aScore=sum(mkA);
+    const has = mkH in matchPlayer || mkA in matchPlayer;
+    let winner=null;
+    if(mkH in matchPlayer && mkA in matchPlayer) winner = hScore>aScore?m.home:(aScore>hScore?m.away:null);
+    results[m.seq]={home:m.home,away:m.away,homeScore:hScore,awayScore:aScore,winner,hasData:has,date:m.date,time:m.time,isFinal:m.isFinal};
+  });
+  // rr standings
+  const rrPts={},rrW={},rrL={}; teamOrder.forEach(t=>{rrPts[t]=0;rrW[t]=0;rrL[t]=0;});
+  for(let seq=1;seq<=10;seq++){ const r=results[seq]; if(r&&r.winner){ const w=r.winner,l=(r.winner===r.home?r.away:r.home);
+    rrPts[w]+=2;rrW[w]+=1;rrPts[l]+=1;rrL[l]+=1; } }
+  function headToHead(a,b){
+    for(let seq=1; seq<=10; seq++){
+      const r = results[seq];
+      if(!r || !r.winner) continue;
+      if((r.home===a && r.away===b) || (r.home===b && r.away===a)){
+        return r.winner===a ? -1 : 1;
+      }
+    }
+    return 0;
+  }
+  const rrStandings=teamOrder.slice().sort((a,b)=> rrPts[b]-rrPts[a] || headToHead(a,b) || rrW[b]-rrW[a] || a.localeCompare(b))
+    .map(t=>({team:t,points:rrPts[t],win:rrW[t],loss:rrL[t],played:rrW[t]+rrL[t]}));
+  // final
+  function teamsOf(seq){ const m=schedule.find(x=>x.seq===seq); const out=[];
+    Object.keys(matchPlayer).forEach(k=>{ const p=k.split("|"); if(p[0]===m.date&&p[1]===m.time) out.push(p[2]); }); return out; }
+  let final=null;
+  const t12=teamsOf(12), t11=teamsOf(11);
+  if(t12.length===2||t11.length===2){
+    function decide(ts){ const m=schedule.find(x=>x.seq=== (ts===t12?12:11)); const a=ts[0],b=ts[1];
+      const sa=Object.values(matchPlayer[`${m.date}|${m.time}|${a}`]||{}).reduce((s,v)=>s+v,0);
+      const sb=Object.values(matchPlayer[`${m.date}|${m.time}|${b}`]||{}).reduce((s,v)=>s+v,0);
+      return sa>=sb?[a,b]:[b,a]; }
+    let champ=null,runner=null,third=null,fourth=null;
+    if(t12.length===2){ const d=decide(t12); champ=d[0]; runner=d[1]; }
+    if(t11.length===2){ const d=decide(t11); third=d[0]; fourth=d[1]; }
+    final={champion:champ,runner:runner,third:third,fourth:fourth};
+  }
+  // players
+  const nameMap={}; roster.forEach(p=>{ nameMap[`${p.team}|${p.number}`]=p.name; });
+  const players=roster.map(p=>{ const k=`${p.team}|${p.number}`;
+    return {name:p.name,number:p.number,team:p.team,
+      total:playerAll[k]||0, rr:playerRR[k]||0, final:playerFinal[k]||0}; })
+    .sort((a,b)=> b.total-a.total || a.team.localeCompare(b.team) || a.number-b.number);
+  // matchPlayers arrays
+  const matchPlayers={};
+  Object.keys(matchPlayer).forEach(mk=>{
+    const arr=Object.keys(matchPlayer[mk]).map(no=>({number:+no,name:nameMap[`${mk.split("|")[2]}|${no}`]||("球员#"+no),score:matchPlayer[mk][no]}))
+      .sort((a,b)=> b.score-a.score || a.number-b.number);
+    matchPlayers[mk]=arr;
+  });
+  return {results,rrStandings,final,players,matchPlayers,dailySheets,meta:{hasFinal:final!=null,source:"import"}};
+}
+
+/* ---------- incremental import helpers ---------- */
+function parseWorkbook(wb){
+  const teamOrder = BASE.teamOrder;
+  const schedule = BASE.schedule;
+  const ALIAS={};
+  teamOrder.forEach(t=>{ ALIAS[t]=t; if(t.endsWith("战队"))ALIAS[t.slice(0,-2)]=t; if(t.endsWith("队"))ALIAS[t.slice(0,-1)]=t; });
+  function normTeam(n){ if(n==null)return null; n=String(n).trim(); if(ALIAS[n])return ALIAS[n];
+    for(const t of teamOrder){ if(n.includes(t)||t.includes(n)) return t; } return n; }
+  function sheetLabel(name){
+    name=String(name).trim();
+    if(name.includes("月")&&name.includes("日")) return name;
+    for(const sep of [".","/","-"]){ if(name.includes(sep)){ const p=name.split(sep);
+      if(p.length===2 && /^\d+$/.test(p[0]) && /^\d+$/.test(p[1])) return `${+p[0]}月${+p[1]}日`; } }
+    return name;
+  }
+  const schedByDate={}; schedule.forEach(m=>{ (schedByDate[m.date]=schedByDate[m.date]||[]).push(m); });
+  const matchPlayer={};          // "date|time|team" -> {number:score}
+  const dailySheets=[];
+  wb.SheetNames.forEach(sname=>{
+    const ws=wb.Sheets[sname];
+    const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:null,raw:true});
+    let hIdx=-1;
+    for(let i=0;i<rows.length;i++){ if(rows[i]&&rows[i].some(c=>typeof c==="string"&&c.includes("场次"))){hIdx=i;break;} }
+    if(hIdx<0) return;
+    const header=rows[hIdx];
+    const ciField=header.findIndex(h=>h==="场次");
+    const ciTeam=header.findIndex(h=>h==="队名");
+    const ciNo=header.findIndex(h=>typeof h==="string"&&h.includes("队内号码"));
+    const ciScore=header.findIndex(h=>h==="得分");
+    if(ciField<0||ciTeam<0||ciNo<0||ciScore<0) return;
+    const dateLabel=sheetLabel(sname); dailySheets.push(dateLabel);
+    for(let i=hIdx+1;i<rows.length;i++){
+      const r=rows[i]; if(!r||r[ciField]==null) continue;
+      const ftime=String(r[ciField]).trim();
+      const team=normTeam(r[ciTeam]);
+      let no, sc;
+      try{ no=parseInt(r[ciNo]); sc=r[ciScore]==null?0:parseInt(r[ciScore]); }catch(e){ continue; }
+      if(isNaN(no)) continue;
+      const mk=`${dateLabel}|${ftime}|${team}`;
+      const mp=matchPlayer[mk]||(matchPlayer[mk]={});
+      mp[no]=(mp[no]||0)+ (isNaN(sc)?0:sc);
+    }
+  });
+  return {matchPlayer, dailySheets};
+}
+
+function rebuildFromMatchPlayer(matchPlayer, dailySheets){
+  const teamOrder = BASE.teamOrder;
+  const schedule = BASE.schedule;
+  const roster = (BASE.players||[]).map(p=>({team:p.team,number:p.number,name:p.name}));
+  // results
+  const results={};
+  schedule.forEach(m=>{
+    const mkH=`${m.date}|${m.time}|${m.home}`, mkA=`${m.date}|${m.time}|${m.away}`;
+    function sum(mk){ const o=matchPlayer[mk]; if(!o) return 0; return Object.values(o).reduce((s,v)=>s+v,0); }
+    const hScore=sum(mkH), aScore=sum(mkA);
+    const has = mkH in matchPlayer || mkA in matchPlayer;
+    let winner=null;
+    if(mkH in matchPlayer && mkA in matchPlayer) winner = hScore>aScore?m.home:(aScore>hScore?m.away:null);
+    results[m.seq]={home:m.home,away:m.away,homeScore:hScore,awayScore:aScore,winner,hasData:has,date:m.date,time:m.time,isFinal:m.isFinal};
+  });
+  // rr standings
+  const rrPts={},rrW={},rrL={}; teamOrder.forEach(t=>{rrPts[t]=0;rrW[t]=0;rrL[t]=0;});
+  for(let seq=1;seq<=10;seq++){ const r=results[seq]; if(r&&r.winner){ const w=r.winner,l=(r.winner===r.home?r.away:r.home);
+    rrPts[w]+=2;rrW[w]+=1;rrPts[l]+=1;rrL[l]+=1; } }
+  function headToHead(a,b){
+    for(let seq=1; seq<=10; seq++){
+      const r = results[seq];
+      if(!r || !r.winner) continue;
+      if((r.home===a && r.away===b) || (r.home===b && r.away===a)){
+        return r.winner===a ? -1 : 1;
+      }
+    }
+    return 0;
+  }
+  const rrStandings=teamOrder.slice().sort((a,b)=> rrPts[b]-rrPts[a] || headToHead(a,b) || rrW[b]-rrW[a] || a.localeCompare(b))
+    .map(t=>({team:t,points:rrPts[t],win:rrW[t],loss:rrL[t],played:rrW[t]+rrL[t]}));
+  // final
+  function teamsOf(seq){ const m=schedule.find(x=>x.seq===seq); const out=[];
+    Object.keys(matchPlayer).forEach(k=>{ const p=k.split("|"); if(p[0]===m.date&&p[1]===m.time) out.push(p[2]); }); return out; }
+  let final=null;
+  const t12=teamsOf(12), t11=teamsOf(11);
+  if(t12.length===2||t11.length===2){
+    function decide(ts){ const m=schedule.find(x=>x.seq=== (ts===t12?12:11)); const a=ts[0],b=ts[1];
+      const sa=Object.values(matchPlayer[`${m.date}|${m.time}|${a}`]||{}).reduce((s,v)=>s+v,0);
+      const sb=Object.values(matchPlayer[`${m.date}|${m.time}|${b}`]||{}).reduce((s,v)=>s+v,0);
+      return sa>=sb?[a,b]:[b,a]; }
+    let champ=null,runner=null,third=null,fourth=null;
+    if(t12.length===2){ const d=decide(t12); champ=d[0]; runner=d[1]; }
+    if(t11.length===2){ const d=decide(t11); third=d[0]; fourth=d[1]; }
+    final={champion:champ,runner:runner,third:third,fourth:fourth};
+  }
+  // players (recomputed from matchPlayer)
+  const playerAll={},playerRR={},playerFinal={};
+  Object.keys(matchPlayer).forEach(mk=>{
+    const parts=mk.split("|"); const date=parts[0],time=parts[1],team=parts[2];
+    const m=schedule.find(x=>x.date===date&&x.time===time); if(!m) return;
+    const isFinal=m.isFinal;
+    const obj=matchPlayer[mk];
+    Object.keys(obj).forEach(no=>{ const pk=`${team}|${no}`; const sc=obj[no];
+      playerAll[pk]=(playerAll[pk]||0)+sc;
+      if(isFinal) playerFinal[pk]=(playerFinal[pk]||0)+sc; else playerRR[pk]=(playerRR[pk]||0)+sc; });
+  });
+  const nameMap={}; roster.forEach(p=>{ nameMap[`${p.team}|${p.number}`]=p.name; });
+  const players=roster.map(p=>{ const k=`${p.team}|${p.number}`;
+    return {name:p.name,number:p.number,team:p.team,
+      total:playerAll[k]||0, rr:playerRR[k]||0, final:playerFinal[k]||0}; })
+    .sort((a,b)=> b.total-a.total || a.team.localeCompare(b.team) || a.number-b.number);
+  // matchPlayers arrays
+  const matchPlayers={};
+  Object.keys(matchPlayer).forEach(mk=>{
+    const arr=Object.keys(matchPlayer[mk]).map(no=>({number:+no,name:nameMap[`${mk.split("|")[2]}|${no}`]||("球员#"+no),score:matchPlayer[mk][no]}))
+      .sort((a,b)=> b.score-a.score || a.number-b.number);
+    matchPlayers[mk]=arr;
+  });
+  return {results,rrStandings,final,players,matchPlayers,dailySheets,meta:{hasFinal:final!=null,source:"import"}};
+}
+
+function matchPlayersArrToObj(mpArr){
+  const obj={};
+  Object.keys(mpArr||{}).forEach(mk=>{
+    const o={};
+    (mpArr[mk]||[]).forEach(p=>{ if(p && p.number!=null) o[p.number]=p.score||0; });
+    obj[mk]=o;
+  });
+  return obj;
+}
+
+/* ---------- init ---------- */
+setPage("schedule");
+</script>
+</body>
+</html>
