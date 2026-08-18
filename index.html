@@ -107,6 +107,8 @@
   .mp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
   .mp-col{display:flex;flex-direction:column;gap:4px;}
   .mp-row{display:flex;align-items:center;gap:6px;font-size:12px;}
+  .mp-row.hl{background:rgba(245,158,11,.14);border-radius:8px;padding:2px 4px;margin:0 -4px;outline:1px solid rgba(245,158,11,.55);}
+  .mp-row.hl .mp-name{color:var(--gold);font-weight:800;}
   .mp-no{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;
           font-size:12px;font-weight:800;flex:0 0 auto;font-family:"Arial","Helvetica Neue",sans-serif;
           box-shadow:inset 0 1px 0 rgba(255,255,255,.30), inset 0 -2px 4px rgba(0,0,0,.18);}
@@ -118,6 +120,48 @@
   @media (max-width:380px){
     .mp-name{width:40px;font-size:11px;}
     .mp-no{width:20px;height:20px;font-size:9px;}
+  }
+  /* cheer scoring */
+  .cheer-match{background:var(--card);border:1px solid var(--card-brd);border-radius:16px;padding:12px 14px;margin-bottom:12px;overflow:hidden;}
+  .cheer-mh{font-size:13px;font-weight:800;color:var(--txt);margin-bottom:10px;}
+  .cheer-team{background:rgba(255,255,255,.04);border-radius:12px;padding:10px 12px;margin:8px 0;border-left:4px solid #64748b;}
+  .cheer-th{font-size:14px;font-weight:800;margin-bottom:8px;}
+  .ch-dim{display:flex;align-items:center;gap:10px;padding:3px 0;}
+  .ch-dl{width:38px;flex:0 0 auto;font-size:13px;color:var(--txt);}
+  .ch-stars{display:flex;gap:4px;cursor:pointer;}
+  .star{font-size:20px;line-height:1;color:rgba(255,255,255,.22);transition:transform .08s,color .1s;user-select:none;}
+  .star.on{text-shadow:0 0 6px currentColor;}
+  .star:active{transform:scale(1.25);}
+  .ch-submit{margin-top:8px;display:block;width:100%;font-size:13px;font-weight:700;
+             background:transparent;border:1.5px solid #64748b;border-radius:20px;padding:6px 0;cursor:pointer;color:#64748b;}
+  .ch-submit:active{transform:scale(.98);}
+  .cheer-agg{margin-top:8px;font-size:12px;color:var(--txt-mute);}
+  .cheer-agg b{color:var(--txt);font-variant-numeric:tabular-nums;}
+  .cheer-user-badge{margin:-4px 0 14px;font-size:12px;color:var(--txt-mute);}
+  .cheer-user-badge b{color:var(--gold);}
+  .cheer-name-card{margin:28px 14px;background:var(--card);border:1px solid var(--card-brd);border-radius:16px;padding:22px 18px;text-align:center;}
+  .cheer-nm-t{font-size:15px;font-weight:800;color:var(--txt);margin-bottom:14px;}
+  .cheer-nm-input{width:70%;max-width:240px;background:rgba(255,255,255,.07);border:1px solid var(--card-brd);
+                  color:var(--txt);border-radius:12px;padding:10px 14px;font-size:15px;text-align:center;outline:none;}
+  .cheer-nm-input:focus{border-color:rgba(245,158,11,.5);}
+  .cheer-nm-btn{margin-top:14px;display:inline-block;}
+  .ch-done{margin-top:8px;display:block;width:100%;text-align:center;font-size:13px;font-weight:800;
+           border:1.5px solid;border-radius:20px;padding:6px 0;}
+  .cheer-next{margin:6px 2px 4px;padding:10px 12px;border-radius:12px;
+              background:rgba(245,158,11,.08);border:1px dashed rgba(245,158,11,.35);
+              color:var(--gold);font-size:12px;line-height:1.7;text-align:center;}
+  .empty-state{margin:48px 18px;text-align:center;color:var(--txt-mute);font-size:14px;line-height:1.8;}
+  /* cheer admin tables */
+  .chg-table{width:100%;border-collapse:collapse;font-size:13px;}
+  .chg-table th{background:rgba(255,255,255,.06);padding:7px 6px;text-align:left;font-weight:700;color:var(--txt-mute);white-space:nowrap;}
+  .chg-table td{padding:7px 6px;border-top:1px solid var(--card-brd);font-variant-numeric:tabular-nums;}
+  .chg-actions{margin-top:14px;display:flex;justify-content:flex-end;}
+  .chg-reset{background:transparent;border:1px solid rgba(248,113,113,.5);color:#f87171;
+             font-size:11px;border-radius:12px;padding:3px 9px;cursor:pointer;white-space:nowrap;}
+  .chg-reset:active{transform:scale(.95);}
+  @media (max-width:380px){
+    .ch-dl{width:32px;font-size:12px;}
+    .star{font-size:18px;}
   }
   /* daily results */
   .day-card{background:var(--card);border:1px solid var(--card-brd);border-radius:16px;
@@ -269,7 +313,8 @@
     <ul class="menu" id="menu">
       <li data-page="schedule"><span class="ico">&#128197;</span>赛程</li>
       <li data-page="rankings"><span class="ico">&#127942;</span>阶段排名</li>
-      <li data-page="players"><span class="ico">&#127936;</span>球员</li>
+      <li data-page="players"><span class="ico">&#127936;</span>球员排名</li>
+      <li data-page="cheer" id="cheerMenuLi" style="display:none;"><span class="ico">&#127881;</span>啦啦队</li>
     </ul>
     <div class="drawer-foot">
       <button class="mini-btn" id="adminBtn">管理员</button>
@@ -277,6 +322,8 @@
         <button class="mini-btn" id="importBtn" style="margin-top:8px;">导入每日战况</button>
         <button class="mini-btn" id="snapSaveBtn" style="margin-top:8px;">保存快照</button>
         <button class="mini-btn" id="snapOpenBtn" style="margin-top:8px;">恢复至快照</button>
+        <button class="mini-btn" id="cheerSumBtn" style="margin-top:8px;">啦啦队汇总</button>
+        <button class="mini-btn" id="cheerDetBtn" style="margin-top:8px;">打分明细</button>
       </div>
     </div>
   </div>
@@ -309,6 +356,18 @@
   </div>
 </div>
 
+<div class="modal" id="cheerModal">
+  <div class="modal-bg" id="cheerBg"></div>
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="h-name" id="cheerModalName">啦啦队数据</div>
+      <div class="h-meta" id="cheerModalMeta"></div>
+    </div>
+    <button class="modal-close" id="cheerClose">&times;</button>
+    <div class="modal-body" id="cheerModalBody"></div>
+  </div>
+</div>
+
 <script src="xlsx.full.min.js"></script>
 <script src="data.js"></script>
 <script>
@@ -317,6 +376,8 @@ const BASE = window.APP_DATA;
 const LS_KEY = "fyns_basketball_v1";
 const SNAP_KEY = "fyns_basketball_snaps_v1";   // 多版本数据快照
 const ADMIN_KEY = "fyns2026";             // 管理员导入密钥，可在此修改
+const CHEER_KEY = "fyns_cheer_v1";        // 啦啦队打分（按 日期|场次|队 存数组）
+const CHEER_USER_KEY = "fyns_cheer_user_v1"; // 本机评分人姓名（同设备免重复输入）
 let D = Object.assign({}, BASE);          // working data (may be replaced by import)
 let imported = false;
 
@@ -334,6 +395,9 @@ const state = {
   player: { scope:"all", team:"all", name:"" },
   playerList: [],
   playerCount: 0,
+  modalPlayer: null,      // {team, number, name} currently opened in player modal
+  cheerDraft: {},         // "date|time|team" -> {ren,dis,atm} in-progress ratings
+  cheerNow: null,         // 测试用：可覆盖当前时间（ISO 字符串），null 表示用真实时间
 };
 
 /* ---------- helpers ---------- */
@@ -389,6 +453,291 @@ function toast(msg){
   toastT=setTimeout(()=>el.classList.remove("show"),2200);
 }
 
+/* ---------- cheer scoring (啦啦队打分) ---------- */
+const CHEER_DIMS = [
+  {key:"ren", label:"人数"},
+  {key:"dis", label:"纪律"},
+  {key:"atm", label:"氛围"},
+];
+let cheerStore = loadCheer();
+let cheerUser = "";                       // 本机评分人姓名
+try{ cheerUser = localStorage.getItem(CHEER_USER_KEY) || ""; }catch(e){}
+function loadCheer(){
+  try{ return JSON.parse(localStorage.getItem(CHEER_KEY)) || {}; }catch(e){ return {}; }
+}
+function saveCheer(d){ try{ localStorage.setItem(CHEER_KEY, JSON.stringify(d)); }catch(e){} }
+function setCheerUser(name){
+  cheerUser = (name==null?"":String(name)).trim();
+  try{ localStorage.setItem(CHEER_USER_KEY, cheerUser); }catch(e){}
+}
+function cheerKey(date,time,team){ return date+"|"+time+"|"+team; }
+function cheerAgg(date,time,team){
+  const arr = cheerStore[cheerKey(date,time,team)] || [];
+  const total = arr.reduce((s,r)=>s+(+r.ren)+(+r.dis)+(+r.atm),0);
+  return { total, count:arr.length, avg: arr.length? total/arr.length : 0 };
+}
+function addCheer(date,time,team,rec){
+  const k = cheerKey(date,time,team);
+  const arr = cheerStore[k] = cheerStore[k] || [];
+  const u = rec && rec.user;
+  if(u && arr.some(r=>r.user===u)) return false;   // 每设备每场每队仅一次
+  const id = (rec && rec.id) || (Date.now()+"-"+Math.random().toString(36).slice(2,8));
+  arr.push(Object.assign({id:id, ts:new Date().toISOString()}, rec));
+  saveCheer(cheerStore);
+  return true;
+}
+function clearCheer(){ cheerStore = {}; saveCheer(cheerStore); }
+function resetCheerRecord(id){
+  let removed=false;
+  Object.keys(cheerStore).forEach(k=>{
+    const arr=cheerStore[k];
+    const idx=arr.findIndex(r=>r.id===id);
+    if(idx>=0){ arr.splice(idx,1); removed=true; if(arr.length===0) delete cheerStore[k]; }
+  });
+  if(removed) saveCheer(cheerStore);
+  return removed;
+}
+function cheerDraftVal(key,dim){
+  const d = state.cheerDraft[key];
+  return d ? (d[dim]||0) : 0;
+}
+/* 啦啦队打分可见性：有比赛得分的场次始终展示；无得分场次仅比赛日当天 18:00 后展示 */
+function nowDate(){ return state.cheerNow ? new Date(state.cheerNow) : new Date(); }
+function todayLabel(){ const d=nowDate(); return `${d.getMonth()+1}月${d.getDate()}日`; }
+function nowHour(){ const d=nowDate(); return d.getHours()+d.getMinutes()/60; }
+function cheerMatchVisible(m){
+  if(matchHasData(m)) return true;                // 已有比分 -> 始终展示打分
+  return m.date===todayLabel() && nowHour()>=18;  // 无比分 -> 当日 18:00 后展示
+}
+/* 下一比赛日预告（打分页底部） */
+function parseDateLabel(l){ const m=String(l).match(/(\d+)月(\d+)日/); return m ? [+m[1], +m[2]] : null; }
+function nextMatchLabel(){
+  const d=nowDate(); const t=d.getMonth()*100+d.getDate()+100; // 用 (月+1)*100+日 比较
+  let best=null;
+  D.schedule.forEach(m=>{
+    const p=parseDateLabel(m.date); if(!p) return;
+    const n=p[0]*100+p[1];
+    if(n>t && (best===null || n<best[0])) best=[n, m.date];
+  });
+  return best ? best[1] : null;
+}
+function cheerNextHtml(){
+  const today = todayLabel();
+  const isMatchDay = D.schedule.some(m=>m.date===today);
+  const next = nextMatchLabel();
+  let txt;
+  if(!isMatchDay) txt = `今日（${today}）无赛程，啦啦队打分在比赛日「${next||"—"}」18:00 后开放`;
+  else txt = `今日（${today}）比赛，啦啦队打分 18:00 后开放`;
+  return `<div class="cheer-next">下一比赛打分预告 · ${txt}</div>`;
+}
+function renderCheer(){
+  const titleHtml = `<div class="page-title"><span class="bar"></span>啦啦队打分
+     <span class="page-sub">按日期场次 · 三维度星级评分</span></div>`;
+  /* 未输入评分人姓名 -> 先要求输入（同设备以后免输入） */
+  if(!cheerUser){
+    document.getElementById("content").innerHTML = titleHtml + `
+      <div class="cheer-name-card">
+        <div class="cheer-nm-t">评分前请先输入您的姓名</div>
+        <input class="cheer-nm-input" id="cheerNameInput" maxlength="12" placeholder="请输入姓名" />
+        <button class="mini-btn cheer-nm-btn" id="cheerNameBtn">确认</button>
+      </div>`;
+    const inp = document.getElementById("cheerNameInput");
+    const btn = document.getElementById("cheerNameBtn");
+    const doSet = ()=>{ const v=(inp.value||"").trim(); if(!v){ toast("请输入姓名"); return; } setCheerUser(v); renderCheer(); };
+    btn.addEventListener("click", doSet);
+    inp.addEventListener("keydown", e=>{ if(e.key==="Enter") doSet(); });
+    return;
+  }
+  const visible = D.schedule.filter(m=>cheerMatchVisible(m));
+  if(visible.length===0){
+    const today = todayLabel();
+    const isMatchDay = D.schedule.some(m=>m.date===today);
+    let msg;
+    if(!isMatchDay) msg = `今日（${today}）无赛程，啦啦队打分在比赛日 18:00 后开放`;
+    else if(nowHour()<18) msg = `今日（${today}）比赛将于 18:00 后开放啦啦队打分`;
+    else msg = `今日比赛得分尚未录入，暂无可打分场次`;
+    document.getElementById("content").innerHTML = titleHtml + `<div class="empty-state">${msg}</div>` + cheerNextHtml();
+    return;
+  }
+  const dates = [...new Set(visible.map(m=>m.date))];
+  let html = titleHtml + `<div class="cheer-user-badge">评分人：<b>${esc(cheerUser)}</b></div>`;
+  dates.forEach(date=>{
+    const ms = visible.filter(m=>m.date===date);
+    const allFinal = ms.every(m=>m.isFinal);
+    const dayTag = allFinal ? `<span class="m-tag fin">决赛</span>` : `<span class="m-tag rr">循环赛</span>`;
+    html += `<div class="section"><div class="section-h"><span class="dot"></span>${esc(date)}${dayTag}</div>`;
+    ms.forEach(m=>{
+      const teams = displayTeams(m);
+      let title;
+      if(m.isFinal){ title = m.seq===12 ? "决赛 · 冠亚军" : "决赛 · 三四名"; }
+      else { title = esc(m.time); }
+      html += `<div class="cheer-match"><div class="cheer-mh">${title}</div>`;
+      teams.forEach(tm=>{
+        if(!tm) return;
+        const col = tColor(tm);
+        const key = cheerKey(m.date,m.time,tm);
+        const agg = cheerAgg(m.date,m.time,tm);
+        const mine = (cheerStore[key]||[]).find(r=>r.user===cheerUser);
+        const dimsHtml = CHEER_DIMS.map(dim=>{
+          const v = mine ? mine[dim.key] : cheerDraftVal(key, dim.key);
+          const stars = mine
+            ? [1,2,3,4,5].map(n=>`<span class="star on" style="${n<=v?('color:'+col+';'):''}">&#9733;</span>`).join("")
+            : [1,2,3,4,5].map(n=>`<span class="star${n<=v?' on':''}" style="${n<=v?('color:'+col+';'):''}" data-key="${esc(key)}" data-dim="${dim.key}" data-val="${n}">&#9733;</span>`).join("");
+          return `<div class="ch-dim"><span class="ch-dl">${dim.label}</span><div class="ch-stars" data-col="${col}">${stars}</div></div>`;
+        }).join("");
+        const actionHtml = mine
+          ? `<div class="ch-done" style="color:${col};border-color:${col}">&#10003; 您已打分</div>`
+          : `<button class="ch-submit" data-key="${esc(key)}" data-date="${esc(m.date)}" data-time="${esc(m.time)}" data-team="${esc(tm)}" style="border-color:${col};color:${col}">提交打分</button>`;
+        html += `<div class="cheer-team" style="border-left:4px solid ${col}">
+            <div class="cheer-th" style="color:${col}">${esc(tm)}</div>
+            ${dimsHtml}
+            ${actionHtml}
+            <div class="cheer-agg">总得分 <b>${agg.total}</b> · 打分 <b>${agg.count}</b> 人 · 场均 <b>${agg.avg.toFixed(1)}</b></div>
+          </div>`;
+      });
+      html += `</div>`;
+    });
+    html += `</div>`;
+  });
+  document.getElementById("content").innerHTML = html + cheerNextHtml();
+}
+
+/* 啦啦队菜单门控：仅当 URL 携带 token=7 时展示菜单项 */
+function applyCheerMenuToken(search){
+  const li = document.getElementById("cheerMenuLi");
+  if(!li) return;
+  let show = false;
+  try{
+    const q = (search||"").replace(/^\?/,"");
+    const params = new URLSearchParams(q);
+    show = params.get("token") === "7";
+  }catch(e){}
+  li.style.display = show ? "" : "none";
+}
+/* ---------- cheer admin: summary / detail / export ---------- */
+function cheerRecords(){          // 打分明细：扁平记录列表（按日期/场次/队排序）
+  const out=[];
+  Object.keys(cheerStore||{}).forEach(k=>{
+    const p=k.split("|");
+    (cheerStore[k]||[]).forEach(r=>{
+      out.push({id:r.id||"", date:p[0]||"", time:p[1]||"", team:p[2]||"", user:r.user||"",
+        ren:+r.ren||0, dis:+r.dis||0, atm:+r.atm||0, ts:r.ts||""});
+    });
+  });
+  out.sort((a,b)=> (a.date===b.date ? a.time.localeCompare(b.time) : a.date.localeCompare(b.date)));
+  return out;
+}
+function cheerSummary(){          // 汇总：按队聚合 打分人数 + 三维度场均得星 + 综合均分
+  const map={};
+  cheerRecords().forEach(r=>{
+    const o=map[r.team]||(map[r.team]={count:0,ren:0,dis:0,atm:0});
+    o.count++; o.ren+=r.ren; o.dis+=r.dis; o.atm+=r.atm;
+  });
+  return Object.keys(map).map(t=>{
+    const o=map[t];
+    return {team:t, count:o.count,
+      avgRen:o.ren/o.count, avgDis:o.dis/o.count, avgAtm:o.atm/o.count,
+      avgTotal:(o.ren+o.dis+o.atm)/(o.count*3)};
+  }).sort((a,b)=> b.avgTotal-a.avgTotal || b.count-a.count || a.team.localeCompare(b.team));
+}
+function summaryRows(){
+  return cheerSummary().map(r=>({
+    "队伍": r.team, "打分人数": r.count,
+    "人数场均得星": +r.avgRen.toFixed(1), "纪律场均得星": +r.avgDis.toFixed(1),
+    "氛围场均得星": +r.avgAtm.toFixed(1), "综合均分": +r.avgTotal.toFixed(1)
+  }));
+}
+function detailRows(){
+  return cheerRecords().map(r=>({
+    "日期": r.date, "场次": r.time, "队伍": r.team, "评分人": r.user||"—",
+    "人数": r.ren, "纪律": r.dis, "氛围": r.atm,
+    "提交时间": (r.ts||"").replace("T"," ").slice(0,16)
+  }));
+}
+function exportCSV(filename, rows){
+  if(!rows || rows.length===0){ toast("无数据可导出"); return; }
+  const headers = Object.keys(rows[0]);
+  const lines = [headers.join(",")];
+  rows.forEach(r=>{
+    lines.push(headers.map(h=>{
+      let v = r[h]==null ? "" : String(r[h]);
+      if(/[",\n]/.test(v)) v = '"' + v.replace(/"/g,'""') + '"';
+      return v;
+    }).join(","));
+  });
+  const csv = "\uFEFF" + lines.join("\r\n");
+  try{
+    const blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+    toast("已导出：" + filename);
+  }catch(e){ toast("导出失败：" + e.message); }
+}
+function openCheerModal(){
+  document.getElementById("cheerModal").classList.add("show");
+}
+function closeCheerModal(){
+  document.getElementById("cheerModal").classList.remove("show");
+}
+function openCheerSummaryModal(){
+  closeDrawer();
+  document.getElementById("cheerModalName").textContent = "啦啦队汇总";
+  document.getElementById("cheerModalMeta").textContent = "场均得星 · 按队汇总";
+  const rows = cheerSummary();
+  let html = `<table class="chg-table"><thead><tr>
+      <th>队伍</th><th>打分人数</th><th>人数</th><th>纪律</th><th>氛围</th><th>综合均分</th>
+    </tr></thead><tbody>`;
+  if(rows.length===0){
+    html += `<tr><td colspan="6" style="text-align:center;color:var(--txt-mute);padding:16px 0;">暂无啦啦队打分数据</td></tr>`;
+  }
+  rows.forEach(r=>{
+    html += `<tr>
+        <td style="color:${tColor(r.team)};font-weight:700;">${esc(r.team)}</td>
+        <td>${r.count}</td>
+        <td>${r.avgRen.toFixed(1)}</td>
+        <td>${r.avgDis.toFixed(1)}</td>
+        <td>${r.avgAtm.toFixed(1)}</td>
+        <td><b>${r.avgTotal.toFixed(1)}</b></td>
+      </tr>`;
+  });
+  html += `</tbody></table>`;
+  html += `<div class="chg-actions"><button class="mini-btn" id="chgExport">导出 CSV</button></div>`;
+  document.getElementById("cheerModalBody").innerHTML = html;
+  document.getElementById("chgExport").addEventListener("click", ()=>exportCSV("啦啦队汇总.csv", summaryRows()));
+  openCheerModal();
+}
+function openCheerDetailModal(){
+  closeDrawer();
+  document.getElementById("cheerModalName").textContent = "打分明细";
+  document.getElementById("cheerModalMeta").textContent = "逐条打分记录";
+  const recs = cheerRecords();
+  let html = `<table class="chg-table"><thead><tr>
+      <th>日期</th><th>场次</th><th>队伍</th><th>评分人</th><th>人数</th><th>纪律</th><th>氛围</th><th>提交时间</th><th>操作</th>
+    </tr></thead><tbody>`;
+  if(recs.length===0){
+    html += `<tr><td colspan="9" style="text-align:center;color:var(--txt-mute);padding:16px 0;">暂无打分明细</td></tr>`;
+  }
+  recs.forEach(r=>{
+    html += `<tr>
+        <td>${esc(r.date)}</td><td>${esc(r.time)}</td>
+        <td style="color:${tColor(r.team)};font-weight:700;">${esc(r.team)}</td>
+        <td>${esc(r.user||"—")}</td>
+        <td>${r.ren}</td><td>${r.dis}</td><td>${r.atm}</td>
+        <td style="color:var(--txt-mute);">${esc((r.ts||"").replace("T"," ").slice(0,16))}</td>
+        <td><button class="chg-reset" data-id="${esc(r.id)}" title="重置该条打分">重置</button></td>
+      </tr>`;
+  });
+  html += `</tbody></table>`;
+  html += `<div class="chg-actions"><button class="mini-btn" id="chgExport2">导出 CSV</button></div>`;
+  document.getElementById("cheerModalBody").innerHTML = html;
+  document.getElementById("chgExport2").addEventListener("click", ()=>exportCSV("打分明细.csv", detailRows()));
+  openCheerModal();
+}
 /* ---------- render: schedule ---------- */
 function renderSchedule(){
   const dates = [...new Set(D.schedule.map(m=>m.date))];
@@ -450,7 +799,7 @@ function renderSchedule(){
   document.getElementById("content").innerHTML = html;
 }
 
-function renderMatchPanel(m){
+function renderMatchPanel(m, hi){
   const teams = displayTeams(m);
   const res = D.results[m.seq]||{};
   const realKeys = Object.keys(D.matchPlayers).filter(k=>k.startsWith(m.date+"|"+m.time+"|"));
@@ -467,8 +816,9 @@ function renderMatchPanel(m){
     let rows = arr.length? "" : `<div class="mp-empty">暂无</div>`;
     arr.forEach(p=>{
       const pct = (p.score/max)*100;
-      rows += `<div class="mp-row">
-          <span class="mp-no" style="background:${rgbaColor(col,0.20)};color:${col};border:1px solid ${rgbaColor(col,0.45)}">${p.number}</span>
+      const isHL = hi && hi.team===tm && p.number===hi.number;
+      rows += `<div class="mp-row${isHL?' hl':''}">
+          <span class="mp-no" style="background:${isHL?col:rgbaColor(col,0.20)};color:${isHL?'#fff':col};border:1px solid ${rgbaColor(col,0.45)}">${p.number}</span>
           <span class="mp-name">${esc(p.name)}</span>
           <div class="mp-bar"><span style="width:${pct}%;background:linear-gradient(90deg, ${rgbaColor(col,0.55)}, ${col});box-shadow:0 0 8px ${col}"></span></div>
           <span class="mp-sc">${p.score}</span>
@@ -724,6 +1074,7 @@ function getPlayerMatches(team, number){
 }
 function openPlayerModal(team, number, name){
   const modal = document.getElementById("playerModal");
+  state.modalPlayer = {team, number, name};
   const matches = getPlayerMatches(team, number);
   document.getElementById("modalName").textContent = esc(name);
   document.getElementById("modalMeta").textContent = `${esc(team)} · #${number} · 共 ${matches.length} 场`;
@@ -756,6 +1107,7 @@ function setPage(p){
   else if(p==="daily"){ state.dailyExpanded={}; renderDaily(); }
   else if(p==="rankings") renderRankings();
   else if(p==="players"){ state.playerCount=0; renderPlayersPage(); }
+  else if(p==="cheer"){ renderCheer(); }
   const c=document.getElementById("content");
   c.scrollTop=0;
 }
@@ -806,6 +1158,35 @@ document.getElementById("content").addEventListener("click", e=>{
     const seq=+dm.dataset.seq;
     state.dailyExpanded[seq]=!state.dailyExpanded[seq];
     renderDaily();
+    return;
+  }
+  // cheer scoring: star click
+  const star=e.target.closest(".star");
+  if(star){
+    const key=star.dataset.key, dim=star.dataset.dim, val=+star.dataset.val;
+    const d=state.cheerDraft[key]||(state.cheerDraft[key]={ren:0,dis:0,atm:0});
+    d[dim]=val;
+    const row=star.parentElement;
+    const col=row.dataset.col || "#fbbf24";
+    row.querySelectorAll(".star").forEach((s,i)=>{
+      const on=(i+1)<=val;
+      s.classList.toggle("on", on);
+      s.style.color = on ? col : "";
+    });
+    return;
+  }
+  // cheer scoring: submit
+  const sub=e.target.closest(".ch-submit");
+  if(sub){
+    const key=sub.dataset.key, date=sub.dataset.date, time=sub.dataset.time, team=sub.dataset.team;
+    if(!cheerUser){ toast("请先输入评分人姓名"); return; }
+    const d=state.cheerDraft[key];
+    if(!d || !d.ren || !d.dis || !d.atm){ toast("请完成人数 / 纪律 / 氛围三项评分"); return; }
+    const ok = addCheer(date,time,team,{ren:d.ren,dis:d.dis,atm:d.atm,user:cheerUser});
+    if(!ok){ toast("本设备已为该队打过分，不可重复提交"); return; }
+    delete state.cheerDraft[key];
+    renderCheer();
+    toast(esc(team)+" 打分已提交");
     return;
   }
 });
@@ -878,7 +1259,7 @@ document.getElementById("modalBody").addEventListener("click", e=>{
   const det=document.getElementById("pmd-"+seq);
   if(!det.classList.contains("show")){
     const m=D.schedule.find(x=>x.seq===seq);
-    det.innerHTML = renderMatchPanel(m);
+    det.innerHTML = renderMatchPanel(m, state.modalPlayer);
   }
   det.classList.toggle("show");
 });
@@ -894,6 +1275,20 @@ document.getElementById("adminBtn").addEventListener("click", ()=>{
 document.getElementById("importBtn").addEventListener("click", ()=>{
   closeDrawer();
   document.getElementById("fileInput").click();
+});
+document.getElementById("cheerSumBtn").addEventListener("click", openCheerSummaryModal);
+document.getElementById("cheerDetBtn").addEventListener("click", openCheerDetailModal);
+document.getElementById("cheerBg").addEventListener("click", closeCheerModal);
+document.getElementById("cheerClose").addEventListener("click", closeCheerModal);
+/* 打分明细弹窗内"重置"（委托，每场每队某人的单条打分） */
+document.getElementById("cheerModalBody").addEventListener("click", e=>{
+  const btn=e.target.closest(".chg-reset");
+  if(!btn) return;
+  if(!confirm("确定重置该条打分吗？该评分人将可重新打分。")) return;
+  const ok = resetCheerRecord(btn.dataset.id);
+  toast(ok ? "已重置该条打分" : "记录不存在");
+  openCheerDetailModal();       // 重新渲染明细
+  if(state.page==="cheer") renderCheer();  // 同步刷新打分页（恢复该队可打分状态）
 });
 document.getElementById("fileInput").addEventListener("change", e=>{
   const file=e.target.files[0]; if(!file) return;
@@ -1238,7 +1633,10 @@ function matchPlayersArrToObj(mpArr){
 }
 
 /* ---------- init ---------- */
+applyCheerMenuToken(location.search);   // 仅 ?token=7 时展示"啦啦队"菜单
 setPage("schedule");
+/* 啦啦队打分时间门：停留在啦啦队页时每 30s 刷新，跨过 18:00 自动显示当日场次 */
+setInterval(()=>{ if(state.page==="cheer") renderCheer(); }, 30000);
 </script>
 </body>
 </html>
