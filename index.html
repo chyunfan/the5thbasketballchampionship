@@ -378,6 +378,37 @@ const SNAP_KEY = "fyns_basketball_snaps_v1";   // 多版本数据快照
 const ADMIN_KEY = "fyns2026";             // 管理员导入密钥，可在此修改
 const CHEER_KEY = "fyns_cheer_v1";        // 啦啦队打分（按 日期|场次|队 存数组）
 const CHEER_USER_KEY = "fyns_cheer_user_v1"; // 本机评分人姓名（同设备免重复输入）
+/* ===== Supabase 云同步配置 =====
+   mode:
+     "env"    -> 通过 Vercel 服务端环境变量代理（推荐，密钥不出前端）。
+                在 Vercel 项目 Settings -> Environment Variables 配置：
+                SupabaseURL = https://xxxx.supabase.co
+                SupabaseScret = 服务端密钥（Settings -> API -> service_role 或 anon）
+                前端请求 /api/cheer（由 app/api/cheer.js 代理到 Supabase）
+     "direct" -> 前端直连 Supabase REST（需在此填 url + anon key，密钥会暴露在前端）
+     ""       -> 关闭云同步（仅本机 localStorage）
+   两种模式都需先在 Supabase 执行建表 SQL（见交付说明）：
+   create table if not exists public.cheer_scores(
+     id uuid primary key default gen_random_uuid(),
+     date text not null, time text not null, team text not null,
+     user_name text not null,
+     ren int not null default 0, dis int not null default 0, atm int not null default 0,
+     ts timestamptz not null default now(), device text
+   );
+   alter table public.cheer_scores enable row level security;
+   create policy "anon read"  on public.cheer_scores for select using (true);
+   create policy "anon insert" on public.cheer_scores for insert with check (true);
+   create policy "anon delete" on public.cheer_scores for delete using (true); */
+const SUPA = {
+  mode: "env",  // "env" | "direct" | ""
+  url: "",      // direct 模式：例："https://xxxx.supabase.co"
+  anon: "",     // direct 模式：例："eyJhbGciOi..."（Settings -> API -> anon public）
+};
+let DEVICE_ID = "";
+try{
+  DEVICE_ID = localStorage.getItem("fyns_device_id") ||
+    (localStorage.setItem("fyns_device_id","dev-"+Math.random().toString(36).slice(2,10)), localStorage.getItem("fyns_device_id"));
+}catch(e){}
 let D = Object.assign({}, BASE);          // working data (may be replaced by import)
 let imported = false;
 
@@ -484,6 +515,7 @@ function addCheer(date,time,team,rec){
   const id = (rec && rec.id) || (Date.now()+"-"+Math.random().toString(36).slice(2,8));
   arr.push(Object.assign({id:id, ts:new Date().toISOString()}, rec));
   saveCheer(cheerStore);
+  syncCheerToCloud(date, time, team, Object.assign({id:id}, rec));
   return true;
 }
 function clearCheer(){ cheerStore = {}; saveCheer(cheerStore); }
@@ -494,8 +526,58 @@ function resetCheerRecord(id){
     const idx=arr.findIndex(r=>r.id===id);
     if(idx>=0){ arr.splice(idx,1); removed=true; if(arr.length===0) delete cheerStore[k]; }
   });
-  if(removed) saveCheer(cheerStore);
+  if(removed){ saveCheer(cheerStore); removeCheerFromCloud(id); }
   return removed;
+}
+/* ---------- Supabase 云同步（跨设备共享打分） ----------
+   env 模式：请求 /api/cheer（Vercel serverless 代理，密钥在服务端环境变量）
+   direct 模式：前端直连 Supabase REST（url + anon）
+   关闭：以上均为 no-op，仅本机 localStorage */
+function supaEnabled(){ return SUPA.mode==="env" || !!(SUPA.url && SUPA.anon); }
+function supaHeaders(){ return { apikey:SUPA.anon, Authorization:"Bearer "+SUPA.anon, "Content-Type":"application/json" }; }
+async function refreshCheerFromCloud(){
+  if(!supaEnabled()) return;
+  try{
+    let res;
+    if(SUPA.mode==="env"){
+      res = await fetch("/api/cheer");
+    }else{
+      res = await fetch(SUPA.url+"/rest/v1/cheer_scores?select=id,date,time,team,user_name,ren,dis,atm,ts&order=ts.asc", { headers: supaHeaders() });
+    }
+    if(!res.ok) throw new Error("http "+res.status);
+    const rows = await res.json();
+    const store = {};
+    (rows||[]).forEach(r=>{
+      const k = cheerKey(r.date, r.time, r.team);
+      (store[k] = store[k] || []).push({
+        id: r.id, date: r.date, time: r.time, team: r.team,
+        user: r.user_name || "", ren: +r.ren || 0, dis: +r.dis || 0, atm: +r.atm || 0,
+        ts: r.ts || "" });
+    });
+    cheerStore = store;
+    saveCheer(cheerStore);
+    return true;
+  }catch(e){ return false; }
+}
+function syncCheerToCloud(date, time, team, rec){
+  if(!supaEnabled()) return;
+  try{
+    const body = { date:date, time:time, team:team, user_name:rec.user||"", ren:rec.ren||0, dis:rec.dis||0, atm:rec.atm||0, device:DEVICE_ID };
+    const p = SUPA.mode==="env"
+      ? fetch("/api/cheer", { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify(body) })
+      : fetch(SUPA.url + "/rest/v1/cheer_scores", { method:"POST", headers:Object.assign({Prefer:"return=minimal"}, supaHeaders()), body: JSON.stringify(body) });
+    p.then(res=>{ if(!res.ok) throw new Error("sync "+res.status); })
+     .catch(()=>{ toast("云同步失败，本条仅本机可见"); });
+  }catch(e){}
+}
+function removeCheerFromCloud(id){
+  if(!supaEnabled() || !id) return;
+  try{
+    const p = SUPA.mode==="env"
+      ? fetch("/api/cheer?id="+encodeURIComponent(id), { method:"DELETE" })
+      : fetch(SUPA.url + "/rest/v1/cheer_scores?id=eq." + encodeURIComponent(id), { method:"DELETE", headers:{ apikey:SUPA.anon, Authorization:"Bearer "+SUPA.anon } });
+    p.catch(()=>{});
+  }catch(e){}
 }
 function cheerDraftVal(key,dim){
   const d = state.cheerDraft[key];
@@ -1276,8 +1358,8 @@ document.getElementById("importBtn").addEventListener("click", ()=>{
   closeDrawer();
   document.getElementById("fileInput").click();
 });
-document.getElementById("cheerSumBtn").addEventListener("click", openCheerSummaryModal);
-document.getElementById("cheerDetBtn").addEventListener("click", openCheerDetailModal);
+document.getElementById("cheerSumBtn").addEventListener("click", async ()=>{ await refreshCheerFromCloud(); openCheerSummaryModal(); });
+document.getElementById("cheerDetBtn").addEventListener("click", async ()=>{ await refreshCheerFromCloud(); openCheerDetailModal(); });
 document.getElementById("cheerBg").addEventListener("click", closeCheerModal);
 document.getElementById("cheerClose").addEventListener("click", closeCheerModal);
 /* 打分明细弹窗内"重置"（委托，每场每队某人的单条打分） */
@@ -1635,8 +1717,13 @@ function matchPlayersArrToObj(mpArr){
 /* ---------- init ---------- */
 applyCheerMenuToken(location.search);   // 仅 ?token=7 时展示"啦啦队"菜单
 setPage("schedule");
-/* 啦啦队打分时间门：停留在啦啦队页时每 30s 刷新，跨过 18:00 自动显示当日场次 */
-setInterval(()=>{ if(state.page==="cheer") renderCheer(); }, 30000);
+/* 啦啦队：启动时拉取云端打分（若配置了 Supabase），并保持 30s 自动刷新 */
+refreshCheerFromCloud().then(ok=>{ if(ok && state.page==="cheer") renderCheer(); });
+setInterval(()=>{
+  if(state.page==="cheer"){
+    refreshCheerFromCloud().then(()=>renderCheer());  // 跨 18:00 自动放行 + 云端数据同步
+  }
+}, 30000);
 </script>
 </body>
 </html>
