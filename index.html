@@ -237,7 +237,10 @@
   .f-row select option{background:#1e293b;color:var(--txt);}
   .f-row input::placeholder{color:var(--txt-mute);}
   .pl-card{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--card-brd);
-           border-radius:14px;padding:11px 14px;margin-bottom:10px;}
+           border-radius:14px;padding:11px 14px;margin-bottom:10px;cursor:pointer;user-select:none;
+           transition:background .12s,border-color .12s,transform .08s;}
+  .pl-card:hover{background:rgba(255,255,255,.06);border-color:rgba(245,158,11,.35);}
+  .pl-card:active{transform:scale(.99);}
   .pl-rank{width:30px;font-size:15px;font-weight:800;color:var(--txt-mute);text-align:center;flex:0 0 auto;}
   .pl-rank.top{color:var(--gold);}
   .pl-no{font-size:12px;color:var(--txt-mute);width:30px;flex:0 0 auto;text-align:center;}
@@ -1231,7 +1234,7 @@ document.getElementById("content").addEventListener("click", e=>{
   const tg=e.target.closest(".toggle button");
   if(tg){ state.rankingsView=tg.dataset.v; renderRankings(); return; }
   const card=e.target.closest(".pl-card");
-  if(card && e.target.closest(".pl-name")){
+  if(card){
     openPlayerModal(card.dataset.team, +card.dataset.number, card.dataset.name);
     return;
   }
