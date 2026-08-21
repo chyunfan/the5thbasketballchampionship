@@ -356,11 +356,12 @@
   .theme-btn:hover{border-color:rgba(245,158,11,.35);}
 </style>
 <script>
-  /* 首屏防闪烁：body 渲染前确定主题，避免浅色用户先看到暗色 */
+  /* 首屏防闪烁：body 渲染前确定主题，默认暗色（已显式选过 auto 的用户仍跟随系统） */
   (function(){
     try{
       var t = localStorage.getItem("fyns_theme");
-      if(!t || t==="auto"){
+      if(!t){ t = "dark"; }                        // 未选择 -> 默认暗色
+      else if(t==="auto"){
         t = (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
       }
       document.documentElement.setAttribute("data-theme", t);
@@ -709,6 +710,60 @@ async function applyCloudDatasetIfNewer(){
   localStorage.setItem(LS_TS_KEY, cloudTs || new Date().toISOString());
   if(d.data.meta) state.rankingsView = d.data.meta.hasFinal ? "final" : "rr";
   return true;
+}
+/* ---------- 数据快照云端同步（跨设备共享多版本快照） ----------
+   与数据集/啦啦队同源：env 模式走 /api/snapshot（服务端代理）；direct 模式前端直连；
+   关闭则为 no-op，仅本机。云端表 match_snapshots 以快照 id 为主键，各设备共享。 */
+async function loadSnapsFromCloud(){
+  if(!supaEnabled() || typeof fetch === "undefined") return null;
+  try{
+    let res;
+    if(SUPA.mode==="env"){
+      res = await fetch("/api/snapshot");
+    }else{
+      res = await fetch(SUPABASE_URL + "/rest/v1/match_snapshots?select=id,time,data,created_by&order=time.desc", { headers: supaHeaders() });
+    }
+    if(!res.ok) return null;
+    const rows = await res.json();
+    return (Array.isArray(rows) ? rows : []).map(r => ({ id:String(r.id), time:String(r.time), data:r.data }));
+  }catch(e){ return null; }
+}
+function pushSnapToCloud(snap){
+  if(!supaEnabled() || typeof fetch === "undefined" || !snap) return;
+  try{
+    const body = { id:String(snap.id), time:String(snap.time), data:snap.data, created_by:DEVICE_ID };
+    const p = SUPA.mode==="env"
+      ? fetch("/api/snapshot", { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify(body) })
+      : fetch(SUPABASE_URL + "/rest/v1/match_snapshots", { method:"POST", headers: Object.assign({Prefer:"return=minimal"}, supaHeaders()), body: JSON.stringify(body) });
+    p.catch(()=>{});
+  }catch(e){}
+}
+function deleteSnapFromCloud(id){
+  if(!supaEnabled() || !id) return;
+  try{
+    const p = SUPA.mode==="env"
+      ? fetch("/api/snapshot?id="+encodeURIComponent(id), { method:"DELETE" })
+      : fetch(SUPABASE_URL + "/rest/v1/match_snapshots?id=eq." + encodeURIComponent(id), { method:"DELETE", headers: supaHeaders() });
+    p.catch(()=>{});
+  }catch(e){}
+}
+/* 合并云端快照到本机：按 id 取并集（云端新增的快照也出现在本机）；变化时刷新快照列表 */
+async function mergeCloudSnaps(){
+  if(!supaEnabled() || typeof fetch === "undefined") return false;
+  try{
+    const remote = await loadSnapsFromCloud();
+    if(!remote || !remote.length) return false;
+    const local = loadSnaps();
+    const map = {};
+    local.forEach(s => { map[s.id] = s; });
+    let changed = false;
+    remote.forEach(s => { if(!map[s.id]){ map[s.id] = s; changed = true; } });
+    if(!changed) return false;
+    const merged = Object.values(map).sort((a,b)=> new Date(b.time) - new Date(a.time));
+    saveSnaps(merged);
+    if(document.getElementById("snapModal") && document.getElementById("snapModal").classList.contains("show")) renderSnapList();
+    return true;
+  }catch(e){ return false; }
 }
 function cheerDraftVal(key,dim){
   const d = state.cheerDraft[key];
@@ -1558,6 +1613,7 @@ function saveSnap(){
   const id=String(now.getTime());
   snaps.unshift({ id, time:now.toISOString(), data:currentDynamic() });
   saveSnaps(snaps);
+  pushSnapToCloud({ id, time:now.toISOString(), data:currentDynamic() });   // 同步云端，跨设备可见
   toast("已保存快照：" + fmtTime(now.toISOString()));
   return id;
 }
@@ -1602,6 +1658,7 @@ function restoreSnap(id){
 }
 function deleteSnap(id){
   saveSnaps(loadSnaps().filter(x=>x.id!==id));
+  deleteSnapFromCloud(id);   // 同步删除云端，跨设备一致
   renderSnapList();
   toast("已删除快照");
 }
@@ -1880,7 +1937,7 @@ function applyTheme(t){
   document.documentElement.setAttribute("data-theme", t);
   updateThemeBtn();
 }
-function getStoredTheme(){ try{ return localStorage.getItem(THEME_KEY) || "auto"; }catch(e){ return "auto"; } }
+function getStoredTheme(){ try{ return localStorage.getItem(THEME_KEY) || "dark"; }catch(e){ return "dark"; } }
 function setTheme(t){
   try{ localStorage.setItem(THEME_KEY, t); }catch(e){}
   applyTheme(t);
@@ -1914,9 +1971,12 @@ setInterval(()=>{
 }, 30000);
 /* 比赛数据集：启动时拉取云端较新数据（部署网址其他设备导入的也能看到），并 60s 轮询自动更新 */
 applyCloudDatasetIfNewer().then(changed=>{ if(changed) setPage(state.page); });
+/* 数据快照：启动时合并云端快照（其他设备保存的快照本机也能看到），并 60s 轮询自动更新 */
+mergeCloudSnaps().then(changed=>{ if(changed && document.getElementById("snapModal") && document.getElementById("snapModal").classList.contains("show")) renderSnapList(); });
 setInterval(()=>{
   if(["schedule","rankings","players","daily"].includes(state.page)){
     applyCloudDatasetIfNewer().then(changed=>{ if(changed) setPage(state.page); });
+    mergeCloudSnaps().then(changed=>{ if(changed && document.getElementById("snapModal") && document.getElementById("snapModal").classList.contains("show")) renderSnapList(); });
   }
 }, 60000);
 </script>
