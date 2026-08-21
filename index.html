@@ -12,20 +12,77 @@
     --txt:#e8edf6; --txt-dim:#9fb0c8; --txt-mute:#6b7c95;
     --gold:#f59e0b; --gold-soft:rgba(245,158,11,.16);
     --win:#34d399;
+    /* theme-aware extras */
+    --bg-grad:#1b2b4a;
+    --app-shadow:rgba(0,0,0,.5);
+    --expand-shadow:rgba(0,0,0,.22);
+    --overlay:rgba(0,0,0,.6);
+    --overlay-sm:rgba(0,0,0,.15);
+    --embed:rgba(0,0,0,.18);
+    --embed2:rgba(255,255,255,.08);
+    --hover:rgba(255,255,255,.06);
+    --press:rgba(255,255,255,.07);
+    --chip-brd:rgba(255,255,255,.07);
+    --tag-rr-bg:rgba(148,163,184,.18);
+    --tag-rr-tx:#cbd5e1;
+    --danger:#f87171;
+    --danger-bd:rgba(248,113,113,.5);
+    --danger-soft:#fca5a5;
+    --on-gold:#1a1205;
+    --rank-c1:#fde047; --rank-c2:#e2e8f0; --rank-c3:#fdba74;
+    --option-bg:#1e293b;
+    --toast-bg:rgba(20,30,50,.96);
+    --no-shadow:inset 0 1px 0 rgba(255,255,255,.30), inset 0 -2px 4px rgba(0,0,0,.18);
+    --star-off:rgba(255,255,255,.22);
+    --neutral:#64748b;
+    --neutral-soft:rgba(255,255,255,.04);
+    --appbar-grad:rgba(245,158,11,.14);
+  }
+  [data-theme="light"]{
+    --bg1:#eef2f8; --bg2:#ffffff; --bg3:#f4f7fb;
+    --card:#ffffff;
+    --card-brd:rgba(15,23,42,.10);
+    --txt:#1a2332; --txt-dim:#475569; --txt-mute:#7a899c;
+    --gold:#d97706; --gold-soft:rgba(217,119,6,.12);
+    --win:#059669;
+    --bg-grad:#dbe4f0;
+    --app-shadow:rgba(15,23,42,.12);
+    --expand-shadow:rgba(15,23,42,.10);
+    --overlay:rgba(15,23,42,.42);
+    --overlay-sm:rgba(15,23,42,.05);
+    --embed:rgba(15,23,42,.05);
+    --embed2:rgba(15,23,42,.07);
+    --hover:rgba(15,23,42,.045);
+    --press:rgba(15,23,42,.06);
+    --chip-brd:rgba(15,23,42,.08);
+    --tag-rr-bg:rgba(100,116,139,.16);
+    --tag-rr-tx:#475569;
+    --danger:#dc2626;
+    --danger-bd:rgba(220,38,38,.4);
+    --danger-soft:#dc2626;
+    --on-gold:#1a1205;
+    --rank-c1:#ca8a04; --rank-c2:#64748b; --rank-c3:#ea580c;
+    --option-bg:#ffffff;
+    --toast-bg:rgba(255,255,255,.97);
+    --no-shadow:inset 0 1px 0 rgba(255,255,255,.65), inset 0 -2px 4px rgba(0,0,0,.10);
+    --star-off:rgba(15,23,42,.18);
+    --neutral:#475569;
+    --neutral-soft:rgba(15,23,42,.03);
+    --appbar-grad:rgba(217,119,6,.10);
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
   html,body{margin:0;padding:0;height:100%;}
   body{
     font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",system-ui,sans-serif;
-    background:radial-gradient(1200px 600px at 50% -10%, #1b2b4a 0%, var(--bg1) 55%), var(--bg1);
+    background:radial-gradient(1200px 600px at 50% -10%, var(--bg-grad) 0%, var(--bg1) 55%), var(--bg1);
     color:var(--txt); overflow:hidden;
   }
   #app{max-width:540px;margin:0 auto;height:100vh;display:flex;flex-direction:column;
        position:relative;background:linear-gradient(180deg,var(--bg2),var(--bg3));
-       box-shadow:0 0 60px rgba(0,0,0,.5);}
+       box-shadow:0 0 60px var(--app-shadow);}
   /* ---- top bar ---- */
   .topbar{display:flex;align-items:center;gap:10px;padding:12px 14px;
-          background:linear-gradient(180deg,rgba(245,158,11,.14),transparent);
+          background:linear-gradient(180deg,var(--appbar-grad),transparent);
           border-bottom:1px solid var(--card-brd);flex:0 0 auto;z-index:20;}
   .hamb{width:42px;height:42px;border-radius:12px;border:1px solid var(--card-brd);
         background:var(--card);color:var(--txt);font-size:22px;line-height:1;cursor:pointer;
@@ -37,7 +94,7 @@
   /* ---- content ---- */
   #content{flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 14px 14px;}
   .app-footer{flex:0 0 auto;text-align:center;font-size:11px;color:var(--txt-mute);
-              padding:10px 14px;border-top:1px solid var(--card-brd);background:rgba(0,0,0,.14);letter-spacing:.3px;}
+              padding:10px 14px;border-top:1px solid var(--card-brd);background:var(--overlay-sm);letter-spacing:.3px;}
   .page-title{font-size:18px;font-weight:800;margin:2px 2px 14px;display:flex;align-items:center;gap:8px;}
   .page-title .bar{width:4px;height:18px;background:var(--gold);border-radius:3px;}
   .page-sub{font-size:12px;color:var(--txt-mute);font-weight:400;margin-left:auto;}
@@ -46,7 +103,7 @@
          transition:opacity .25s;z-index:40;}
   .scrim.open{opacity:1;pointer-events:auto;}
   .drawer{position:absolute;top:0;left:0;height:100%;width:74%;max-width:300px;
-          background:linear-gradient(180deg,#16223c,#0d1626);border-right:1px solid var(--card-brd);
+          background:linear-gradient(180deg,var(--bg2),var(--bg3));border-right:1px solid var(--card-brd);
           transform:translateX(-102%);transition:transform .28s ease;z-index:50;display:flex;flex-direction:column;}
   .drawer.open{transform:translateX(0);}
   .drawer-head{padding:22px 18px 14px;border-bottom:1px solid var(--card-brd);}
@@ -57,12 +114,12 @@
            font-size:15px;font-weight:600;cursor:pointer;color:var(--txt);}
   .menu li .ico{font-size:18px;width:24px;text-align:center;}
   .menu li.active{background:var(--gold-soft);color:var(--gold);}
-  .menu li:active{background:rgba(255,255,255,.07);}
+  .menu li:active{background:var(--press);}
   .drawer-foot{padding:12px;border-top:1px solid var(--card-brd);}
   .mini-btn{width:100%;padding:11px;border-radius:10px;border:1px solid var(--card-brd);
             background:var(--card);color:var(--txt-dim);font-size:13px;font-weight:600;cursor:pointer;}
   .mini-btn:active{transform:scale(.98);}
-  .mini-btn.danger{color:#fca5a5;border-color:rgba(252,165,165,.3);}
+  .mini-btn.danger{color:var(--danger-soft);border-color:var(--danger-bd);}
   /* ---- generic cards / sections ---- */
   .section{margin-bottom:18px;}
   .section-h{font-size:13px;color:var(--txt-dim);font-weight:700;margin:6px 4px 10px;
@@ -75,8 +132,8 @@
   .match-info{flex:0 0 auto;min-width:30px;display:flex;flex-direction:row;align-items:center;gap:4px;flex-wrap:wrap;}
   .m-time{font-size:11px;font-weight:700;color:var(--txt);line-height:1.1;}
   .m-tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;display:inline-block;width:fit-content;line-height:1;}
-  .m-tag.rr{background:rgba(148,163,184,.18);color:#cbd5e1;}
-  .m-tag.fin{background:rgba(245,158,11,.2);color:var(--gold);}
+  .m-tag.rr{background:var(--tag-rr-bg);color:var(--tag-rr-tx);}
+  .m-tag.fin{background:var(--gold-soft);color:var(--gold);}
   .match-board{flex:1 1 auto;display:flex;align-items:center;justify-content:center;gap:4px;min-width:0;}
   .sb-team{flex:1 1 0;display:flex;align-items:center;gap:4px;min-width:0;}
   .sb-team.left{justify-content:flex-end;text-align:right;}
@@ -99,7 +156,7 @@
   /* match data panel */
   .m-panel{margin-top:8px;border-top:1px solid var(--card-brd);padding-top:10px;display:none;}
   .m-panel.show{display:block;}
-  .mp-detail{background:rgba(0,0,0,.18);border-radius:14px;padding:10px;}
+  .mp-detail{background:var(--embed);border-radius:14px;padding:10px;}
   .mp-heads{display:flex;gap:8px;margin-bottom:10px;}
   .mp-head{flex:1 1 50%;border-radius:10px;padding:8px 10px;display:flex;align-items:center;justify-content:space-between;color:#fff;font-weight:700;font-size:13px;min-width:0;}
   .mp-hname{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -107,13 +164,13 @@
   .mp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
   .mp-col{display:flex;flex-direction:column;gap:4px;}
   .mp-row{display:flex;align-items:center;gap:6px;font-size:12px;}
-  .mp-row.hl{background:rgba(245,158,11,.14);border-radius:8px;padding:2px 4px;margin:0 -4px;outline:1px solid rgba(245,158,11,.55);}
+  .mp-row.hl{background:var(--gold-soft);border-radius:8px;padding:2px 4px;margin:0 -4px;outline:1px solid var(--gold);}
   .mp-row.hl .mp-name{color:var(--gold);font-weight:800;}
   .mp-no{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;
           font-size:12px;font-weight:800;flex:0 0 auto;font-family:"Arial","Helvetica Neue",sans-serif;
-          box-shadow:inset 0 1px 0 rgba(255,255,255,.30), inset 0 -2px 4px rgba(0,0,0,.18);}
+          box-shadow:var(--no-shadow);}
   .mp-name{width:54px;flex:0 0 auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--txt);font-size:13px;letter-spacing:.5px;}
-  .mp-bar{flex:1 1 auto;height:8px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;min-width:20px;}
+  .mp-bar{flex:1 1 auto;height:8px;background:var(--embed2);border-radius:999px;overflow:hidden;min-width:20px;}
   .mp-bar span{display:block;height:100%;border-radius:999px;transition:width .3s;}
   .mp-sc{width:28px;text-align:right;font-weight:800;font-variant-numeric:tabular-nums;flex:0 0 auto;color:#fff;font-size:15px;font-family:"Arial","Helvetica Neue",sans-serif;}
   .mp-empty{text-align:center;color:var(--txt-mute);font-size:12px;padding:10px 0;}
@@ -124,16 +181,16 @@
   /* cheer scoring */
   .cheer-match{background:var(--card);border:1px solid var(--card-brd);border-radius:16px;padding:12px 14px;margin-bottom:12px;overflow:hidden;}
   .cheer-mh{font-size:13px;font-weight:800;color:var(--txt);margin-bottom:10px;}
-  .cheer-team{background:rgba(255,255,255,.04);border-radius:12px;padding:10px 12px;margin:8px 0;border-left:4px solid #64748b;}
+  .cheer-team{background:var(--neutral-soft);border-radius:12px;padding:10px 12px;margin:8px 0;border-left:4px solid var(--neutral);}
   .cheer-th{font-size:14px;font-weight:800;margin-bottom:8px;}
   .ch-dim{display:flex;align-items:center;gap:10px;padding:3px 0;}
   .ch-dl{width:38px;flex:0 0 auto;font-size:13px;color:var(--txt);}
   .ch-stars{display:flex;gap:4px;cursor:pointer;}
-  .star{font-size:20px;line-height:1;color:rgba(255,255,255,.22);transition:transform .08s,color .1s;user-select:none;}
+  .star{font-size:20px;line-height:1;color:var(--star-off);transition:transform .08s,color .1s;user-select:none;}
   .star.on{text-shadow:0 0 6px currentColor;}
   .star:active{transform:scale(1.25);}
   .ch-submit{margin-top:8px;display:block;width:100%;font-size:13px;font-weight:700;
-             background:transparent;border:1.5px solid #64748b;border-radius:20px;padding:6px 0;cursor:pointer;color:#64748b;}
+             background:transparent;border:1.5px solid var(--neutral);border-radius:20px;padding:6px 0;cursor:pointer;color:var(--neutral);}
   .ch-submit:active{transform:scale(.98);}
   .cheer-agg{margin-top:8px;font-size:12px;color:var(--txt-mute);}
   .cheer-agg b{color:var(--txt);font-variant-numeric:tabular-nums;}
@@ -141,22 +198,22 @@
   .cheer-user-badge b{color:var(--gold);}
   .cheer-name-card{margin:28px 14px;background:var(--card);border:1px solid var(--card-brd);border-radius:16px;padding:22px 18px;text-align:center;}
   .cheer-nm-t{font-size:15px;font-weight:800;color:var(--txt);margin-bottom:14px;}
-  .cheer-nm-input{width:70%;max-width:240px;background:rgba(255,255,255,.07);border:1px solid var(--card-brd);
+  .cheer-nm-input{width:70%;max-width:240px;background:var(--embed2);border:1px solid var(--card-brd);
                   color:var(--txt);border-radius:12px;padding:10px 14px;font-size:15px;text-align:center;outline:none;}
-  .cheer-nm-input:focus{border-color:rgba(245,158,11,.5);}
+  .cheer-nm-input:focus{border-color:var(--gold);}
   .cheer-nm-btn{margin-top:14px;display:inline-block;}
   .ch-done{margin-top:8px;display:block;width:100%;text-align:center;font-size:13px;font-weight:800;
            border:1.5px solid;border-radius:20px;padding:6px 0;}
   .cheer-next{margin:6px 2px 4px;padding:10px 12px;border-radius:12px;
-              background:rgba(245,158,11,.08);border:1px dashed rgba(245,158,11,.35);
+              background:var(--gold-soft);border:1px dashed var(--gold);
               color:var(--gold);font-size:12px;line-height:1.7;text-align:center;}
   .empty-state{margin:48px 18px;text-align:center;color:var(--txt-mute);font-size:14px;line-height:1.8;}
   /* cheer admin tables */
   .chg-table{width:100%;border-collapse:collapse;font-size:13px;}
-  .chg-table th{background:rgba(255,255,255,.06);padding:7px 6px;text-align:left;font-weight:700;color:var(--txt-mute);white-space:nowrap;}
+  .chg-table th{background:var(--hover);padding:7px 6px;text-align:left;font-weight:700;color:var(--txt-mute);white-space:nowrap;}
   .chg-table td{padding:7px 6px;border-top:1px solid var(--card-brd);font-variant-numeric:tabular-nums;}
   .chg-actions{margin-top:14px;display:flex;justify-content:flex-end;}
-  .chg-reset{background:transparent;border:1px solid rgba(248,113,113,.5);color:#f87171;
+  .chg-reset{background:transparent;border:1px solid var(--danger-bd);color:var(--danger);
              font-size:11px;border-radius:12px;padding:3px 9px;cursor:pointer;white-space:nowrap;}
   .chg-reset:active{transform:scale(.95);}
   @media (max-width:380px){
@@ -170,7 +227,7 @@
   .day-h .badge{font-size:11px;font-weight:700;color:var(--gold);background:var(--gold-soft);
                 padding:2px 9px;border-radius:20px;}
   .day-match{display:flex;align-items:stretch;position:relative;gap:0;padding:0;border-radius:14px;overflow:hidden;min-height:54px;}
-  .day-match + .day-match{border-top:1px dashed rgba(255,255,255,.08);}
+  .day-match + .day-match{border-top:1px dashed var(--chip-brd);}
   .dm-team{flex:1 1 50%;display:flex;align-items:center;min-width:0;padding:12px 10px;}
   .dm-team.left{justify-content:flex-start;padding-right:52px;}
   .dm-team.right{justify-content:flex-end;padding-left:52px;text-align:right;}
@@ -182,14 +239,14 @@
   .dm-w .dm-score{color:var(--win);}
   .day-match-wrap{background:var(--card);border:1px solid var(--card-brd);border-radius:16px;
                   padding:12px 14px;margin-bottom:10px;transition:all .2s;}
-  .day-match-wrap.expanded{border-color:rgba(245,158,11,.35);box-shadow:0 8px 24px rgba(0,0,0,.22);}
+  .day-match-wrap.expanded{border-color:rgba(245,158,11,.35);box-shadow:0 8px 24px var(--expand-shadow);}
   .day-match{cursor:pointer;}
   .dm-arrow{width:8px;height:8px;border-right:2px solid var(--txt-mute);border-bottom:2px solid var(--txt-mute);
             position:absolute;right:12px;top:50%;transform:translateY(-50%) rotate(45deg);transition:transform .2s;z-index:3;}
   .day-match-wrap.expanded .dm-arrow{transform:translateY(-50%) rotate(-135deg);}
   .dm-detail{margin-top:12px;}
   .dpp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  .dpp-col{background:rgba(0,0,0,.18);border-radius:12px;overflow:hidden;padding:8px 10px;}
+  .dpp-col{background:var(--embed);border-radius:12px;overflow:hidden;padding:8px 10px;}
   .dpp-body{padding:0;}
   .dpp-row{display:flex;align-items:center;gap:6px;padding:4px 0;font-size:12px;}
   .dpp-no{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;
@@ -211,9 +268,9 @@
   .toggle button.on{background:var(--gold);color:#1a1205;}
   .rk-table{background:var(--card);border:1px solid var(--card-brd);border-radius:16px;overflow:hidden;}
   .rk-row{display:flex;align-items:center;gap:10px;padding:13px 14px;}
-  .rk-row + .rk-row{border-top:1px solid rgba(255,255,255,.07);}
+  .rk-row + .rk-row{border-top:1px solid var(--chip-brd);}
   .rk-pos{width:30px;font-size:17px;font-weight:800;text-align:center;flex:0 0 auto;}
-  .rk-pos.c1{color:#fde047;} .rk-pos.c2{color:#e2e8f0;} .rk-pos.c3{color:#fdba74;}
+  .rk-pos.c1{color:var(--rank-c1);} .rk-pos.c2{color:var(--rank-c2);} .rk-pos.c3{color:var(--rank-c3);}
   .rk-name{flex:1 1 auto;font-size:15px;font-weight:700;display:flex;align-items:center;gap:9px;}
   .rk-dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto;}
   .rk-stats{display:flex;gap:14px;font-size:13px;color:var(--txt-dim);}
@@ -225,7 +282,7 @@
   .pod .medal{font-size:30px;}
   .pod .lab{font-size:12px;color:var(--txt-mute);margin-top:2px;}
   .pod .pn{font-size:16px;font-weight:800;margin-top:8px;}
-  .pod.gold{border-color:rgba(245,158,11,.5);background:rgba(245,158,11,.10);}
+  .pod.gold{border-color:var(--gold);background:var(--gold-soft);}
   .note{font-size:12px;color:var(--txt-mute);background:var(--card);border:1px dashed var(--card-brd);
         border-radius:12px;padding:14px;text-align:center;line-height:1.6;}
   /* players */
@@ -234,12 +291,12 @@
   .f-row{display:flex;gap:8px;margin-bottom:8px;}
   .f-row select,.f-row input{flex:1;min-width:0;background:var(--card);border:1px solid var(--card-brd);
             color:var(--txt);font-size:14px;padding:11px 10px;border-radius:11px;outline:none;}
-  .f-row select option{background:#1e293b;color:var(--txt);}
+  .f-row select option{background:var(--option-bg);color:var(--txt);}
   .f-row input::placeholder{color:var(--txt-mute);}
   .pl-card{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--card-brd);
            border-radius:14px;padding:11px 14px;margin-bottom:10px;cursor:pointer;user-select:none;
            transition:background .12s,border-color .12s,transform .08s;}
-  .pl-card:hover{background:rgba(255,255,255,.06);border-color:rgba(245,158,11,.35);}
+  .pl-card:hover{background:var(--hover);border-color:rgba(245,158,11,.35);}
   .pl-card:active{transform:scale(.99);}
   .pl-rank{width:30px;font-size:15px;font-weight:800;color:var(--txt-mute);text-align:center;flex:0 0 auto;}
   .pl-rank.top{color:var(--gold);}
@@ -254,7 +311,7 @@
   .empty{text-align:center;color:var(--txt-mute);padding:40px 0;font-size:14px;}
   /* toast */
   #toast{position:absolute;left:50%;bottom:30px;transform:translateX(-50%) translateY(20px);
-         background:rgba(20,30,50,.96);border:1px solid var(--card-brd);color:var(--txt);
+         background:var(--toast-bg);border:1px solid var(--card-brd);color:var(--txt);
          padding:11px 18px;border-radius:24px;font-size:13px;font-weight:600;opacity:0;
          transition:all .25s;z-index:60;pointer-events:none;max-width:80%;text-align:center;}
   #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
@@ -262,9 +319,9 @@
   /* player detail modal */
   .modal{position:absolute;inset:0;z-index:55;display:none;flex-direction:column;}
   .modal.show{display:flex;}
-  .modal-bg{position:absolute;inset:0;background:rgba(0,0,0,.6);}
-  .modal-card{position:relative;margin:auto 14px;width:auto;max-height:80vh;background:var(--bg2);border:1px solid var(--card-brd);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.5);}
-  .modal-head{padding:16px 50px 12px 18px;border-bottom:1px solid var(--card-brd);background:rgba(0,0,0,.15);}
+  .modal-bg{position:absolute;inset:0;background:var(--overlay);}
+  .modal-card{position:relative;margin:auto 14px;width:auto;max-height:80vh;background:var(--bg2);border:1px solid var(--card-brd);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px var(--app-shadow);}
+  .modal-head{padding:16px 50px 12px 18px;border-bottom:1px solid var(--card-brd);background:var(--overlay-sm);}
   .modal-head .h-name{font-size:18px;font-weight:800;}
   .modal-head .h-meta{font-size:13px;color:var(--txt-dim);margin-top:4px;}
   .modal-body{padding:10px 14px 18px;overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1;}
@@ -276,22 +333,40 @@
   .snap-time{font-size:15px;font-weight:800;color:var(--txt);font-variant-numeric:tabular-nums;}
   .snap-sub{font-size:12px;color:var(--txt-dim);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .snap-acts{display:flex;gap:8px;flex:0 0 auto;}
-  .snap-restore{font-size:13px;font-weight:700;color:#0b1220;background:var(--gold);border:none;border-radius:10px;padding:8px 14px;cursor:pointer;}
+  .snap-restore{font-size:13px;font-weight:700;color:var(--on-gold);background:var(--gold);border:none;border-radius:10px;padding:8px 14px;cursor:pointer;}
   .snap-restore:active{transform:scale(.96);}
-  .snap-del{font-size:13px;font-weight:700;color:#fca5a5;border:1px solid rgba(252,165,165,.3);background:transparent;border-radius:10px;padding:8px 12px;cursor:pointer;}
+  .snap-del{font-size:13px;font-weight:700;color:var(--danger-soft);border:1px solid var(--danger-bd);background:transparent;border-radius:10px;padding:8px 12px;cursor:pointer;}
   .snap-del:active{transform:scale(.96);}
   .snap-empty{color:var(--txt-dim);font-size:13px;text-align:center;padding:24px 0;}
   .pm-item{background:var(--card);border:1px solid var(--card-brd);border-radius:14px;padding:12px 14px;margin-bottom:10px;cursor:pointer;}
   .pm-item:active{transform:scale(.99);}
   .pm-row{display:flex;align-items:center;gap:8px;}
-  .pm-tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(148,163,184,.18);color:#cbd5e1;flex:0 0 auto;}
-  .pm-tag.fin{background:rgba(245,158,11,.2);color:var(--gold);}
+  .pm-tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:var(--tag-rr-bg);color:var(--tag-rr-tx);flex:0 0 auto;}
+  .pm-tag.fin{background:var(--gold-soft);color:var(--gold);}
   .pm-vs{flex:1 1 auto;font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
   .pm-score{font-size:18px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--gold);flex:0 0 auto;}
   .pm-score.zero{color:var(--txt-mute);}
   .pm-detail{display:none;margin-top:10px;border-top:1px solid var(--card-brd);padding-top:10px;}
   .pm-detail.show{display:block;}
+  /* theme toggle button */
+  .theme-btn{margin-left:auto;flex:0 0 auto;width:42px;height:42px;border-radius:12px;border:1px solid var(--card-brd);
+            background:var(--card);color:var(--txt);font-size:20px;line-height:1;cursor:pointer;
+            display:flex;align-items:center;justify-content:center;transition:transform .08s,border-color .12s;}
+  .theme-btn:active{transform:scale(.94);}
+  .theme-btn:hover{border-color:rgba(245,158,11,.35);}
 </style>
+<script>
+  /* 首屏防闪烁：body 渲染前确定主题，避免浅色用户先看到暗色 */
+  (function(){
+    try{
+      var t = localStorage.getItem("fyns_theme");
+      if(!t || t==="auto"){
+        t = (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+      }
+      document.documentElement.setAttribute("data-theme", t);
+    }catch(e){ document.documentElement.setAttribute("data-theme","dark"); }
+  })();
+</script>
 </head>
 <body>
 <div id="app">
@@ -301,6 +376,7 @@
       <span class="kick">富阳农商银行</span>
       <span class="main">第五届职工篮球赛</span>
     </div>
+    <button class="theme-btn" id="themeBtn" aria-label="切换主题">🌙</button>
   </div>
 
   <div id="content"></div>
@@ -377,6 +453,7 @@
 "use strict";
 const BASE = window.APP_DATA;
 const LS_KEY = "fyns_basketball_v1";
+const LS_TS_KEY = "fyns_basketball_ts_v1";     // 当前数据集本地写入时间戳（用于与云端比较新旧）
 const SNAP_KEY = "fyns_basketball_snaps_v1";   // 多版本数据快照
 const ADMIN_KEY = "fyns2026";             // 管理员导入密钥，可在此修改
 const CHEER_KEY = "fyns_cheer_v1";        // 啦啦队打分（按 日期|场次|队 存数组）
@@ -581,6 +658,56 @@ function removeCheerFromCloud(id){
       : fetch(SUPA.url + "/rest/v1/cheer_scores?id=eq." + encodeURIComponent(id), { method:"DELETE", headers:{ apikey:SUPA.anon, Authorization:"Bearer "+SUPA.anon } });
     p.catch(()=>{});
   }catch(e){}
+}
+/* ---------- 比赛数据集云端同步（跨设备共享导入数据） ----------
+   与啦啦队打分同源：env 模式走 /api/dataset（服务端代理，密钥不出前端）；
+   direct 模式前端直连 Supabase；关闭则为 no-op，仅本机。
+   云端以单行为当前数据集（id="active"），各设备启动/定时拉取较新者，导入/恢复时回写。 */
+async function loadDatasetFromCloud(){
+  if(!supaEnabled() || typeof fetch === "undefined") return null;
+  try{
+    let res;
+    if(SUPA.mode==="env"){
+      res = await fetch("/api/dataset");
+    }else{
+      res = await fetch(SUPA.url+"/rest/v1/match_dataset?id=eq.active&select=id,data,updated_at,updated_by", { headers: supaHeaders() });
+    }
+    if(!res.ok) return null;
+    const d = await res.json();
+    return (d && Array.isArray(d)) ? (d[0]||null) : (d||null);
+  }catch(e){ return null; }
+}
+async function pushDatasetToCloud(){
+  if(!supaEnabled() || typeof fetch === "undefined") return false;
+  try{
+    const data = currentDynamic();
+    const ts = new Date().toISOString();
+    const p = SUPA.mode==="env"
+      ? fetch("/api/dataset", { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ data:data, updated_by:DEVICE_ID }) })
+      : fetch(SUPA.url + "/rest/v1/match_dataset", {
+          method:"POST",
+          headers: Object.assign({ Prefer:"resolution=merge-duplicates,return=minimal" }, supaHeaders()),
+          body: JSON.stringify({ id:"active", data:data, updated_at:ts, updated_by:DEVICE_ID })
+        });
+    const res = await p;
+    if(!res.ok) throw new Error("push "+res.status);
+    localStorage.setItem(LS_TS_KEY, ts);
+    return true;
+  }catch(e){ toast("比赛数据云同步失败，本条仅本机可见"); return false; }
+}
+async function applyCloudDatasetIfNewer(){
+  const d = await loadDatasetFromCloud();
+  if(!d || !d.data) return false;
+  const localTs = localStorage.getItem(LS_TS_KEY);
+  const cloudTs = d.updated_at || null;
+  // 本地已存在且云端不比本地更新 -> 跳过（避免每次轮询都重渲染）
+  if(localTs && cloudTs && new Date(cloudTs) <= new Date(localTs)) return false;
+  Object.assign(D, d.data);
+  imported = true;
+  localStorage.setItem(LS_KEY, JSON.stringify(d.data));
+  localStorage.setItem(LS_TS_KEY, cloudTs || new Date().toISOString());
+  if(d.data.meta) state.rankingsView = d.data.meta.hasFinal ? "final" : "rr";
+  return true;
 }
 function cheerDraftVal(key,dim){
   const d = state.cheerDraft[key];
@@ -1391,9 +1518,11 @@ document.getElementById("fileInput").addEventListener("change", e=>{
       Object.assign(D, dyn);
       imported=true;
       localStorage.setItem(LS_KEY, JSON.stringify(dyn));
+      localStorage.setItem(LS_TS_KEY, new Date().toISOString());
       if(D.meta) D.meta.hasFinal = !!dyn.final;
       state.rankingsView = dyn.final ? "final" : "rr";
       setPage(state.page==="players"?"players":state.page);
+      pushDatasetToCloud();   // 同步到云端，部署网址的其他设备也能看到
       toast("导入成功：" + parsed.dailySheets.join("、") + (dyn.final?"（含决赛数据）":""));
     }catch(err){
       toast("导入失败：" + err.message);
@@ -1458,8 +1587,10 @@ function restoreSnap(id){
   if(!s){ toast("快照不存在"); return; }
   Object.assign(D, s.data);
   localStorage.setItem(LS_KEY, JSON.stringify(s.data));
+  localStorage.setItem(LS_TS_KEY, new Date().toISOString());
   imported=true;
   state.rankingsView = (s.data.meta && s.data.meta.hasFinal) ? "final" : "rr";
+  pushDatasetToCloud();   // 恢复后也同步云端，保持各设备一致
   closeSnapModal();
   closeDrawer();
   setPage(state.page);
@@ -1717,9 +1848,59 @@ function matchPlayersArrToObj(mpArr){
   return obj;
 }
 
+/* ---------- 主题切换（暗色 / 浅色 / 自动） ---------- */
+const THEME_KEY = "fyns_theme";
+/* 跟随系统：左半太阳 + 右半月亮（各一半） */
+const AUTO_ICON = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">'
+  + '<path d="M12 3 A9 9 0 0 0 12 21 Z" fill="#f59e0b"/>'
+  + '<path d="M12 3 A9 9 0 0 1 12 21 Z" fill="#cbd5e1"/>'
+  + '<circle cx="16" cy="9.5" r="1.5" fill="#94a3b8"/>'
+  + '<circle cx="17.3" cy="14.5" r="1.05" fill="#94a3b8"/>'
+  + '<line x1="12" y1="3" x2="12" y2="21" stroke="#475569" stroke-width="0.9" opacity="0.5"/>'
+  + '</svg>';
+function sysPref(){ return (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light"; }
+function updateThemeBtn(){
+  const btn = document.getElementById("themeBtn");
+  if(!btn) return;
+  if(getStoredTheme()==="auto"){
+    btn.innerHTML = AUTO_ICON;
+    btn.setAttribute("aria-label","当前跟随系统，点击切换");
+  }else{
+    const t = document.documentElement.getAttribute("data-theme");
+    btn.textContent = (t==="light") ? "☀️" : "🌙";
+    btn.setAttribute("aria-label", t==="light" ? "当前浅色，点击切换" : "当前暗色，点击切换");
+  }
+}
+function applyTheme(t){
+  if(t!=="dark" && t!=="light") t = sysPref();
+  document.documentElement.setAttribute("data-theme", t);
+  updateThemeBtn();
+}
+function getStoredTheme(){ try{ return localStorage.getItem(THEME_KEY) || "auto"; }catch(e){ return "auto"; } }
+function setTheme(t){
+  try{ localStorage.setItem(THEME_KEY, t); }catch(e){}
+  applyTheme(t);
+}
+function toggleTheme(){
+  const order = {dark:"light", light:"auto", auto:"dark"};
+  const stored = getStoredTheme();
+  const next = order[stored] || "light";
+  setTheme(next);
+  toast(next==="auto" ? "主题：跟随系统" : (next==="light" ? "主题：浅色" : "主题：暗色"));
+}
+if(document.getElementById("themeBtn")){
+  document.getElementById("themeBtn").addEventListener("click", toggleTheme);
+}
+if(window.matchMedia){
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ()=>{
+    if(getStoredTheme()==="auto") applyTheme("auto");
+  });
+}
+
 /* ---------- init ---------- */
-applyCheerMenuToken(location.search);   // 仅 ?token=7 时展示"啦啦队"菜单
+applyCheerMenuToken(location.search);   // 复用 ?token=7 时展示"啦啦队"菜单
 setPage("schedule");
+applyTheme(getStoredTheme());            // 同步按钮图标（首屏已由 head 内联脚本定好主题）
 /* 啦啦队：启动时拉取云端打分（若配置了 Supabase），并保持 30s 自动刷新 */
 refreshCheerFromCloud().then(ok=>{ if(ok && state.page==="cheer") renderCheer(); });
 setInterval(()=>{
@@ -1727,6 +1908,13 @@ setInterval(()=>{
     refreshCheerFromCloud().then(()=>renderCheer());  // 跨 18:00 自动放行 + 云端数据同步
   }
 }, 30000);
+/* 比赛数据集：启动时拉取云端较新数据（部署网址其他设备导入的也能看到），并 60s 轮询自动更新 */
+applyCloudDatasetIfNewer().then(changed=>{ if(changed) setPage(state.page); });
+setInterval(()=>{
+  if(["schedule","rankings","players","daily"].includes(state.page)){
+    applyCloudDatasetIfNewer().then(changed=>{ if(changed) setPage(state.page); });
+  }
+}, 60000);
 </script>
 </body>
 </html>
