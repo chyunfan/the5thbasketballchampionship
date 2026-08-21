@@ -354,6 +354,7 @@
             display:flex;align-items:center;justify-content:center;transition:transform .08s,border-color .12s;}
   .theme-btn:active{transform:scale(.94);}
   .theme-btn:hover{border-color:rgba(245,158,11,.35);}
+  .theme-btn img{width:28px;height:28px;display:block;object-fit:contain;pointer-events:none;}
 </style>
 <script>
   /* 首屏防闪烁：body 渲染前确定主题，默认暗色（已显式选过 auto 的用户仍跟随系统） */
@@ -1912,13 +1913,7 @@ function matchPlayersArrToObj(mpArr){
 /* ---------- 主题切换（暗色 / 浅色 / 自动） ---------- */
 const THEME_KEY = "fyns_theme";
 /* 跟随系统：左半太阳 + 右半月亮（各一半） */
-const AUTO_ICON = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" style="display:block">'
-  + '<path d="M12 3 A9 9 0 0 0 3 12 A9 9 0 0 0 12 21 Z" fill="#f59e0b"/>'
-  + '<path d="M12 3 A9 9 0 0 1 21 12 A9 9 0 0 1 12 21 Z" fill="#94a3b8"/>'
-  + '<circle cx="16.2" cy="9.5" r="1.35" fill="#64748b"/>'
-  + '<circle cx="17.4" cy="14.3" r="0.95" fill="#64748b"/>'
-  + '<line x1="12" y1="3" x2="12" y2="21" stroke="#475569" stroke-width="1" opacity="0.55"/>'
-  + '</svg>';
+const AUTO_ICON = '<img src="auto-theme-icon.png" alt="" width="28" height="28" aria-hidden="true" style="display:block;width:28px;height:28px;object-fit:contain;pointer-events:none">';
 function sysPref(){ return (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light"; }
 function updateThemeBtn(){
   const btn = document.getElementById("themeBtn");
