@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
 <title>第五届职工篮球赛</title>
 <style>
   :root{
@@ -82,6 +82,9 @@
        box-shadow:0 0 60px var(--app-shadow);}
   /* ---- top bar ---- */
   .topbar{display:flex;align-items:center;gap:10px;padding:12px 14px;
+          /* iOS 刘海/状态栏安全区：让标题栏内容避开刘海，背景仍延伸到刘海下 */
+          padding-top:calc(12px + constant(safe-area-inset-top));
+          padding-top:calc(12px + env(safe-area-inset-top));
           background:linear-gradient(180deg,var(--appbar-grad),transparent);
           border-bottom:1px solid var(--card-brd);flex:0 0 auto;z-index:20;}
   .hamb{width:42px;height:42px;border-radius:12px;border:1px solid var(--card-brd);
@@ -885,16 +888,27 @@ function applyCheerMenuToken(search){
   li.style.display = show ? "" : "none";
 }
 /* ---------- cheer admin: summary / detail / export ---------- */
-function cheerRecords(){          // 打分明细：扁平记录列表（按日期/场次/队排序）
+function cheerTeamRank(){        // 由赛程推算 (日期|场次|队伍) 的排序权重：日期→场次→主队/客队顺序
+  const rank={};
+  (D.schedule||[]).forEach(m=>{
+    const base=(m.seq||0)*10;
+    rank[(m.date||"")+"|"+(m.time||"")+"|"+(m.home||"")]=base;
+    rank[(m.date||"")+"|"+(m.time||"")+"|"+(m.away||"")]=base+1;
+  });
+  return rank;
+}
+function cheerRecords(){          // 打分明细：扁平记录列表，按 日期→场次→队伍(赛程顺序)→提交时间 排序
+  const rank=cheerTeamRank();
   const out=[];
   Object.keys(cheerStore||{}).forEach(k=>{
     const p=k.split("|");
     (cheerStore[k]||[]).forEach(r=>{
       out.push({id:r.id||"", date:p[0]||"", time:p[1]||"", team:p[2]||"", user:r.user||"",
-        ren:+r.ren||0, dis:+r.dis||0, atm:+r.atm||0, ts:r.ts||""});
+        ren:+r.ren||0, dis:+r.dis||0, atm:+r.atm||0, ts:r.ts||"",
+        _order: rank[k]===undefined ? 1e9 : rank[k]});
     });
   });
-  out.sort((a,b)=> (a.date===b.date ? a.time.localeCompare(b.time) : a.date.localeCompare(b.date)));
+  out.sort((a,b)=> a._order-b._order || (a.ts<b.ts?-1 : a.ts>b.ts?1 : 0));
   return out;
 }
 function cheerSummary(){          // 汇总：按队聚合 打分人数 + 三维度场均得星 + 综合均分
