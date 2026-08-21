@@ -266,6 +266,7 @@
   .toggle button{flex:1;border:none;background:transparent;color:var(--txt-dim);font-size:14px;
                  font-weight:700;padding:9px;border-radius:9px;cursor:pointer;}
   .toggle button.on{background:var(--gold);color:#1a1205;}
+  .toggle button.dim{color:var(--txt-mute);}
   .rk-table{background:var(--card);border:1px solid var(--card-brd);border-radius:16px;overflow:hidden;}
   .rk-row{display:flex;align-items:center;gap:10px;padding:13px 14px;}
   .rk-row + .rk-row{border-top:1px solid var(--chip-brd);}
@@ -1201,14 +1202,14 @@ function renderRankings(){
   const hasFinal = !!(D.final);
   let toggle = `<div class="toggle">
       <button data-v="rr" class="${state.rankingsView==='rr'?'on':''}">循环赛</button>
-      <button data-v="final" class="${state.rankingsView==='final'?'on':''}" ${hasFinal?'':'disabled style="opacity:.4"'}>决赛</button>
+      <button data-v="final" class="${state.rankingsView==='final'?'on':''}${hasFinal?'':' dim'}" ${hasFinal?'':'title="决赛数据尚未导入"'}>决赛</button>
     </div>`;
   let html = `<div class="page-title"><span class="bar"></span>阶段排名
      <span class="page-sub">${hasFinal?'已导入决赛数据':'当前为循环赛'}</span></div>${toggle}`;
 
   if(state.rankingsView==="final"){
     if(!hasFinal){
-      html += `<div class="note">决赛数据尚未导入。<br>导入 8月30日 决赛每日对战信息后，将在此展示冠、亚、季、第四名最终名次。</div>`;
+      html += `<div class="note">决赛数据尚未产生。<br>8月30日 决赛后，将在此展示冠、亚、季、第四名最终名次。</div>`;
     }else{
       const f=D.final;
       html += `<div class="podium">
