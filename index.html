@@ -349,6 +349,21 @@
   .pm-tag.fin{background:var(--gold-soft);color:var(--gold);}
   .pm-vs{flex:1 1 auto;font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
   .pm-score{font-size:18px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--gold);flex:0 0 auto;}
+
+  /* ---- 管理员：实时录入得分 ---- */
+  .ls-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .ls-row>label{width:42px;flex:0 0 auto;color:var(--txt-dim);font-size:14px;}
+  .ls-select{flex:1 1 auto;padding:11px 12px;border-radius:10px;border:1px solid var(--card-brd);background:var(--card);color:var(--txt);font-size:15px;}
+  .ls-select:focus{outline:none;border-color:var(--gold);}
+  .ls-table{margin-top:4px;border-top:1px solid var(--card-brd);padding-top:12px;}
+  .ls-line{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+  .ls-no,.ls-sc{width:62px;padding:10px 6px;border-radius:9px;border:1px solid var(--card-brd);background:var(--card);color:var(--txt);font-size:15px;text-align:center;font-variant-numeric:tabular-nums;}
+  .ls-no:focus,.ls-sc:focus{outline:none;border-color:var(--gold);}
+  .ls-name{flex:1 1 auto;min-width:0;color:var(--txt);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .ls-del{flex:0 0 auto;width:30px;height:30px;border-radius:8px;border:1px solid var(--danger-bd);background:transparent;color:var(--danger-soft);font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .ls-del:active{transform:scale(.94);}
+  .ls-actions{display:flex;gap:10px;margin-top:14px;}
+  .ls-empty{color:var(--txt-dim);font-size:13px;text-align:center;padding:18px 0;}
   .pm-score.zero{color:var(--txt-mute);}
   .pm-detail{display:none;margin-top:10px;border-top:1px solid var(--card-brd);padding-top:10px;}
   .pm-detail.show{display:block;}
@@ -409,6 +424,7 @@
         <button class="mini-btn" id="snapOpenBtn" style="margin-top:8px;">恢复至快照</button>
         <button class="mini-btn" id="cheerSumBtn" style="margin-top:8px;">啦啦队汇总</button>
         <button class="mini-btn" id="cheerDetBtn" style="margin-top:8px;">打分明细</button>
+        <button class="mini-btn" id="liveScoreBtn" style="margin-top:8px;">实时录入得分</button>
       </div>
     </div>
   </div>
@@ -450,6 +466,37 @@
     </div>
     <button class="modal-close" id="cheerClose">&times;</button>
     <div class="modal-body" id="cheerModalBody"></div>
+  </div>
+</div>
+
+<div class="modal" id="liveScoreModal">
+  <div class="modal-bg" id="liveScoreBg"></div>
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="h-name">实时录入得分</div>
+      <div class="h-meta" id="liveScoreMeta">选择日期 / 场次 / 队伍后录入明细</div>
+    </div>
+    <button class="modal-close" id="liveScoreClose">&times;</button>
+    <div class="modal-body">
+      <div class="ls-row">
+        <label>日期</label>
+        <select id="lsDate" class="ls-select"></select>
+      </div>
+      <div class="ls-row">
+        <label>场次</label>
+        <select id="lsTime" class="ls-select"></select>
+      </div>
+      <div class="ls-row">
+        <label>队伍</label>
+        <select id="lsTeam" class="ls-select"></select>
+      </div>
+      <div id="lsTable" class="ls-table"></div>
+      <button class="mini-btn" id="lsAddRow" style="margin-top:10px;">+ 添加一行</button>
+      <div class="ls-actions">
+        <button class="snap-restore" id="lsSave">保存</button>
+        <button class="snap-del" id="lsCancel">取消</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1606,6 +1653,131 @@ document.getElementById("fileInput").addEventListener("change", e=>{
     e.target.value="";
   };
   reader.readAsArrayBuffer(file);
+});
+
+/* ---------- 管理员：实时录入当日得分 ---------- */
+/* 交互状态：当前选中的 日期/场次/队伍 与可编辑的行（每行 号码+得分） */
+const liveScore = { date:"", time:"", team:"", mk:"", rows:[] };
+/* 由花名册解析号码对应的真实姓名（与 EXCEL 导入一致，缺失显示"球员#N"） */
+function rosterName(team, no){
+  const p = (BASE.players||[]).find(x=>x.team===team && x.number===(+no));
+  return p ? p.name : ("球员#"+no);
+}
+function lsPopulateDates(){
+  const sel = document.getElementById("lsDate");
+  const dates = [];
+  D.schedule.forEach(m=>{ if(!dates.includes(m.date)) dates.push(m.date); });
+  sel.innerHTML = dates.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join("");
+}
+function lsOnDateChange(){
+  const date = document.getElementById("lsDate").value;
+  liveScore.date = date;
+  const sel = document.getElementById("lsTime");
+  const times = [];
+  D.schedule.forEach(m=>{ if(m.date===date && !times.includes(m.time)) times.push(m.time); });
+  sel.innerHTML = times.map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join("");
+  lsOnTimeChange();
+}
+function lsOnTimeChange(){
+  const date = document.getElementById("lsDate").value;
+  const time = document.getElementById("lsTime").value;
+  liveScore.date = date; liveScore.time = time;
+  const sel = document.getElementById("lsTeam");
+  const teams = [];
+  D.schedule.forEach(m=>{ if(m.date===date && m.time===time){ if(!teams.includes(m.home)) teams.push(m.home); if(!teams.includes(m.away)) teams.push(m.away); } });
+  sel.innerHTML = teams.map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join("");
+  lsOnTeamChange();
+}
+function lsOnTeamChange(){
+  const team = document.getElementById("lsTeam").value;
+  liveScore.team = team;
+  liveScore.mk = liveScore.date+"|"+liveScore.time+"|"+team;
+  const arr = D.matchPlayers[liveScore.mk] || [];
+  liveScore.rows = arr.map(p=>({number:p.number, score:p.score||0, name:p.name}));
+  const meta = document.getElementById("liveScoreMeta");
+  if(meta) meta.textContent = `${liveScore.date} ${liveScore.time} · ${team}（共 ${liveScore.rows.length} 人）`;
+  lsRenderRows();
+}
+function lsRenderRows(){
+  const box = document.getElementById("lsTable");
+  if(!box) return;
+  if(liveScore.rows.length===0){
+    box.innerHTML = `<div class="ls-empty">本队暂无录入记录，点击"添加一行"开始录入</div>`;
+    return;
+  }
+  box.innerHTML = liveScore.rows.map((r,i)=>`
+    <div class="ls-line">
+      <input class="ls-no" type="number" min="0" inputmode="numeric" data-i="${i}" value="${r.number==null?'':r.number}" placeholder="号码">
+      <div class="ls-name" id="lsnm-${i}">${esc(rosterName(liveScore.team, r.number))}</div>
+      <input class="ls-sc" type="number" min="0" inputmode="numeric" data-i="${i}" value="${r.score==null?'':r.score}" placeholder="得分">
+      <button class="ls-del" data-i="${i}" title="删除该行">&times;</button>
+    </div>`).join("");
+}
+function lsAddRow(){
+  liveScore.rows.push({number:"", score:"", name:""});
+  lsRenderRows();
+}
+function lsCommit(){
+  const obj = {};
+  liveScore.rows.forEach(r=>{
+    const no = parseInt(r.number);
+    const sc = parseInt(r.score)||0;
+    if(isNaN(no)) return;
+    obj[no] = (obj[no]||0) + (isNaN(sc)?0:sc);
+  });
+  const all = matchPlayersArrToObj(D.matchPlayers);   // 保留其他队伍
+  all[liveScore.mk] = obj;                            // 仅覆盖当前队
+  const dates = [...new Set(Object.keys(all).map(k=>k.split("|")[0]))];
+  const dyn = rebuildFromMatchPlayer(all, dates);
+  Object.assign(D, dyn);
+  imported = true;
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(dyn)); localStorage.setItem(LS_TS_KEY, new Date().toISOString()); }catch(e){}
+  if(D.meta) D.meta.hasFinal = !!dyn.final;
+  return dyn;
+}
+async function lsSave(){
+  if(!liveScore.team){ toast("请先选择队伍"); return; }
+  lsCommit();
+  closeLiveScore();
+  try{ await pushDatasetToCloud(); }catch(e){}
+  setPage(state.page);
+  toast("已保存并更新赛程 / 排名 / 球员榜");
+}
+function openLiveScore(){
+  closeDrawer();
+  lsPopulateDates();
+  lsOnDateChange();   // 级联填充 场次/队伍/明细
+  const md = document.getElementById("liveScoreModal");
+  if(md) md.classList.add("show");
+}
+function closeLiveScore(){
+  const md = document.getElementById("liveScoreModal");
+  if(md) md.classList.remove("show");
+}
+document.getElementById("liveScoreBtn").addEventListener("click", openLiveScore);
+document.getElementById("liveScoreClose").addEventListener("click", closeLiveScore);
+document.getElementById("liveScoreBg").addEventListener("click", closeLiveScore);
+document.getElementById("lsDate").addEventListener("change", lsOnDateChange);
+document.getElementById("lsTime").addEventListener("change", lsOnTimeChange);
+document.getElementById("lsTeam").addEventListener("change", lsOnTeamChange);
+document.getElementById("lsAddRow").addEventListener("click", lsAddRow);
+document.getElementById("lsSave").addEventListener("click", lsSave);
+document.getElementById("lsCancel").addEventListener("click", closeLiveScore);
+document.getElementById("lsTable").addEventListener("input", e=>{
+  const t = e.target;
+  if(!(t.classList.contains("ls-no") || t.classList.contains("ls-sc"))) return;
+  const i = +t.dataset.i; const v = t.value;
+  if(t.classList.contains("ls-no")){
+    liveScore.rows[i].number = v;
+    const nm = document.getElementById("lsnm-"+i);
+    if(nm) nm.textContent = rosterName(liveScore.team, v);
+  } else {
+    liveScore.rows[i].score = v;
+  }
+});
+document.getElementById("lsTable").addEventListener("click", e=>{
+  const del = e.target.closest(".ls-del");
+  if(del){ const i = +del.dataset.i; liveScore.rows.splice(i,1); lsRenderRows(); }
 });
 /* ---------- data snapshots (multi-version, with timestamp) ---------- */
 function currentDynamic(){
