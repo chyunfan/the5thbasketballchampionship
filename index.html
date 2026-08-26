@@ -505,8 +505,8 @@
 <script>
 "use strict";
 const BASE = window.APP_DATA;
-const LS_KEY = "fyns_basketball_v1";
-const LS_TS_KEY = "fyns_basketball_ts_v1";     // 当前数据集本地写入时间戳（用于与云端比较新旧）
+const LS_KEY = "fyns_basketball_v2";
+const LS_TS_KEY = "fyns_basketball_ts_v2";     // 当前数据集本地写入时间戳（用于与云端比较新旧）
 const SNAP_KEY = "fyns_basketball_snaps_v1";   // 多版本数据快照
 const ADMIN_KEY = "fyns2026";             // 管理员导入密钥，可在此修改
 let adminVerified = false;              // 当前会话是否已通过管理员密钥（true 后管理操作常驻）
@@ -1075,7 +1075,10 @@ function renderSchedule(){
   let html = `<div class="page-title"><span class="bar"></span>赛程
      <span class="page-sub">点击"数据"查看球员得分</span></div>`;
   dates.forEach(date=>{
-    const ms = D.schedule.filter(m=>m.date===date);
+    const timeOrder = {"第一场":1,"第二场":2};
+    const ms = D.schedule.filter(m=>m.date===date)
+                        .slice()                           // 复制避免改动原数组
+                        .sort((a,b)=> (a.isFinal===b.isFinal ? (timeOrder[a.time]||0)-(timeOrder[b.time]||0) : (a.isFinal?1:-1)));
     const allFinal = ms.every(m=>m.isFinal);
     const dayTag = allFinal ? `<span class="m-tag fin">决赛</span>` : `<span class="m-tag rr">循环赛</span>`;
     html += `<div class="section"><div class="section-h"><span class="dot"></span>${esc(date)}${dayTag}</div>`;
