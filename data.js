@@ -1,1 +1,1142 @@
-window.APP_DATA = {"teams": [{"name": "西部战狼", "leader": "周雪海", "coach": "陈非", "slogan": "西部战狼，团队协作，再战辉煌"}, {"name": "弄潮儿战队", "leader": "陈莉", "coach": "叶君", "slogan": "江山如龙，慷慨奋进，勇力涛头"}, {"name": "蝶变闪耀队", "leader": "丁宇晖", "coach": "董仲毅", "slogan": "蝶变聚力，闪耀前行，全力以赴，势不可挡"}, {"name": "荣耀先锋队", "leader": "钱潇云", "coach": "王校龙", "slogan": "以实干争荣耀，以担当做先锋"}, {"name": "从容应队", "leader": "胡莹", "coach": "陈凯", "slogan": "从容应对，赢了就对！"}], "teamColors": {"西部战狼": "#ef4444", "弄潮儿战队": "#0ea5e9", "蝶变闪耀队": "#14b8a6", "荣耀先锋队": "#f59e0b", "从容应队": "#8b5cf6"}, "teamOrder": ["西部战狼", "弄潮儿战队", "蝶变闪耀队", "荣耀先锋队", "从容应队"], "players": [{"name": "叶清正", "number": 12, "team": "从容应队", "total": 48, "rr": 48, "final": 0}, {"name": "郑景", "number": 8, "team": "从容应队", "total": 34, "rr": 34, "final": 0}, {"name": "张铖飞", "number": 1, "team": "荣耀先锋队", "total": 24, "rr": 24, "final": 0}, {"name": "俞炜", "number": 99, "team": "弄潮儿战队", "total": 22, "rr": 22, "final": 0}, {"name": "祝丹枫", "number": 4, "team": "西部战狼", "total": 19, "rr": 19, "final": 0}, {"name": "刘宁", "number": 8, "team": "弄潮儿战队", "total": 18, "rr": 18, "final": 0}, {"name": "盛尹稞", "number": 23, "team": "西部战狼", "total": 18, "rr": 18, "final": 0}, {"name": "史杭炜", "number": 15, "team": "从容应队", "total": 16, "rr": 16, "final": 0}, {"name": "刘飞", "number": 27, "team": "弄潮儿战队", "total": 15, "rr": 15, "final": 0}, {"name": "章煜", "number": 25, "team": "蝶变闪耀队", "total": 13, "rr": 13, "final": 0}, {"name": "吕挺", "number": 9, "team": "荣耀先锋队", "total": 11, "rr": 11, "final": 0}, {"name": "吕葳青", "number": 10, "team": "荣耀先锋队", "total": 11, "rr": 11, "final": 0}, {"name": "李俊杰", "number": 6, "team": "弄潮儿战队", "total": 10, "rr": 10, "final": 0}, {"name": "方勤劼", "number": 5, "team": "蝶变闪耀队", "total": 8, "rr": 8, "final": 0}, {"name": "周雪海", "number": 7, "team": "西部战狼", "total": 8, "rr": 8, "final": 0}, {"name": "杜聪", "number": 8, "team": "蝶变闪耀队", "total": 7, "rr": 7, "final": 0}, {"name": "奚路彤", "number": 5, "team": "西部战狼", "total": 7, "rr": 7, "final": 0}, {"name": "郎佳杰", "number": 2, "team": "弄潮儿战队", "total": 6, "rr": 6, "final": 0}, {"name": "陆嘉明", "number": 12, "team": "蝶变闪耀队", "total": 6, "rr": 6, "final": 0}, {"name": "夏震寰", "number": 3, "team": "西部战狼", "total": 6, "rr": 6, "final": 0}, {"name": "洪益烽", "number": 5, "team": "从容应队", "total": 4, "rr": 4, "final": 0}, {"name": "俞鑫", "number": 9, "team": "从容应队", "total": 4, "rr": 4, "final": 0}, {"name": "章竞", "number": 15, "team": "西部战狼", "total": 4, "rr": 4, "final": 0}, {"name": "屠智盛", "number": 22, "team": "荣耀先锋队", "total": 3, "rr": 3, "final": 0}, {"name": "刘垣杰", "number": 9, "team": "蝶变闪耀队", "total": 3, "rr": 3, "final": 0}, {"name": "丁柳斌", "number": 4, "team": "从容应队", "total": 2, "rr": 2, "final": 0}, {"name": "徐晓斌", "number": 5, "team": "弄潮儿战队", "total": 2, "rr": 2, "final": 0}, {"name": "潘杰", "number": 7, "team": "弄潮儿战队", "total": 2, "rr": 2, "final": 0}, {"name": "李罗飞", "number": 7, "team": "荣耀先锋队", "total": 2, "rr": 2, "final": 0}, {"name": "金宇翔", "number": 17, "team": "荣耀先锋队", "total": 2, "rr": 2, "final": 0}, {"name": "陈冠臻", "number": 18, "team": "荣耀先锋队", "total": 2, "rr": 2, "final": 0}, {"name": "胡坚", "number": 16, "team": "蝶变闪耀队", "total": 2, "rr": 2, "final": 0}, {"name": "彭凯杰", "number": 31, "team": "蝶变闪耀队", "total": 2, "rr": 2, "final": 0}, {"name": "黄添", "number": 6, "team": "西部战狼", "total": 2, "rr": 2, "final": 0}, {"name": "钟瑜", "number": 10, "team": "西部战狼", "total": 2, "rr": 2, "final": 0}, {"name": "何小龙", "number": 13, "team": "西部战狼", "total": 2, "rr": 2, "final": 0}, {"name": "陈沛", "number": 6, "team": "蝶变闪耀队", "total": 1, "rr": 1, "final": 0}, {"name": "牧祝强", "number": 6, "team": "从容应队", "total": 0, "rr": 0, "final": 0}, {"name": "王一航", "number": 10, "team": "从容应队", "total": 0, "rr": 0, "final": 0}, {"name": "董智涵", "number": 11, "team": "从容应队", "total": 0, "rr": 0, "final": 0}, {"name": "刘文", "number": 17, "team": "从容应队", "total": 0, "rr": 0, "final": 0}, {"name": "汪晓峰", "number": 9, "team": "弄潮儿战队", "total": 0, "rr": 0, "final": 0}, {"name": "毛富东", "number": 10, "team": "弄潮儿战队", "total": 0, "rr": 0, "final": 0}, {"name": "喻辰枫", "number": 11, "team": "弄潮儿战队", "total": 0, "rr": 0, "final": 0}, {"name": "孙梦杰", "number": 12, "team": "弄潮儿战队", "total": 0, "rr": 0, "final": 0}, {"name": "蒋力", "number": 13, "team": "弄潮儿战队", "total": 0, "rr": 0, "final": 0}, {"name": "钱启航", "number": 15, "team": "弄潮儿战队", "total": 0, "rr": 0, "final": 0}, {"name": "陈斌", "number": 16, "team": "弄潮儿战队", "total": 0, "rr": 0, "final": 0}, {"name": "庄晓泳", "number": 17, "team": "弄潮儿战队", "total": 0, "rr": 0, "final": 0}, {"name": "陈儒彬", "number": 18, "team": "弄潮儿战队", "total": 0, "rr": 0, "final": 0}, {"name": "王嘉盛", "number": 2, "team": "荣耀先锋队", "total": 0, "rr": 0, "final": 0}, {"name": "刘敏敏", "number": 4, "team": "荣耀先锋队", "total": 0, "rr": 0, "final": 0}, {"name": "许夏超", "number": 5, "team": "荣耀先锋队", "total": 0, "rr": 0, "final": 0}, {"name": "王校龙", "number": 8, "team": "荣耀先锋队", "total": 0, "rr": 0, "final": 0}, {"name": "钟晨鑫", "number": 11, "team": "荣耀先锋队", "total": 0, "rr": 0, "final": 0}, {"name": "李俊峰", "number": 12, "team": "荣耀先锋队", "total": 0, "rr": 0, "final": 0}, {"name": "钱潇云", "number": 34, "team": "荣耀先锋队", "total": 0, "rr": 0, "final": 0}, {"name": "丁宇晖", "number": 1, "team": "蝶变闪耀队", "total": 0, "rr": 0, "final": 0}, {"name": "李春桥", "number": 7, "team": "蝶变闪耀队", "total": 0, "rr": 0, "final": 0}, {"name": "章佳乐", "number": 10, "team": "蝶变闪耀队", "total": 0, "rr": 0, "final": 0}, {"name": "刘奇", "number": 11, "team": "蝶变闪耀队", "total": 0, "rr": 0, "final": 0}, {"name": "章伯伦", "number": 14, "team": "蝶变闪耀队", "total": 0, "rr": 0, "final": 0}, {"name": "王志恒", "number": 22, "team": "蝶变闪耀队", "total": 0, "rr": 0, "final": 0}, {"name": "叶欢", "number": 77, "team": "蝶变闪耀队", "total": 0, "rr": 0, "final": 0}, {"name": "吴佳栋", "number": 98, "team": "蝶变闪耀队", "total": 0, "rr": 0, "final": 0}, {"name": "赵青", "number": 8, "team": "西部战狼", "total": 0, "rr": 0, "final": 0}, {"name": "罗炜", "number": 24, "team": "西部战狼", "total": 0, "rr": 0, "final": 0}], "schedule": [{"seq": 1, "date": "8月13日", "time": "第一场", "home": "弄潮儿战队", "away": "荣耀先锋队", "isFinal": false}, {"seq": 2, "date": "8月13日", "time": "第二场", "home": "从容应队", "away": "西部战狼", "isFinal": false}, {"seq": 3, "date": "8月17日", "time": "第一场", "home": "西部战狼", "away": "蝶变闪耀队", "isFinal": false}, {"seq": 4, "date": "8月17日", "time": "第二场", "home": "弄潮儿战队", "away": "从容应队", "isFinal": false}, {"seq": 5, "date": "8月20日", "time": "第一场", "home": "从容应队", "away": "蝶变闪耀队", "isFinal": false}, {"seq": 6, "date": "8月20日", "time": "第二场", "home": "荣耀先锋队", "away": "西部战狼", "isFinal": false}, {"seq": 7, "date": "8月24日", "time": "第一场", "home": "荣耀先锋队", "away": "从容应队", "isFinal": false}, {"seq": 8, "date": "8月24日", "time": "第二场", "home": "蝶变闪耀队", "away": "弄潮儿战队", "isFinal": false}, {"seq": 9, "date": "8月27日", "time": "第二场", "home": "西部战狼", "away": "弄潮儿战队", "isFinal": false}, {"seq": 10, "date": "8月27日", "time": "第一场", "home": "蝶变闪耀队", "away": "荣耀先锋队", "isFinal": false}, {"seq": 11, "date": "9月2日", "time": "第一场", "home": "第三名", "away": "第四名", "isFinal": true}, {"seq": 12, "date": "9月2日", "time": "第二场", "home": "第一名", "away": "第二名", "isFinal": true}], "results": {"1": {"home": "弄潮儿战队", "away": "荣耀先锋队", "homeScore": 31, "awayScore": 55, "winner": "荣耀先锋队", "hasData": true, "date": "8月13日", "time": "第一场", "isFinal": false}, "2": {"home": "从容应队", "away": "西部战狼", "homeScore": 48, "awayScore": 21, "winner": "从容应队", "hasData": true, "date": "8月13日", "time": "第二场", "isFinal": false}, "3": {"home": "西部战狼", "away": "蝶变闪耀队", "homeScore": 47, "awayScore": 42, "winner": "西部战狼", "hasData": true, "date": "8月17日", "time": "第一场", "isFinal": false}, "4": {"home": "弄潮儿战队", "away": "从容应队", "homeScore": 44, "awayScore": 60, "winner": "从容应队", "hasData": true, "date": "8月17日", "time": "第二场", "isFinal": false}, "5": {"home": "从容应队", "away": "蝶变闪耀队", "homeScore": 0, "awayScore": 0, "winner": null, "hasData": false, "date": "8月20日", "time": "第一场", "isFinal": false}, "6": {"home": "荣耀先锋队", "away": "西部战狼", "homeScore": 0, "awayScore": 0, "winner": null, "hasData": false, "date": "8月20日", "time": "第二场", "isFinal": false}, "7": {"home": "荣耀先锋队", "away": "从容应队", "homeScore": 0, "awayScore": 0, "winner": null, "hasData": false, "date": "8月24日", "time": "第一场", "isFinal": false}, "8": {"home": "蝶变闪耀队", "away": "弄潮儿战队", "homeScore": 0, "awayScore": 0, "winner": null, "hasData": false, "date": "8月24日", "time": "第二场", "isFinal": false}, "9": {"home": "西部战狼", "away": "弄潮儿战队", "homeScore": 0, "awayScore": 0, "winner": null, "hasData": false, "date": "8月27日", "time": "第一场", "isFinal": false}, "10": {"home": "蝶变闪耀队", "away": "荣耀先锋队", "homeScore": 0, "awayScore": 0, "winner": null, "hasData": false, "date": "8月27日", "time": "第二场", "isFinal": false}, "11": {"home": "第三名", "away": "第四名", "homeScore": 0, "awayScore": 0, "winner": null, "hasData": false, "date": "9月2日", "time": "第一场", "isFinal": true}, "12": {"home": "第一名", "away": "第二名", "homeScore": 0, "awayScore": 0, "winner": null, "hasData": false, "date": "9月2日", "time": "第二场", "isFinal": true}}, "rrStandings": [{"team": "从容应队", "points": 4, "win": 2, "loss": 0, "played": 2}, {"team": "西部战狼", "points": 3, "win": 1, "loss": 1, "played": 2}, {"team": "荣耀先锋队", "points": 2, "win": 1, "loss": 0, "played": 1}, {"team": "弄潮儿战队", "points": 2, "win": 0, "loss": 2, "played": 2}, {"team": "蝶变闪耀队", "points": 1, "win": 0, "loss": 1, "played": 1}], "final": null, "matchPlayers": {"8月13日|第一场|弄潮儿战队": [{"number": 27, "name": "刘飞", "score": 8}, {"number": 99, "name": "俞炜", "score": 7}, {"number": 6, "name": "李俊杰", "score": 6}, {"number": 8, "name": "刘宁", "score": 6}, {"number": 2, "name": "郎佳杰", "score": 2}, {"number": 5, "name": "徐晓斌", "score": 2}], "8月13日|第一场|荣耀先锋队": [{"number": 1, "name": "张铖飞", "score": 24}, {"number": 9, "name": "吕挺", "score": 11}, {"number": 10, "name": "吕葳青", "score": 11}, {"number": 22, "name": "屠智盛", "score": 3}, {"number": 7, "name": "李罗飞", "score": 2}, {"number": 17, "name": "金宇翔", "score": 2}, {"number": 18, "name": "陈冠臻", "score": 2}], "8月13日|第二场|从容应队": [{"number": 12, "name": "叶清正", "score": 26}, {"number": 8, "name": "郑景", "score": 12}, {"number": 15, "name": "史杭炜", "score": 6}, {"number": 4, "name": "丁柳斌", "score": 2}, {"number": 9, "name": "俞鑫", "score": 2}], "8月13日|第二场|西部战狼": [{"number": 4, "name": "祝丹枫", "score": 7}, {"number": 23, "name": "盛尹稞", "score": 6}, {"number": 5, "name": "奚路彤", "score": 2}, {"number": 7, "name": "周雪海", "score": 2}, {"number": 10, "name": "钟瑜", "score": 2}, {"number": 15, "name": "章竞", "score": 2}], "8月17日|第一场|西部战狼": [{"number": 4, "name": "祝丹枫", "score": 12}, {"number": 23, "name": "盛尹稞", "score": 12}, {"number": 3, "name": "夏震寰", "score": 6}, {"number": 7, "name": "周雪海", "score": 6}, {"number": 5, "name": "奚路彤", "score": 5}, {"number": 6, "name": "黄添", "score": 2}, {"number": 13, "name": "何小龙", "score": 2}, {"number": 15, "name": "章竞", "score": 2}], "8月17日|第一场|蝶变闪耀队": [{"number": 25, "name": "章煜", "score": 13}, {"number": 5, "name": "方勤劼", "score": 8}, {"number": 8, "name": "杜聪", "score": 7}, {"number": 12, "name": "陆嘉明", "score": 6}, {"number": 9, "name": "刘垣杰", "score": 3}, {"number": 16, "name": "胡坚", "score": 2}, {"number": 31, "name": "彭凯杰", "score": 2}, {"number": 6, "name": "陈沛", "score": 1}], "8月17日|第二场|弄潮儿战队": [{"number": 99, "name": "俞炜", "score": 15}, {"number": 8, "name": "刘宁", "score": 12}, {"number": 27, "name": "刘飞", "score": 7}, {"number": 2, "name": "郎佳杰", "score": 4}, {"number": 6, "name": "李俊杰", "score": 4}, {"number": 7, "name": "潘杰", "score": 2}], "8月17日|第二场|从容应队": [{"number": 8, "name": "郑景", "score": 22}, {"number": 12, "name": "叶清正", "score": 22}, {"number": 15, "name": "史杭炜", "score": 10}, {"number": 5, "name": "洪益烽", "score": 4}, {"number": 9, "name": "俞鑫", "score": 2}]}, "dailySheets": ["8月13日", "8月17日"], "meta": {"hasFinal": false, "source": "Excel auto-build"}};
+window.APP_DATA = {
+  "teams": [
+    {
+      "name": "西部战狼",
+      "leader": "周雪海",
+      "coach": "陈非",
+      "slogan": "西部战狼，团队协作，再战辉煌"
+    },
+    {
+      "name": "弄潮儿战队",
+      "leader": "陈莉",
+      "coach": "叶君",
+      "slogan": "江山如龙，慷慨奋进，勇力涛头"
+    },
+    {
+      "name": "蝶变闪耀队",
+      "leader": "丁宇晖",
+      "coach": "董仲毅",
+      "slogan": "蝶变聚力，闪耀前行，全力以赴，势不可挡"
+    },
+    {
+      "name": "荣耀先锋队",
+      "leader": "钱潇云",
+      "coach": "王校龙",
+      "slogan": "以实干争荣耀，以担当做先锋"
+    },
+    {
+      "name": "从容应队",
+      "leader": "胡莹",
+      "coach": "陈凯",
+      "slogan": "从容应对，赢了就对！"
+    }
+  ],
+  "teamColors": {
+    "西部战狼": "#ef4444",
+    "弄潮儿战队": "#0ea5e9",
+    "蝶变闪耀队": "#14b8a6",
+    "荣耀先锋队": "#f59e0b",
+    "从容应队": "#8b5cf6"
+  },
+  "teamOrder": [
+    "西部战狼",
+    "弄潮儿战队",
+    "蝶变闪耀队",
+    "荣耀先锋队",
+    "从容应队"
+  ],
+  "players": [
+    {
+      "name": "叶清正",
+      "number": 12,
+      "team": "从容应队",
+      "total": 48,
+      "rr": 48,
+      "final": 0
+    },
+    {
+      "name": "郑景",
+      "number": 8,
+      "team": "从容应队",
+      "total": 34,
+      "rr": 34,
+      "final": 0
+    },
+    {
+      "name": "张铖飞",
+      "number": 1,
+      "team": "荣耀先锋队",
+      "total": 24,
+      "rr": 24,
+      "final": 0
+    },
+    {
+      "name": "俞炜",
+      "number": 99,
+      "team": "弄潮儿战队",
+      "total": 22,
+      "rr": 22,
+      "final": 0
+    },
+    {
+      "name": "祝丹枫",
+      "number": 4,
+      "team": "西部战狼",
+      "total": 19,
+      "rr": 19,
+      "final": 0
+    },
+    {
+      "name": "刘宁",
+      "number": 8,
+      "team": "弄潮儿战队",
+      "total": 18,
+      "rr": 18,
+      "final": 0
+    },
+    {
+      "name": "盛尹稞",
+      "number": 23,
+      "team": "西部战狼",
+      "total": 18,
+      "rr": 18,
+      "final": 0
+    },
+    {
+      "name": "史杭炜",
+      "number": 15,
+      "team": "从容应队",
+      "total": 16,
+      "rr": 16,
+      "final": 0
+    },
+    {
+      "name": "刘飞",
+      "number": 27,
+      "team": "弄潮儿战队",
+      "total": 15,
+      "rr": 15,
+      "final": 0
+    },
+    {
+      "name": "章煜",
+      "number": 25,
+      "team": "蝶变闪耀队",
+      "total": 13,
+      "rr": 13,
+      "final": 0
+    },
+    {
+      "name": "吕挺",
+      "number": 9,
+      "team": "荣耀先锋队",
+      "total": 11,
+      "rr": 11,
+      "final": 0
+    },
+    {
+      "name": "吕葳青",
+      "number": 10,
+      "team": "荣耀先锋队",
+      "total": 11,
+      "rr": 11,
+      "final": 0
+    },
+    {
+      "name": "李俊杰",
+      "number": 6,
+      "team": "弄潮儿战队",
+      "total": 10,
+      "rr": 10,
+      "final": 0
+    },
+    {
+      "name": "方勤劼",
+      "number": 5,
+      "team": "蝶变闪耀队",
+      "total": 8,
+      "rr": 8,
+      "final": 0
+    },
+    {
+      "name": "周雪海",
+      "number": 7,
+      "team": "西部战狼",
+      "total": 8,
+      "rr": 8,
+      "final": 0
+    },
+    {
+      "name": "杜聪",
+      "number": 8,
+      "team": "蝶变闪耀队",
+      "total": 7,
+      "rr": 7,
+      "final": 0
+    },
+    {
+      "name": "奚路彤",
+      "number": 5,
+      "team": "西部战狼",
+      "total": 7,
+      "rr": 7,
+      "final": 0
+    },
+    {
+      "name": "郎佳杰",
+      "number": 2,
+      "team": "弄潮儿战队",
+      "total": 6,
+      "rr": 6,
+      "final": 0
+    },
+    {
+      "name": "陆嘉明",
+      "number": 12,
+      "team": "蝶变闪耀队",
+      "total": 6,
+      "rr": 6,
+      "final": 0
+    },
+    {
+      "name": "夏震寰",
+      "number": 3,
+      "team": "西部战狼",
+      "total": 6,
+      "rr": 6,
+      "final": 0
+    },
+    {
+      "name": "洪益烽",
+      "number": 5,
+      "team": "从容应队",
+      "total": 4,
+      "rr": 4,
+      "final": 0
+    },
+    {
+      "name": "俞鑫",
+      "number": 9,
+      "team": "从容应队",
+      "total": 4,
+      "rr": 4,
+      "final": 0
+    },
+    {
+      "name": "章竞",
+      "number": 15,
+      "team": "西部战狼",
+      "total": 4,
+      "rr": 4,
+      "final": 0
+    },
+    {
+      "name": "屠智盛",
+      "number": 22,
+      "team": "荣耀先锋队",
+      "total": 3,
+      "rr": 3,
+      "final": 0
+    },
+    {
+      "name": "刘垣杰",
+      "number": 9,
+      "team": "蝶变闪耀队",
+      "total": 3,
+      "rr": 3,
+      "final": 0
+    },
+    {
+      "name": "丁柳斌",
+      "number": 4,
+      "team": "从容应队",
+      "total": 2,
+      "rr": 2,
+      "final": 0
+    },
+    {
+      "name": "徐晓斌",
+      "number": 5,
+      "team": "弄潮儿战队",
+      "total": 2,
+      "rr": 2,
+      "final": 0
+    },
+    {
+      "name": "潘杰",
+      "number": 7,
+      "team": "弄潮儿战队",
+      "total": 2,
+      "rr": 2,
+      "final": 0
+    },
+    {
+      "name": "李罗飞",
+      "number": 7,
+      "team": "荣耀先锋队",
+      "total": 2,
+      "rr": 2,
+      "final": 0
+    },
+    {
+      "name": "金宇翔",
+      "number": 17,
+      "team": "荣耀先锋队",
+      "total": 2,
+      "rr": 2,
+      "final": 0
+    },
+    {
+      "name": "陈冠臻",
+      "number": 18,
+      "team": "荣耀先锋队",
+      "total": 2,
+      "rr": 2,
+      "final": 0
+    },
+    {
+      "name": "胡坚",
+      "number": 16,
+      "team": "蝶变闪耀队",
+      "total": 2,
+      "rr": 2,
+      "final": 0
+    },
+    {
+      "name": "彭凯杰",
+      "number": 31,
+      "team": "蝶变闪耀队",
+      "total": 2,
+      "rr": 2,
+      "final": 0
+    },
+    {
+      "name": "黄添",
+      "number": 6,
+      "team": "西部战狼",
+      "total": 2,
+      "rr": 2,
+      "final": 0
+    },
+    {
+      "name": "钟瑜",
+      "number": 10,
+      "team": "西部战狼",
+      "total": 2,
+      "rr": 2,
+      "final": 0
+    },
+    {
+      "name": "何小龙",
+      "number": 13,
+      "team": "西部战狼",
+      "total": 2,
+      "rr": 2,
+      "final": 0
+    },
+    {
+      "name": "陈沛",
+      "number": 6,
+      "team": "蝶变闪耀队",
+      "total": 1,
+      "rr": 1,
+      "final": 0
+    },
+    {
+      "name": "牧祝强",
+      "number": 6,
+      "team": "从容应队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "王一航",
+      "number": 10,
+      "team": "从容应队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "董智涵",
+      "number": 11,
+      "team": "从容应队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "刘文",
+      "number": 17,
+      "team": "从容应队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "汪晓峰",
+      "number": 9,
+      "team": "弄潮儿战队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "毛富东",
+      "number": 10,
+      "team": "弄潮儿战队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "喻辰枫",
+      "number": 11,
+      "team": "弄潮儿战队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "孙梦杰",
+      "number": 12,
+      "team": "弄潮儿战队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "蒋力",
+      "number": 13,
+      "team": "弄潮儿战队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "钱启航",
+      "number": 15,
+      "team": "弄潮儿战队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "陈斌",
+      "number": 16,
+      "team": "弄潮儿战队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "庄晓泳",
+      "number": 17,
+      "team": "弄潮儿战队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "陈儒彬",
+      "number": 18,
+      "team": "弄潮儿战队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "王嘉盛",
+      "number": 2,
+      "team": "荣耀先锋队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "刘敏敏",
+      "number": 4,
+      "team": "荣耀先锋队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "许夏超",
+      "number": 5,
+      "team": "荣耀先锋队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "王校龙",
+      "number": 8,
+      "team": "荣耀先锋队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "钟晨鑫",
+      "number": 11,
+      "team": "荣耀先锋队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "李俊峰",
+      "number": 12,
+      "team": "荣耀先锋队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "钱潇云",
+      "number": 34,
+      "team": "荣耀先锋队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "丁宇晖",
+      "number": 1,
+      "team": "蝶变闪耀队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "李春桥",
+      "number": 7,
+      "team": "蝶变闪耀队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "章佳乐",
+      "number": 10,
+      "team": "蝶变闪耀队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "刘奇",
+      "number": 11,
+      "team": "蝶变闪耀队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "章伯伦",
+      "number": 14,
+      "team": "蝶变闪耀队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "王志恒",
+      "number": 22,
+      "team": "蝶变闪耀队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "叶欢",
+      "number": 77,
+      "team": "蝶变闪耀队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "吴佳栋",
+      "number": 98,
+      "team": "蝶变闪耀队",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "赵青",
+      "number": 8,
+      "team": "西部战狼",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    },
+    {
+      "name": "罗炜",
+      "number": 24,
+      "team": "西部战狼",
+      "total": 0,
+      "rr": 0,
+      "final": 0
+    }
+  ],
+  "schedule": [
+    {
+      "seq": 1,
+      "date": "8月13日",
+      "time": "第一场",
+      "home": "弄潮儿战队",
+      "away": "荣耀先锋队",
+      "isFinal": false
+    },
+    {
+      "seq": 2,
+      "date": "8月13日",
+      "time": "第二场",
+      "home": "从容应队",
+      "away": "西部战狼",
+      "isFinal": false
+    },
+    {
+      "seq": 3,
+      "date": "8月17日",
+      "time": "第一场",
+      "home": "西部战狼",
+      "away": "蝶变闪耀队",
+      "isFinal": false
+    },
+    {
+      "seq": 4,
+      "date": "8月17日",
+      "time": "第二场",
+      "home": "弄潮儿战队",
+      "away": "从容应队",
+      "isFinal": false
+    },
+    {
+      "seq": 5,
+      "date": "8月20日",
+      "time": "第一场",
+      "home": "从容应队",
+      "away": "蝶变闪耀队",
+      "isFinal": false
+    },
+    {
+      "seq": 6,
+      "date": "8月20日",
+      "time": "第二场",
+      "home": "荣耀先锋队",
+      "away": "西部战狼",
+      "isFinal": false
+    },
+    {
+      "seq": 7,
+      "date": "8月24日",
+      "time": "第一场",
+      "home": "荣耀先锋队",
+      "away": "从容应队",
+      "isFinal": false
+    },
+    {
+      "seq": 8,
+      "date": "8月24日",
+      "time": "第二场",
+      "home": "蝶变闪耀队",
+      "away": "弄潮儿战队",
+      "isFinal": false
+    },
+    {
+      "seq": 9,
+      "date": "8月27日",
+      "time": "第二场",
+      "home": "西部战狼",
+      "away": "弄潮儿战队",
+      "isFinal": false
+    },
+    {
+      "seq": 10,
+      "date": "8月27日",
+      "time": "第一场",
+      "home": "蝶变闪耀队",
+      "away": "荣耀先锋队",
+      "isFinal": false
+    },
+    {
+      "seq": 11,
+      "date": "9月2日",
+      "time": "第一场",
+      "home": "第三名",
+      "away": "第四名",
+      "isFinal": true
+    },
+    {
+      "seq": 12,
+      "date": "9月2日",
+      "time": "第二场",
+      "home": "第一名",
+      "away": "第二名",
+      "isFinal": true
+    }
+  ],
+  "results": {
+    "1": {
+      "home": "弄潮儿战队",
+      "away": "荣耀先锋队",
+      "homeScore": 31,
+      "awayScore": 55,
+      "winner": "荣耀先锋队",
+      "hasData": true,
+      "date": "8月13日",
+      "time": "第一场",
+      "isFinal": false
+    },
+    "2": {
+      "home": "从容应队",
+      "away": "西部战狼",
+      "homeScore": 48,
+      "awayScore": 21,
+      "winner": "从容应队",
+      "hasData": true,
+      "date": "8月13日",
+      "time": "第二场",
+      "isFinal": false
+    },
+    "3": {
+      "home": "西部战狼",
+      "away": "蝶变闪耀队",
+      "homeScore": 47,
+      "awayScore": 42,
+      "winner": "西部战狼",
+      "hasData": true,
+      "date": "8月17日",
+      "time": "第一场",
+      "isFinal": false
+    },
+    "4": {
+      "home": "弄潮儿战队",
+      "away": "从容应队",
+      "homeScore": 44,
+      "awayScore": 60,
+      "winner": "从容应队",
+      "hasData": true,
+      "date": "8月17日",
+      "time": "第二场",
+      "isFinal": false
+    },
+    "5": {
+      "home": "从容应队",
+      "away": "蝶变闪耀队",
+      "homeScore": 0,
+      "awayScore": 0,
+      "winner": null,
+      "hasData": false,
+      "date": "8月20日",
+      "time": "第一场",
+      "isFinal": false
+    },
+    "6": {
+      "home": "荣耀先锋队",
+      "away": "西部战狼",
+      "homeScore": 0,
+      "awayScore": 0,
+      "winner": null,
+      "hasData": false,
+      "date": "8月20日",
+      "time": "第二场",
+      "isFinal": false
+    },
+    "7": {
+      "home": "荣耀先锋队",
+      "away": "从容应队",
+      "homeScore": 0,
+      "awayScore": 0,
+      "winner": null,
+      "hasData": false,
+      "date": "8月24日",
+      "time": "第一场",
+      "isFinal": false
+    },
+    "8": {
+      "home": "蝶变闪耀队",
+      "away": "弄潮儿战队",
+      "homeScore": 0,
+      "awayScore": 0,
+      "winner": null,
+      "hasData": false,
+      "date": "8月24日",
+      "time": "第二场",
+      "isFinal": false
+    },
+    "9": {
+      "home": "西部战狼",
+      "away": "弄潮儿战队",
+      "homeScore": 0,
+      "awayScore": 0,
+      "winner": null,
+      "hasData": false,
+      "date": "8月27日",
+      "time": "第一场",
+      "isFinal": false
+    },
+    "10": {
+      "home": "蝶变闪耀队",
+      "away": "荣耀先锋队",
+      "homeScore": 0,
+      "awayScore": 0,
+      "winner": null,
+      "hasData": false,
+      "date": "8月27日",
+      "time": "第二场",
+      "isFinal": false
+    },
+    "11": {
+      "home": "第三名",
+      "away": "第四名",
+      "homeScore": 0,
+      "awayScore": 0,
+      "winner": null,
+      "hasData": false,
+      "date": "9月2日",
+      "time": "第一场",
+      "isFinal": true
+    },
+    "12": {
+      "home": "第一名",
+      "away": "第二名",
+      "homeScore": 0,
+      "awayScore": 0,
+      "winner": null,
+      "hasData": false,
+      "date": "9月2日",
+      "time": "第二场",
+      "isFinal": true
+    }
+  },
+  "rrStandings": [
+    {
+      "team": "从容应队",
+      "points": 4,
+      "win": 2,
+      "loss": 0,
+      "played": 2,
+      "scoreFor": 108
+    },
+    {
+      "team": "西部战狼",
+      "points": 3,
+      "win": 1,
+      "loss": 1,
+      "played": 2,
+      "scoreFor": 68
+    },
+    {
+      "team": "荣耀先锋队",
+      "points": 2,
+      "win": 1,
+      "loss": 0,
+      "played": 1,
+      "scoreFor": 55
+    },
+    {
+      "team": "弄潮儿战队",
+      "points": 2,
+      "win": 0,
+      "loss": 2,
+      "played": 2,
+      "scoreFor": 75
+    },
+    {
+      "team": "蝶变闪耀队",
+      "points": 1,
+      "win": 0,
+      "loss": 1,
+      "played": 1,
+      "scoreFor": 42
+    }
+  ],
+  "final": null,
+  "matchPlayers": {
+    "8月13日|第一场|弄潮儿战队": [
+      {
+        "number": 27,
+        "name": "刘飞",
+        "score": 8
+      },
+      {
+        "number": 99,
+        "name": "俞炜",
+        "score": 7
+      },
+      {
+        "number": 6,
+        "name": "李俊杰",
+        "score": 6
+      },
+      {
+        "number": 8,
+        "name": "刘宁",
+        "score": 6
+      },
+      {
+        "number": 2,
+        "name": "郎佳杰",
+        "score": 2
+      },
+      {
+        "number": 5,
+        "name": "徐晓斌",
+        "score": 2
+      }
+    ],
+    "8月13日|第一场|荣耀先锋队": [
+      {
+        "number": 1,
+        "name": "张铖飞",
+        "score": 24
+      },
+      {
+        "number": 9,
+        "name": "吕挺",
+        "score": 11
+      },
+      {
+        "number": 10,
+        "name": "吕葳青",
+        "score": 11
+      },
+      {
+        "number": 22,
+        "name": "屠智盛",
+        "score": 3
+      },
+      {
+        "number": 7,
+        "name": "李罗飞",
+        "score": 2
+      },
+      {
+        "number": 17,
+        "name": "金宇翔",
+        "score": 2
+      },
+      {
+        "number": 18,
+        "name": "陈冠臻",
+        "score": 2
+      }
+    ],
+    "8月13日|第二场|从容应队": [
+      {
+        "number": 12,
+        "name": "叶清正",
+        "score": 26
+      },
+      {
+        "number": 8,
+        "name": "郑景",
+        "score": 12
+      },
+      {
+        "number": 15,
+        "name": "史杭炜",
+        "score": 6
+      },
+      {
+        "number": 4,
+        "name": "丁柳斌",
+        "score": 2
+      },
+      {
+        "number": 9,
+        "name": "俞鑫",
+        "score": 2
+      }
+    ],
+    "8月13日|第二场|西部战狼": [
+      {
+        "number": 4,
+        "name": "祝丹枫",
+        "score": 7
+      },
+      {
+        "number": 23,
+        "name": "盛尹稞",
+        "score": 6
+      },
+      {
+        "number": 5,
+        "name": "奚路彤",
+        "score": 2
+      },
+      {
+        "number": 7,
+        "name": "周雪海",
+        "score": 2
+      },
+      {
+        "number": 10,
+        "name": "钟瑜",
+        "score": 2
+      },
+      {
+        "number": 15,
+        "name": "章竞",
+        "score": 2
+      }
+    ],
+    "8月17日|第一场|西部战狼": [
+      {
+        "number": 4,
+        "name": "祝丹枫",
+        "score": 12
+      },
+      {
+        "number": 23,
+        "name": "盛尹稞",
+        "score": 12
+      },
+      {
+        "number": 3,
+        "name": "夏震寰",
+        "score": 6
+      },
+      {
+        "number": 7,
+        "name": "周雪海",
+        "score": 6
+      },
+      {
+        "number": 5,
+        "name": "奚路彤",
+        "score": 5
+      },
+      {
+        "number": 6,
+        "name": "黄添",
+        "score": 2
+      },
+      {
+        "number": 13,
+        "name": "何小龙",
+        "score": 2
+      },
+      {
+        "number": 15,
+        "name": "章竞",
+        "score": 2
+      }
+    ],
+    "8月17日|第一场|蝶变闪耀队": [
+      {
+        "number": 25,
+        "name": "章煜",
+        "score": 13
+      },
+      {
+        "number": 5,
+        "name": "方勤劼",
+        "score": 8
+      },
+      {
+        "number": 8,
+        "name": "杜聪",
+        "score": 7
+      },
+      {
+        "number": 12,
+        "name": "陆嘉明",
+        "score": 6
+      },
+      {
+        "number": 9,
+        "name": "刘垣杰",
+        "score": 3
+      },
+      {
+        "number": 16,
+        "name": "胡坚",
+        "score": 2
+      },
+      {
+        "number": 31,
+        "name": "彭凯杰",
+        "score": 2
+      },
+      {
+        "number": 6,
+        "name": "陈沛",
+        "score": 1
+      }
+    ],
+    "8月17日|第二场|弄潮儿战队": [
+      {
+        "number": 99,
+        "name": "俞炜",
+        "score": 15
+      },
+      {
+        "number": 8,
+        "name": "刘宁",
+        "score": 12
+      },
+      {
+        "number": 27,
+        "name": "刘飞",
+        "score": 7
+      },
+      {
+        "number": 2,
+        "name": "郎佳杰",
+        "score": 4
+      },
+      {
+        "number": 6,
+        "name": "李俊杰",
+        "score": 4
+      },
+      {
+        "number": 7,
+        "name": "潘杰",
+        "score": 2
+      }
+    ],
+    "8月17日|第二场|从容应队": [
+      {
+        "number": 8,
+        "name": "郑景",
+        "score": 22
+      },
+      {
+        "number": 12,
+        "name": "叶清正",
+        "score": 22
+      },
+      {
+        "number": 15,
+        "name": "史杭炜",
+        "score": 10
+      },
+      {
+        "number": 5,
+        "name": "洪益烽",
+        "score": 4
+      },
+      {
+        "number": 9,
+        "name": "俞鑫",
+        "score": 2
+      }
+    ]
+  },
+  "dailySheets": [
+    "8月13日",
+    "8月17日"
+  ],
+  "meta": {
+    "hasFinal": false,
+    "source": "Excel auto-build"
+  }
+};
