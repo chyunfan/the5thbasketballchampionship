@@ -271,6 +271,8 @@
   .toggle button.on{background:var(--gold);color:#1a1205;}
   .toggle button.dim{color:var(--txt-mute);}
   .rk-table{background:var(--card);border:1px solid var(--card-brd);border-radius:16px;overflow:hidden;}
+  .rk-head{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--embed);border-bottom:1px solid var(--card-brd);font-size:12px;color:var(--txt-mute);font-weight:700;}
+  .rk-head .rk-pos,.rk-head .rk-name,.rk-head .rk-stats,.rk-head .rk-pts{background:transparent;color:var(--txt-mute);font-size:12px;}
   .rk-row{display:flex;align-items:center;gap:10px;padding:13px 14px;}
   .rk-row + .rk-row{border-top:1px solid var(--chip-brd);}
   .rk-pos{width:30px;font-size:17px;font-weight:800;text-align:center;flex:0 0 auto;}
@@ -278,8 +280,9 @@
   .rk-name{flex:1 1 auto;font-size:15px;font-weight:700;display:flex;align-items:center;gap:9px;}
   .rk-dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto;}
   .rk-stats{display:flex;gap:14px;font-size:13px;color:var(--txt-dim);}
+  .rk-stats span{min-width:42px;text-align:center;}
   .rk-stats b{color:var(--txt);font-size:15px;font-variant-numeric:tabular-nums;}
-  .rk-pts{font-size:20px;font-weight:800;color:var(--gold);min-width:38px;text-align:right;}
+  .rk-pts{font-size:20px;font-weight:800;color:var(--gold);min-width:48px;text-align:right;}
   .podium{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
   .pod{background:var(--card);border:1px solid var(--card-brd);border-radius:16px;padding:16px 12px;
        text-align:center;}
@@ -1290,7 +1293,7 @@ function renderRankings(){
       const top4 = new Set([f.champion,f.runner,f.third,f.fourth].filter(Boolean));
       const rest = D.rrStandings.filter(s=>!top4.has(s.team));
       if(rest.length){
-        html += `<div class="section-h"><span class="dot"></span>其余名次（按循环赛）</div><div class="rk-table">`;
+        html += `<div class="section-h"><span class="dot"></span>其余名次（按循环赛）</div><div class="rk-table">${rkHead()}`;
         rest.forEach((s,i)=>{
           html += rkRow(i+5, s);
         });
@@ -1298,12 +1301,20 @@ function renderRankings(){
       }
     }
   }else{
-    html += `<div class="rk-table">`;
+    html += `<div class="rk-table">${rkHead()}`;
     D.rrStandings.forEach((s,i)=>{ html += rkRow(i+1, s); });
     html += `</div>
       <div class="note" style="margin-top:12px;">每胜一场积 2 分，负一场积 1 分；积分相等按相互间胜负排名。</div>`;
   }
   document.getElementById("content").innerHTML = html;
+}
+function rkHead(){
+  return `<div class="rk-head">
+      <span class="rk-pos">排名</span>
+      <span class="rk-name">球队</span>
+      <span class="rk-stats"><span>胜</span><span>负</span><span>总得分</span></span>
+      <span class="rk-pts">积分</span>
+    </div>`;
 }
 function rkRow(pos, s){
   const col=tColor(s.team);
@@ -1311,7 +1322,7 @@ function rkRow(pos, s){
   return `<div class="rk-row">
       <span class="rk-pos ${cls}">${pos}</span>
       <span class="rk-name"><span class="rk-dot" style="background:${col}"></span>${esc(s.team)}</span>
-      <span class="rk-stats"><span>胜 <b>${s.win}</b></span><span>负 <b>${s.loss}</b></span></span>
+      <span class="rk-stats"><span>胜 <b>${s.win}</b></span><span>负 <b>${s.loss}</b></span><span>总 <b>${s.scoreFor||0}</b></span></span>
       <span class="rk-pts">${s.points}</span>
     </div>`;
 }
@@ -1926,9 +1937,11 @@ function recompute(wb){
     results[m.seq]={home:m.home,away:m.away,homeScore:hScore,awayScore:aScore,winner,hasData:has,date:m.date,time:m.time,isFinal:m.isFinal};
   });
   // rr standings
-  const rrPts={},rrW={},rrL={}; teamOrder.forEach(t=>{rrPts[t]=0;rrW[t]=0;rrL[t]=0;});
-  for(let seq=1;seq<=10;seq++){ const r=results[seq]; if(r&&r.winner){ const w=r.winner,l=(r.winner===r.home?r.away:r.home);
-    rrPts[w]+=2;rrW[w]+=1;rrPts[l]+=1;rrL[l]+=1; } }
+  const rrPts={},rrW={},rrL={},rrScoreFor={}; teamOrder.forEach(t=>{rrPts[t]=0;rrW[t]=0;rrL[t]=0;rrScoreFor[t]=0;});
+  for(let seq=1;seq<=10;seq++){ const r=results[seq]; if(r){
+    rrScoreFor[r.home]+=r.homeScore||0; rrScoreFor[r.away]+=r.awayScore||0;
+    if(r.winner){ const w=r.winner,l=(r.winner===r.home?r.away:r.home);
+      rrPts[w]+=2;rrW[w]+=1;rrPts[l]+=1;rrL[l]+=1; } } }
   function headToHead(a,b){
     for(let seq=1; seq<=10; seq++){
       const r = results[seq];
@@ -1940,7 +1953,7 @@ function recompute(wb){
     return 0;
   }
   const rrStandings=teamOrder.slice().sort((a,b)=> rrPts[b]-rrPts[a] || headToHead(a,b) || rrW[b]-rrW[a] || a.localeCompare(b))
-    .map(t=>({team:t,points:rrPts[t],win:rrW[t],loss:rrL[t],played:rrW[t]+rrL[t]}));
+    .map(t=>({team:t,points:rrPts[t],win:rrW[t],loss:rrL[t],played:rrW[t]+rrL[t],scoreFor:rrScoreFor[t]}));
   // final
   function teamsOf(seq){ const m=schedule.find(x=>x.seq===seq); const out=[];
     Object.keys(matchPlayer).forEach(k=>{ const p=k.split("|"); if(p[0]===m.date&&p[1]===m.time) out.push(p[2]); }); return out; }
@@ -2034,9 +2047,11 @@ function rebuildFromMatchPlayer(matchPlayer, dailySheets){
     results[m.seq]={home:m.home,away:m.away,homeScore:hScore,awayScore:aScore,winner,hasData:has,date:m.date,time:m.time,isFinal:m.isFinal};
   });
   // rr standings
-  const rrPts={},rrW={},rrL={}; teamOrder.forEach(t=>{rrPts[t]=0;rrW[t]=0;rrL[t]=0;});
-  for(let seq=1;seq<=10;seq++){ const r=results[seq]; if(r&&r.winner){ const w=r.winner,l=(r.winner===r.home?r.away:r.home);
-    rrPts[w]+=2;rrW[w]+=1;rrPts[l]+=1;rrL[l]+=1; } }
+  const rrPts={},rrW={},rrL={},rrScoreFor={}; teamOrder.forEach(t=>{rrPts[t]=0;rrW[t]=0;rrL[t]=0;rrScoreFor[t]=0;});
+  for(let seq=1;seq<=10;seq++){ const r=results[seq]; if(r){
+    rrScoreFor[r.home]+=r.homeScore||0; rrScoreFor[r.away]+=r.awayScore||0;
+    if(r.winner){ const w=r.winner,l=(r.winner===r.home?r.away:r.home);
+      rrPts[w]+=2;rrW[w]+=1;rrPts[l]+=1;rrL[l]+=1; } } }
   function headToHead(a,b){
     for(let seq=1; seq<=10; seq++){
       const r = results[seq];
@@ -2048,7 +2063,7 @@ function rebuildFromMatchPlayer(matchPlayer, dailySheets){
     return 0;
   }
   const rrStandings=teamOrder.slice().sort((a,b)=> rrPts[b]-rrPts[a] || headToHead(a,b) || rrW[b]-rrW[a] || a.localeCompare(b))
-    .map(t=>({team:t,points:rrPts[t],win:rrW[t],loss:rrL[t],played:rrW[t]+rrL[t]}));
+    .map(t=>({team:t,points:rrPts[t],win:rrW[t],loss:rrL[t],played:rrW[t]+rrL[t],scoreFor:rrScoreFor[t]}));
   // final
   function teamsOf(seq){ const m=schedule.find(x=>x.seq===seq); const out=[];
     Object.keys(matchPlayer).forEach(k=>{ const p=k.split("|"); if(p[0]===m.date&&p[1]===m.time) out.push(p[2]); }); return out; }
