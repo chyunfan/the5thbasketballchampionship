@@ -131,13 +131,13 @@
   /* match card (schedule) */
   .match{background:var(--card);border:1px solid var(--card-brd);border-radius:16px;
          padding:10px 10px;margin-bottom:12px;overflow:hidden;}
-  .match-row{display:flex;align-items:center;justify-content:space-between;gap:6px;}
-  .match-info{flex:0 0 auto;min-width:30px;display:flex;flex-direction:row;align-items:center;gap:4px;flex-wrap:wrap;}
-  .m-time{font-size:11px;font-weight:700;color:var(--txt);line-height:1.1;}
+  .match-row{display:grid;grid-template-columns:64px 1fr 44px;align-items:center;gap:6px;}
+  .match-info{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;min-width:0;}
+  .m-time{font-size:11px;font-weight:700;color:var(--txt);line-height:1.2;word-break:break-word;}
   .m-tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;display:inline-block;width:fit-content;line-height:1;}
   .m-tag.rr{background:var(--tag-rr-bg);color:var(--tag-rr-tx);}
   .m-tag.fin{background:var(--gold-soft);color:var(--gold);}
-  .match-board{flex:1 1 auto;display:flex;align-items:center;justify-content:center;gap:4px;min-width:0;}
+  .match-board{display:flex;align-items:center;justify-content:center;gap:4px;min-width:0;}
   .sb-team{flex:1 1 0;display:flex;align-items:center;gap:4px;min-width:0;}
   .sb-team.left{justify-content:flex-end;text-align:right;}
   .sb-team.right{justify-content:flex-start;}
@@ -148,12 +148,12 @@
   .sb-colon{font-size:14px;font-weight:700;color:var(--txt-mute);}
   .sb-team.win .sb-name{color:var(--win);}
   .sb-team.win .sb-score{color:var(--win);}
-  .m-data-btn{flex:0 0 auto;font-size:11px;font-weight:700;color:var(--gold);
-              background:transparent;border:1px solid rgba(245,158,11,.4);border-radius:20px;
-              padding:4px 8px;cursor:pointer;}
+  .m-data-btn{justify-self:end;font-size:11px;font-weight:700;color:var(--gold);
+               background:transparent;border:1px solid rgba(245,158,11,.4);border-radius:20px;
+               padding:4px 8px;cursor:pointer;}
   .m-data-btn:active{transform:scale(.95);}
   /* placeholder keeps same width so boards align with/without data button */
-  .m-data-ph{flex:0 0 auto;font-size:11px;font-weight:700;color:transparent;
+  .m-data-ph{justify-self:end;font-size:11px;font-weight:700;color:transparent;
              background:transparent;border:1px solid transparent;border-radius:20px;
              padding:4px 8px;visibility:hidden;user-select:none;}
   /* match data panel */
@@ -180,6 +180,13 @@
   @media (max-width:380px){
     .mp-name{width:40px;font-size:11px;}
     .mp-no{width:20px;height:20px;font-size:9px;}
+    .match-row{grid-template-columns:54px 1fr 38px;gap:4px;}
+    .match{padding:10px 8px;}
+    .m-time{font-size:10px;}
+    .sb-name{font-size:12px;}
+    .sb-score{font-size:18px;min-width:24px;}
+    .sb-chip{width:3px;height:18px;}
+    .m-data-btn,.m-data-ph{padding:3px 6px;font-size:10px;}
   }
   /* cheer scoring */
   .cheer-match{background:var(--card);border:1px solid var(--card-brd);border-radius:16px;padding:12px 14px;margin-bottom:12px;overflow:hidden;}
@@ -422,12 +429,14 @@
     <div class="drawer-foot">
       <button class="mini-btn" id="adminBtn">管理员</button>
       <div id="adminActions" style="display:none;">
-        <button class="mini-btn" id="importBtn" style="margin-top:8px;">导入每日战况</button>
+        <button class="mini-btn" id="importBtn" style="margin-top:8px;" title="Excel 表头需含：场次 / 队名 / 队内号码 / 得分，每个比赛日一个工作表（工作表名=比赛日期）">导入每日战况</button>
+        <button class="mini-btn" id="tplBtn" style="margin-top:8px;" title="下载含表头的导入模板（按赛程预填场次与队名，只需补填队内号码与得分）">下载导入模板</button>
         <button class="mini-btn" id="snapSaveBtn" style="margin-top:8px;">保存快照</button>
         <button class="mini-btn" id="snapOpenBtn" style="margin-top:8px;">恢复至快照</button>
         <button class="mini-btn" id="cheerSumBtn" style="margin-top:8px;">啦啦队汇总</button>
         <button class="mini-btn" id="cheerDetBtn" style="margin-top:8px;">打分明细</button>
         <button class="mini-btn" id="liveScoreBtn" style="margin-top:8px;">实时录入得分</button>
+        <div style="font-size:11px;line-height:1.5;color:var(--txt-dim);margin-top:10px;">导入格式：每个比赛日一个工作表（表名=日期，如「8月17日」或「8.17」），表头为「场次 / 队名 / 队内号码 / 得分」。可先点「下载导入模板」获取带表头的空表。</div>
       </div>
     </div>
   </div>
@@ -601,6 +610,9 @@ function displayTeams(m){
   }
   return [m.home,m.away];
 }
+/* 名次占位队名（决赛未决出时显示“待定”）：第一名/第二名/第三名/第四名 */
+const RANK_PH = {"第一名":1,"第二名":1,"第三名":1,"第四名":1};
+function isPHTeam(name){ return !name || RANK_PH[name]; }
 function matchHasData(m){
   return Object.keys(D.matchPlayers).some(k=>k.startsWith(m.date+"|"+m.time+"|"));
 }
@@ -1079,26 +1091,34 @@ function renderSchedule(){
      <span class="page-sub">点击"数据"查看球员得分</span></div>`;
   dates.forEach(date=>{
     const timeOrder = {"第一场":1,"第二场":2};
-    const ms = D.schedule.filter(m=>m.date===date)
+    const all = D.schedule.filter(m=>m.date===date)
                         .slice()                           // 复制避免改动原数组
                         .sort((a,b)=> (a.isFinal===b.isFinal ? (timeOrder[a.time]||0)-(timeOrder[b.time]||0) : (a.isFinal?1:-1)));
-    const allFinal = ms.every(m=>m.isFinal);
-    const dayTag = allFinal ? `<span class="m-tag fin">决赛</span>` : `<span class="m-tag rr">循环赛</span>`;
-    html += `<div class="section"><div class="section-h"><span class="dot"></span>${esc(date)}${dayTag}</div>`;
-    ms.forEach(m=>{
-      const res = D.results[m.seq] || {};
-      const hasData = matchHasData(m);
-      const winTeam = matchWinner(m);
-      const teams = displayTeams(m);
-      let title;
-      if(m.isFinal){
-        title = m.seq===12 ? "决赛 · 冠亚军" : "决赛 · 三四名";
-      }else{
-        title = esc(m.time);
-      }
+    // 循环赛与决赛分开分组：各自带独立小标题（如「8月27日 循环赛」「8月27日 决赛」）
+    const groups = [
+      {tag:"循环赛", list:all.filter(m=>!m.isFinal)},
+      {tag:"决赛",   list:all.filter(m=>m.isFinal)},
+    ];
+    groups.forEach(g=>{
+      if(!g.list.length) return;
+      html += `<div class="section"><div class="section-h"><span class="dot"></span>${esc(date)}<span class="m-tag ${g.tag==="决赛"?"fin":"rr"}">${g.tag}</span></div>`;
+      g.list.forEach(m=>{
+        const res = D.results[m.seq] || {};
+        const hasData = matchHasData(m);
+        const winTeam = matchWinner(m);
+        const teams = displayTeams(m);
+        let title;
+        if(m.isFinal){
+          const label = m.seq===12 ? "决赛 · 冠亚军" : "决赛 · 三四名";
+          // 窄列下避免「名/军」单独换行：在「·」后强制换行，第一行"决赛 ·"，第二行"三四名/冠亚军"
+          const [_, l2] = label.split("·");
+          title = `决赛 ·<br>${l2}`;
+        }else{
+          title = esc(m.time);
+        }
       const t1 = teams[0] || "", t2 = teams[1] || "";
-      const isPH1 = m.isFinal && (!hasData || !t1);
-      const isPH2 = m.isFinal && (!hasData || !t2);
+      const isPH1 = m.isFinal && isPHTeam(t1);
+      const isPH2 = m.isFinal && isPHTeam(t2);
       const name1 = isPH1 ? "待定" : esc(t1);
       const name2 = isPH2 ? "待定" : esc(t2);
       const sc1 = !hasData ? "—" : teamScore(m.date,m.time,t1);
@@ -1130,8 +1150,9 @@ function renderSchedule(){
           </div>
           <div class="m-panel ${open}" id="panel-${m.seq}">${renderMatchPanel(m)}</div>
         </div>`;
+      });
+      html += `</div>`;
     });
-    html += `</div>`;
   });
   document.getElementById("content").innerHTML = html;
 }
@@ -1141,7 +1162,7 @@ function renderMatchPanel(m, hi){
   const res = D.results[m.seq]||{};
   const realKeys = Object.keys(D.matchPlayers).filter(k=>k.startsWith(m.date+"|"+m.time+"|"));
   if(!res.hasData && realKeys.length===0){
-    if(m.isFinal) return `<div class="mp-empty">决赛数据尚未导入</div>`;
+    if(m.isFinal && (isPHTeam(teams[0]) || isPHTeam(teams[1]))) return `<div class="mp-empty">决赛数据尚未导入</div>`;
     return `<div class="mp-empty">本场暂无得分数据</div>`;
   }
   const c1 = tColor(teams[0]), c2 = tColor(teams[1]);
@@ -1230,12 +1251,13 @@ function renderDaily(){
       const teams = displayTeams(m);
       const hasData = matchHasData(m);
       const winTeam = matchWinner(m);
-      const isPH = m.isFinal && !hasData;
+      const isPH = m.isFinal && (isPHTeam(teams[0]) || isPHTeam(teams[1]));
+      const noScore = isPH || !hasData;
       const t1 = isPH?"待定":teams[0], t2 = isPH?"待定":teams[1];
-      const s1 = isPH?"—":teamScore(m.date,m.time,teams[0]);
-      const s2 = isPH?"—":teamScore(m.date,m.time,teams[1]);
-      const w1 = !isPH && winTeam===teams[0];
-      const w2 = !isPH && winTeam===teams[1];
+      const s1 = noScore?"—":teamScore(m.date,m.time,teams[0]);
+      const s2 = noScore?"—":teamScore(m.date,m.time,teams[1]);
+      const w1 = !noScore && winTeam===teams[0];
+      const w2 = !noScore && winTeam===teams[1];
       const c1 = isPH?"#64748b":tColor(teams[0]);
       const c2 = isPH?"#64748b":tColor(teams[1]);
       const expanded = !!state.dailyExpanded[m.seq];
@@ -1634,9 +1656,38 @@ document.getElementById("adminBtn").addEventListener("click", ()=>{
   document.getElementById("adminBtn").style.display = "none";
   document.getElementById("adminActions").style.display = "block";
 });
+/* ---------- 管理员：下载导入模板（含表头，按赛程预填场次/队名） ---------- */
+function dlTemplate(){
+  if(typeof XLSX === "undefined"){ toast("组件未就绪，请刷新后重试"); return; }
+  const wb = XLSX.utils.book_new();
+  // 同日期多场比赛合并到一个工作表（解析器按表头读取整表所有行）
+  const byDate={};
+  BASE.schedule.forEach(m=>{
+    if(m.isFinal) return;                        // 决赛为占位队名，不纳入每日模板
+    (byDate[m.date]=byDate[m.date]||[]).push(m);
+  });
+  let sheets=0;
+  Object.keys(byDate).forEach(date=>{
+    const aoa=[["场次","队名","队内号码","得分"]];
+    byDate[date].forEach(m=>{
+      aoa.push([m.time, m.home, "", ""]);
+      aoa.push([m.time, m.away, "", ""]);
+    });
+    const ws=XLSX.utils.aoa_to_sheet(aoa);
+    XLSX.utils.book_append_sheet(wb, ws, date);
+    sheets++;
+  });
+  if(sheets===0){ toast("暂无赛程可生成模板"); return; }
+  XLSX.writeFile(wb, "每日战况导入模板.xlsx");
+  toast("模板已生成：" + sheets + " 个比赛日（表头：场次/队名/队内号码/得分）");
+}
 document.getElementById("importBtn").addEventListener("click", ()=>{
   closeDrawer();
   document.getElementById("fileInput").click();
+});
+document.getElementById("tplBtn").addEventListener("click", ()=>{
+  closeDrawer();
+  dlTemplate();
 });
 document.getElementById("cheerSumBtn").addEventListener("click", async ()=>{ await refreshCheerFromCloud(); openCheerSummaryModal(); });
 document.getElementById("cheerDetBtn").addEventListener("click", async ()=>{ await refreshCheerFromCloud(); openCheerDetailModal(); });
