@@ -649,14 +649,6 @@ window.APP_DATA = {
       "isFinal": false
     },
     {
-      "seq": 9,
-      "date": "8月27日",
-      "time": "第二场",
-      "home": "西部战狼",
-      "away": "弄潮儿战队",
-      "isFinal": false
-    },
-    {
       "seq": 10,
       "date": "8月27日",
       "time": "第一场",
@@ -666,18 +658,18 @@ window.APP_DATA = {
     },
     {
       "seq": 11,
-      "date": "9月2日",
-      "time": "第一场",
-      "home": "第三名",
-      "away": "第四名",
+      "date": "8月27日",
+      "time": "三四名决赛",
+      "home": "西部战狼",
+      "away": "弄潮儿战队",
       "isFinal": true
     },
     {
       "seq": 12,
       "date": "9月2日",
       "time": "第二场",
-      "home": "第一名",
-      "away": "第二名",
+      "home": "荣耀先锋队",
+      "away": "从容应队",
       "isFinal": true
     }
   ],
@@ -770,17 +762,6 @@ window.APP_DATA = {
       "time": "第二场",
       "isFinal": false
     },
-    "9": {
-      "home": "西部战狼",
-      "away": "弄潮儿战队",
-      "homeScore": 0,
-      "awayScore": 0,
-      "winner": null,
-      "hasData": false,
-      "date": "8月27日",
-      "time": "第一场",
-      "isFinal": false
-    },
     "10": {
       "home": "蝶变闪耀队",
       "away": "荣耀先锋队",
@@ -793,19 +774,19 @@ window.APP_DATA = {
       "isFinal": false
     },
     "11": {
-      "home": "第三名",
-      "away": "第四名",
+      "home": "西部战狼",
+      "away": "弄潮儿战队",
       "homeScore": 0,
       "awayScore": 0,
       "winner": null,
       "hasData": false,
-      "date": "9月2日",
-      "time": "第一场",
+      "date": "8月27日",
+      "time": "三四名决赛",
       "isFinal": true
     },
     "12": {
-      "home": "第一名",
-      "away": "第二名",
+      "home": "荣耀先锋队",
+      "away": "从容应队",
       "homeScore": 0,
       "awayScore": 0,
       "winner": null,
