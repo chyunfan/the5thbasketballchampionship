@@ -1264,8 +1264,22 @@ function renderDaily(){
   document.getElementById("content").innerHTML = html;
 }
 
+/* 循环赛总得分：从当前 results 实时计算各队已录入得分之和（仅 seq 1~10 循环赛） */
+function ensureRRScoreFor(){
+  if(!D.rrStandings) return;
+  const map={}; D.rrStandings.forEach(s=>map[s.team]=0);
+  Object.keys(D.results||{}).forEach(seq=>{
+    const n=+seq; if(isNaN(n)||n<1||n>10) return;   // 仅统计循环赛
+    const r=D.results[seq]; if(!r) return;
+    map[r.home]=(map[r.home]||0)+(r.homeScore||0);
+    map[r.away]=(map[r.away]||0)+(r.awayScore||0);
+  });
+  D.rrStandings.forEach(s=>{ s.scoreFor=(map[s.team]||0); });
+}
+
 /* ---------- render: rankings ---------- */
 function renderRankings(){
+  ensureRRScoreFor();   // 每次渲染前实时重算循环赛总得分，避免缓存旧数据缺字段
   const hasFinal = !!(D.final);
   let toggle = `<div class="toggle">
       <button data-v="rr" class="${state.rankingsView==='rr'?'on':''}">循环赛</button>
