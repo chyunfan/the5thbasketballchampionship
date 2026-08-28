@@ -30,6 +30,15 @@
     --danger-soft:#fca5a5;
     --on-gold:#1a1205;
     --rank-c1:#fde047; --rank-c2:#e2e8f0; --rank-c3:#fdba74;
+    /* 决赛颁奖台配色（暗色） */
+    --champ-c1:#fef3c7; --champ-c2:#fcd34d; --champ-c3:#f59e0b;
+    --champ-bd:#fbbf24;
+    --champ-shadow:0 16px 40px rgba(245,158,11,.30), inset 0 1px 0 rgba(255,255,255,.55);
+    --champ-lab:#7c2d12; --champ-num:rgba(120,53,15,.28);
+    --silver-c1:rgba(148,163,184,.20); --silver-c2:rgba(100,116,139,.32);
+    --silver-bd:rgba(148,163,184,.45); --silver-num:#cbd5e1;
+    --bronze-c1:rgba(251,191,36,.18); --bronze-c2:rgba(180,83,9,.32);
+    --bronze-bd:rgba(217,119,6,.45); --bronze-num:#fdba74;
     --option-bg:#1e293b;
     --toast-bg:rgba(20,30,50,.96);
     --no-shadow:inset 0 1px 0 rgba(255,255,255,.30), inset 0 -2px 4px rgba(0,0,0,.18);
@@ -62,6 +71,15 @@
     --danger-soft:#dc2626;
     --on-gold:#1a1205;
     --rank-c1:#ca8a04; --rank-c2:#64748b; --rank-c3:#ea580c;
+    /* 决赛颁奖台配色（浅色） */
+    --champ-c1:#fef3c7; --champ-c2:#fde68a; --champ-c3:#fcd34d;
+    --champ-bd:#f59e0b;
+    --champ-shadow:0 14px 30px rgba(245,158,11,.22), inset 0 1px 0 rgba(255,255,255,.6);
+    --champ-lab:#92400e; --champ-num:rgba(146,64,14,.20);
+    --silver-c1:#f8fafc; --silver-c2:#cbd5e1;
+    --silver-bd:#94a3b8; --silver-num:#64748b;
+    --bronze-c1:#fef3c7; --bronze-c2:#fdba74;
+    --bronze-bd:#fb923c; --bronze-num:#9a3412;
     --option-bg:#ffffff;
     --toast-bg:rgba(255,255,255,.97);
     --no-shadow:inset 0 1px 0 rgba(255,255,255,.65), inset 0 -2px 4px rgba(0,0,0,.10);
@@ -278,8 +296,13 @@
   .toggle button.on{background:var(--gold);color:#1a1205;}
   .toggle button.dim{color:var(--txt-mute);}
   .rk-table{background:var(--card);border:1px solid var(--card-brd);border-radius:16px;overflow:hidden;}
-  .rk-head{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--embed);border-bottom:1px solid var(--card-brd);font-size:12px;color:var(--txt-mute);font-weight:700;}
-  .rk-head .rk-pos,.rk-head .rk-name,.rk-head .rk-stats,.rk-head .rk-pts{background:transparent;color:var(--txt-mute);font-size:12px;}
+  .rk-head{display:flex;align-items:center;gap:10px;padding:11px 14px;
+            background:linear-gradient(90deg,var(--champ-c3) 0%,var(--champ-c2) 100%);
+            border-bottom:1px solid var(--champ-bd);font-size:12px;font-weight:800;letter-spacing:.5px;}
+  .rk-head .rk-pos,.rk-head .rk-name,.rk-head .rk-stats,.rk-head .rk-pts{
+    background:transparent;color:var(--champ-lab);font-size:12px;font-weight:800;
+  }
+  .rk-head .rk-stats span{color:var(--champ-lab);}
   .rk-row{display:flex;align-items:center;gap:10px;padding:13px 14px;}
   .rk-row + .rk-row{border-top:1px solid var(--chip-brd);}
   .rk-pos{width:30px;font-size:17px;font-weight:800;text-align:center;flex:0 0 auto;}
@@ -290,22 +313,67 @@
   .rk-stats span{min-width:42px;text-align:center;}
   .rk-stats b{color:var(--txt);font-size:15px;font-variant-numeric:tabular-nums;}
   .rk-pts{font-size:20px;font-weight:800;color:var(--gold);min-width:48px;text-align:right;}
-  .podium{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
-  .pod-row{display:grid;gap:12px;}
-  .pod-row.row1{grid-template-columns:1fr;}
-  .pod-row.row1 .pod{max-width:260px;width:100%;margin:0 auto;padding:22px 16px;border-width:2px;
-                     box-shadow:0 8px 22px rgba(245,158,11,.28);}
-  .pod-row.row1 .medal{font-size:42px;line-height:1.1;}
-  .pod-row.row1 .pn{font-size:18px;}
-  .pod-row.row2,.pod-row.row3{grid-template-columns:1fr 1fr;}
-  .pod{background:var(--card);border:1px solid var(--card-brd);border-radius:16px;padding:16px 12px;
-       text-align:center;}
-  .pod .medal{font-size:30px;line-height:1;
-              font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji","Twemoji Mozilla",emoji,symbols;
-              min-height:30px;display:flex;align-items:center;justify-content:center;}
-  .pod .lab{font-size:12px;color:var(--txt-mute);margin-top:2px;}
-  .pod .pn{font-size:16px;font-weight:800;margin-top:8px;word-break:break-all;}
-  .pod.gold{border-color:var(--gold);background:var(--gold-soft);}
+  /* ===== 阶段排名 · 决赛颁奖台 ===== */
+  .podium{display:flex;flex-direction:column;gap:14px;margin-bottom:16px;}
+  /* 冠军 hero */
+  .pod-champ{
+    position:relative;border-radius:22px;padding:26px 18px 22px;text-align:center;
+    background:linear-gradient(160deg,var(--champ-c1) 0%,var(--champ-c2) 50%,var(--champ-c3) 100%);
+    border:2px solid var(--champ-bd);
+    box-shadow:var(--champ-shadow);
+    overflow:hidden;
+  }
+  .pod-champ::before{
+    content:"";position:absolute;top:-50px;left:50%;transform:translateX(-50%);
+    width:300px;height:300px;
+    background:radial-gradient(circle, rgba(255,255,255,.50) 0%, transparent 62%);
+    border-radius:50%;pointer-events:none;
+  }
+  .pod-champ .tag{
+    position:absolute;top:14px;left:16px;font-size:10px;letter-spacing:3px;font-weight:800;
+    color:var(--champ-lab);background:rgba(255,255,255,.45);padding:3px 9px;border-radius:6px;
+  }
+  .pod-champ .num{
+    position:absolute;top:10px;right:18px;font-size:36px;font-weight:900;color:var(--champ-num);
+    font-style:italic;line-height:1;font-family:Georgia,serif;
+  }
+  .pod-champ .ic-tr{
+    width:84px;height:84px;margin:8px auto 4px;display:block;
+    filter:drop-shadow(0 6px 10px rgba(146,64,14,.35));
+    position:relative;z-index:1;
+  }
+  .pod-champ .lab{font-size:14px;letter-spacing:6px;color:var(--champ-lab);font-weight:800;margin-top:4px;position:relative;z-index:1;}
+  .pod-champ .pn{
+    font-size:22px;font-weight:900;color:var(--champ-lab);margin-top:6px;
+    text-shadow:0 1px 0 rgba(255,255,255,.45);position:relative;z-index:1;word-break:break-all;
+  }
+  .pod-champ .pn.empty{color:var(--champ-num);font-weight:600;font-size:15px;font-style:italic;letter-spacing:2px;}
+  /* 亚军 / 季军 */
+  .pod-medals{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .pod-md{
+    position:relative;border-radius:18px;padding:18px 14px 14px;text-align:center;
+    background:linear-gradient(160deg,var(--silver-c1),var(--silver-c2));
+    border:1px solid var(--silver-bd);
+  }
+  .pod-md.bronze{background:linear-gradient(160deg,var(--bronze-c1),var(--bronze-c2));border-color:var(--bronze-bd);}
+  .pod-md .num-pos{position:absolute;top:10px;left:12px;font-size:11px;font-weight:800;letter-spacing:2px;color:var(--silver-num);}
+  .pod-md.bronze .num-pos{color:var(--bronze-num);}
+  .pod-md .ic-md{width:60px;height:60px;margin:8px auto 4px;display:block;filter:drop-shadow(0 4px 8px rgba(0,0,0,.20));}
+  .pod-md .lab{font-size:13px;color:var(--txt-dim);margin-top:2px;font-weight:700;letter-spacing:1px;}
+  .pod-md .pn{font-size:16px;font-weight:800;color:var(--txt);margin-top:6px;word-break:break-all;}
+  .pod-md .pn.empty{color:var(--txt-mute);font-weight:500;font-size:13px;font-style:italic;}
+  /* 第四 / 第五 */
+  .pod-minor-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .pod-minor{
+    position:relative;border-radius:14px;padding:12px 14px 11px;
+    background:var(--card);border:1px solid var(--card-brd);
+    display:flex;align-items:center;gap:12px;
+  }
+  .pod-minor .ic-dm,.pod-minor .ic-fl{width:36px;height:36px;flex:0 0 auto;filter:drop-shadow(0 3px 5px rgba(0,0,0,.18));}
+  .pod-minor .info{flex:1;min-width:0;text-align:left;}
+  .pod-minor .lab{font-size:11px;color:var(--txt-mute);font-weight:600;letter-spacing:1px;}
+  .pod-minor .pn{font-size:14px;font-weight:800;color:var(--txt);margin-top:3px;word-break:break-all;}
+  .pod-minor .pn.empty{color:var(--txt-mute);font-weight:500;font-size:13px;font-style:italic;}
   .note{font-size:12px;color:var(--txt-mute);background:var(--card);border:1px dashed var(--card-brd);
         border-radius:12px;padding:14px;text-align:center;line-height:1.6;}
   /* players */
@@ -1317,6 +1385,68 @@ function ensureRRScoreFor(){
 }
 
 /* ---------- render: rankings ---------- */
+let __svgUid = 0;
+function _uid(p){ return p + '_' + (++__svgUid); }
+function icTrophy(){
+  const g = _uid('tr'), gb = _uid('trb');
+  return `<svg class="ic-tr" viewBox="0 0 80 80" aria-hidden="true">
+    <defs>
+      <linearGradient id="${g}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#fffbeb"/><stop offset="40%" stop-color="#fbbf24"/>
+        <stop offset="100%" stop-color="#b45309"/></linearGradient>
+      <linearGradient id="${gb}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#92400e"/><stop offset="100%" stop-color="#451a03"/></linearGradient>
+    </defs>
+    <path d="M28 8h24v18c0 11-7 20-12 23-5-3-12-12-12-23V8z" fill="url(#${g})"/>
+    <path d="M20 12h8v13c0 7-4 12-8 13V12zm32 0h8v26c-4-1-8-6-8-13V12z" fill="url(#${g})" opacity=".85"/>
+    <rect x="30" y="50" width="20" height="6" rx="1" fill="url(#${gb})"/>
+    <rect x="24" y="58" width="32" height="6" rx="2" fill="url(#${gb})"/>
+    <ellipse cx="40" cy="64" rx="14" ry="1.5" fill="#fde68a" opacity=".6"/>
+  </svg>`;
+}
+function icMedal(n, kind){
+  const grad = _uid('md');
+  const isSilver = kind === 'silver';
+  const c1 = isSilver ? '#fff' : '#fed7aa';
+  const c2 = isSilver ? '#cbd5e1' : '#b45309';
+  const stroke = isSilver ? '#64748b' : '#78350f';
+  const txt = isSilver ? '#475569' : '#fff';
+  return `<svg class="ic-md" viewBox="0 0 64 64" aria-hidden="true">
+    <defs>
+      <radialGradient id="${grad}" cx="35%" cy="35%">
+        <stop offset="0%" stop-color="${c1}"/><stop offset="100%" stop-color="${c2}"/></radialGradient>
+    </defs>
+    <path d="M22 6l20 0-5 14h-10z" fill="#dc2626" stroke="#7f1d1d" stroke-width="1"/>
+    <circle cx="32" cy="32" r="22" fill="url(#${grad})" stroke="${stroke}" stroke-width="2"/>
+    <text x="32" y="40" text-anchor="middle" font-size="20" font-weight="900" fill="${txt}"
+ font-family="system-ui,-apple-system,sans-serif">${n}</text>
+  </svg>`;
+}
+function icDiamond(){
+  const g = _uid('dm');
+  return `<svg class="ic-dm" viewBox="0 0 40 40" aria-hidden="true">
+    <defs>
+      <linearGradient id="${g}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#a5b4fc"/><stop offset="100%" stop-color="#3730a3"/></linearGradient>
+    </defs>
+    <path d="M20 4l16 16-16 16-16-16z" fill="url(#${g})"/>
+    <path d="M20 4l16 16h-32z" fill="#c7d2fe" opacity=".55"/>
+  </svg>`;
+}
+function icFlower(){
+  const g = _uid('fl');
+  return `<svg class="ic-fl" viewBox="0 0 40 40" aria-hidden="true">
+    <defs>
+      <linearGradient id="${g}" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#fbcfe8"/><stop offset="100%" stop-color="#be185d"/></linearGradient>
+    </defs>
+    <g fill="url(#${g})">
+      <circle cx="20" cy="8" r="6"/><circle cx="32" cy="20" r="6"/>
+      <circle cx="20" cy="32" r="6"/><circle cx="8" cy="20" r="6"/>
+    </g>
+    <circle cx="20" cy="20" r="5" fill="#fde68a" stroke="#f59e0b" stroke-width="1"/>
+  </svg>`;
+}
 function renderRankings(){
   ensureRRScoreFor();   // 每次渲染前实时重算循环赛总得分，避免缓存旧数据缺字段
   const hasFinal = !!(D.final);
@@ -1333,22 +1463,48 @@ function renderRankings(){
     }else{
       const f=D.final;
       const fifth = (D.rrStandings && D.rrStandings.length) ? D.rrStandings[D.rrStandings.length-1].team : null;
+      const champEmpty = !f.champion;
+      const runEmpty = !f.runner;
+      const thirdEmpty = !f.third;
+      const fourthEmpty = !f.fourth;
+      const fifthEmpty = !fifth;
       html += `<div class="podium">
-          <div class="pod-row row1">
-            <div class="pod gold"><div class="medal">&#127942;</div><div class="lab">冠军</div>
-               <div class="pn" style="color:${tColor(f.champion)}">${esc(f.champion||'—')}</div></div>
+          <div class="pod-champ">
+            <div class="tag">CHAMPION</div>
+            <div class="num">01</div>
+            ${icTrophy()}
+            <div class="lab">冠军</div>
+            <div class="pn ${champEmpty?'empty':''}" style="${champEmpty?'':('color:'+tColor(f.champion))}">${champEmpty?'待公布':esc(f.champion)}</div>
           </div>
-          <div class="pod-row row2">
-            <div class="pod"><div class="medal">&#129944;</div><div class="lab">亚军</div>
-               <div class="pn" style="color:${tColor(f.runner)}">${esc(f.runner||'—')}</div></div>
-            <div class="pod"><div class="medal">&#129945;</div><div class="lab">季军</div>
-               <div class="pn" style="color:${tColor(f.third)}">${esc(f.third||'—')}</div></div>
+          <div class="pod-medals">
+            <div class="pod-md">
+              <div class="num-pos">02</div>
+              ${icMedal('02','silver')}
+              <div class="lab">亚军</div>
+              <div class="pn ${runEmpty?'empty':''}" style="${runEmpty?'':('color:'+tColor(f.runner))}">${runEmpty?'待公布':esc(f.runner)}</div>
+            </div>
+            <div class="pod-md bronze">
+              <div class="num-pos">03</div>
+              ${icMedal('03','bronze')}
+              <div class="lab">季军</div>
+              <div class="pn ${thirdEmpty?'empty':''}" style="${thirdEmpty?'':('color:'+tColor(f.third))}">${thirdEmpty?'待公布':esc(f.third)}</div>
+            </div>
           </div>
-          <div class="pod-row row3">
-            <div class="pod"><div class="medal">&#10022;</div><div class="lab">第四名</div>
-               <div class="pn" style="color:${tColor(f.fourth)}">${esc(f.fourth||'—')}</div></div>
-            <div class="pod"><div class="medal">&#10023;</div><div class="lab">第五名</div>
-               <div class="pn" style="color:${tColor(fifth)}">${esc(fifth||'—')}</div></div>
+          <div class="pod-minor-row">
+            <div class="pod-minor">
+              ${icDiamond()}
+              <div class="info">
+                <div class="lab">第四名</div>
+                <div class="pn ${fourthEmpty?'empty':''}" style="${fourthEmpty?'':('color:'+tColor(f.fourth))}">${fourthEmpty?'待公布':esc(f.fourth)}</div>
+              </div>
+            </div>
+            <div class="pod-minor">
+              ${icFlower()}
+              <div class="info">
+                <div class="lab">第五名</div>
+                <div class="pn ${fifthEmpty?'empty':''}" style="${fifthEmpty?'':('color:'+tColor(fifth))}">${fifthEmpty?'待公布':esc(fifth)}</div>
+              </div>
+            </div>
           </div>
         </div>`;
       // remaining teams by round robin
