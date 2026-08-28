@@ -290,12 +290,21 @@
   .rk-stats span{min-width:42px;text-align:center;}
   .rk-stats b{color:var(--txt);font-size:15px;font-variant-numeric:tabular-nums;}
   .rk-pts{font-size:20px;font-weight:800;color:var(--gold);min-width:48px;text-align:right;}
-  .podium{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+  .podium{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+  .pod-row{display:grid;gap:12px;}
+  .pod-row.row1{grid-template-columns:1fr;}
+  .pod-row.row1 .pod{max-width:260px;width:100%;margin:0 auto;padding:22px 16px;border-width:2px;
+                     box-shadow:0 8px 22px rgba(245,158,11,.28);}
+  .pod-row.row1 .medal{font-size:42px;line-height:1.1;}
+  .pod-row.row1 .pn{font-size:18px;}
+  .pod-row.row2,.pod-row.row3{grid-template-columns:1fr 1fr;}
   .pod{background:var(--card);border:1px solid var(--card-brd);border-radius:16px;padding:16px 12px;
        text-align:center;}
-  .pod .medal{font-size:30px;}
+  .pod .medal{font-size:30px;line-height:1;
+              font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji","Twemoji Mozilla",emoji,symbols;
+              min-height:30px;display:flex;align-items:center;justify-content:center;}
   .pod .lab{font-size:12px;color:var(--txt-mute);margin-top:2px;}
-  .pod .pn{font-size:16px;font-weight:800;margin-top:8px;}
+  .pod .pn{font-size:16px;font-weight:800;margin-top:8px;word-break:break-all;}
   .pod.gold{border-color:var(--gold);background:var(--gold-soft);}
   .note{font-size:12px;color:var(--txt-mute);background:var(--card);border:1px dashed var(--card-brd);
         border-radius:12px;padding:14px;text-align:center;line-height:1.6;}
@@ -1320,26 +1329,35 @@ function renderRankings(){
 
   if(state.rankingsView==="final"){
     if(!hasFinal){
-      html += `<div class="note">决赛数据尚未产生。<br>9月2日 决赛后，将在此展示冠、亚、季、第四名最终名次。</div>`;
+      html += `<div class="note">决赛数据尚未产生。<br>9月2日 决赛后，将在此展示冠、亚、季、第四、第五名最终名次。</div>`;
     }else{
       const f=D.final;
+      const fifth = (D.rrStandings && D.rrStandings.length) ? D.rrStandings[D.rrStandings.length-1].team : null;
       html += `<div class="podium">
-          <div class="pod gold"><div class="medal">&#127942;</div><div class="lab">冠军</div>
-             <div class="pn" style="color:${tColor(f.champion)}">${esc(f.champion||'—')}</div></div>
-          <div class="pod"><div class="medal">&#129944;</div><div class="lab">亚军</div>
-             <div class="pn" style="color:${tColor(f.runner)}">${esc(f.runner||'—')}</div></div>
-          <div class="pod"><div class="medal">&#129945;</div><div class="lab">季军</div>
-             <div class="pn" style="color:${tColor(f.third)}">${esc(f.third||'—')}</div></div>
-          <div class="pod"><div class="medal">&#10022;</div><div class="lab">第四名</div>
-             <div class="pn" style="color:${tColor(f.fourth)}">${esc(f.fourth||'—')}</div></div>
+          <div class="pod-row row1">
+            <div class="pod gold"><div class="medal">&#127942;</div><div class="lab">冠军</div>
+               <div class="pn" style="color:${tColor(f.champion)}">${esc(f.champion||'—')}</div></div>
+          </div>
+          <div class="pod-row row2">
+            <div class="pod"><div class="medal">&#129944;</div><div class="lab">亚军</div>
+               <div class="pn" style="color:${tColor(f.runner)}">${esc(f.runner||'—')}</div></div>
+            <div class="pod"><div class="medal">&#129945;</div><div class="lab">季军</div>
+               <div class="pn" style="color:${tColor(f.third)}">${esc(f.third||'—')}</div></div>
+          </div>
+          <div class="pod-row row3">
+            <div class="pod"><div class="medal">&#10022;</div><div class="lab">第四名</div>
+               <div class="pn" style="color:${tColor(f.fourth)}">${esc(f.fourth||'—')}</div></div>
+            <div class="pod"><div class="medal">&#10023;</div><div class="lab">第五名</div>
+               <div class="pn" style="color:${tColor(fifth)}">${esc(fifth||'—')}</div></div>
+          </div>
         </div>`;
       // remaining teams by round robin
-      const top4 = new Set([f.champion,f.runner,f.third,f.fourth].filter(Boolean));
-      const rest = D.rrStandings.filter(s=>!top4.has(s.team));
+      const top5 = new Set([f.champion,f.runner,f.third,f.fourth,fifth].filter(Boolean));
+      const rest = D.rrStandings.filter(s=>!top5.has(s.team));
       if(rest.length){
         html += `<div class="section-h"><span class="dot"></span>其余名次（按循环赛）</div><div class="rk-table">${rkHead()}`;
         rest.forEach((s,i)=>{
-          html += rkRow(i+5, s);
+          html += rkRow(i+6, s);
         });
         html += `</div>`;
       }
