@@ -542,6 +542,22 @@
   </div>
 </div>
 
+<div class="modal" id="adminModal">
+  <div class="modal-bg" id="adminModalBg"></div>
+  <div class="modal-card" style="max-width:340px;">
+    <div class="modal-head">
+      <div class="h-name">管理员验证</div>
+      <div class="h-meta">请输入密钥解锁管理功能</div>
+    </div>
+    <button class="modal-close" id="adminModalClose">&times;</button>
+    <div class="modal-body">
+      <input id="adminPwd" type="password" placeholder="请输入管理员密钥" autocomplete="off"
+             style="width:100%;padding:12px 14px;border-radius:11px;border:1px solid var(--card-brd);background:var(--card);color:var(--txt);font-size:15px;letter-spacing:3px;outline:none;" />
+      <button class="mini-btn" id="adminSubmitBtn" style="margin-top:10px;">解 锁</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal" id="snapModal">
   <div class="modal-bg" id="snapBg"></div>
   <div class="modal-card">
@@ -1830,14 +1846,29 @@ document.getElementById("modalBody").addEventListener("click", e=>{
 });
 
 /* ---------- admin import (SheetJS) ---------- */
-// admin gate: only reveal import/reset after key verified
-document.getElementById("adminBtn").addEventListener("click", ()=>{
-  const key = prompt("请输入管理员密钥：");
-  if(key !== ADMIN_KEY){ toast("密钥错误"); return; }
+// admin gate: only reveal import/reset after key verified (密码以 * 号隐藏输入)
+const adminModalEl = document.getElementById("adminModal");
+const adminPwdInput = document.getElementById("adminPwd");
+function openAdminModal(){
+  adminPwdInput.value = "";
+  adminModalEl.classList.add("show");
+  setTimeout(()=>{ try{ adminPwdInput.focus(); }catch(e){} }, 80);
+}
+function closeAdminModal(){ adminModalEl.classList.remove("show"); }
+function submitAdminKey(){
+  const key = adminPwdInput.value;
+  if(key !== ADMIN_KEY){ toast("密钥错误"); adminPwdInput.select(); return; }
   adminVerified = true;
+  closeAdminModal();
   document.getElementById("adminBtn").style.display = "none";
   document.getElementById("adminActions").style.display = "block";
-});
+  toast("管理员已解锁");
+}
+document.getElementById("adminBtn").addEventListener("click", openAdminModal);
+document.getElementById("adminModalBg").addEventListener("click", closeAdminModal);
+document.getElementById("adminModalClose").addEventListener("click", closeAdminModal);
+document.getElementById("adminSubmitBtn").addEventListener("click", submitAdminKey);
+adminPwdInput.addEventListener("keydown", e=>{ if(e.key==="Enter") submitAdminKey(); });
 /* ---------- 管理员：下载导入模板（含表头，按赛程预填场次/队名） ---------- */
 function dlTemplate(){
   if(typeof XLSX === "undefined"){ toast("组件未就绪，请刷新后重试"); return; }
