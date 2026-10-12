@@ -667,7 +667,7 @@ window.APP_DATA = {
     {
       "seq": 12,
       "date": "9月2日",
-      "time": "第二场",
+      "time": "冠亚军决赛",
       "home": "荣耀先锋队",
       "away": "从容应队",
       "isFinal": true
@@ -792,7 +792,7 @@ window.APP_DATA = {
       "winner": null,
       "hasData": false,
       "date": "9月2日",
-      "time": "第二场",
+      "time": "冠亚军决赛",
       "isFinal": true
     }
   },

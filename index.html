@@ -515,13 +515,13 @@
       <button class="mini-btn" id="adminBtn">管理员</button>
       <div id="adminActions" style="display:none;">
         <button class="mini-btn" id="importBtn" style="margin-top:8px;" title="Excel 表头需含：场次 / 队名 / 队内号码 / 得分，每个比赛日一个工作表（工作表名=比赛日期）">导入每日战况</button>
-        <button class="mini-btn" id="tplBtn" style="margin-top:8px;" title="下载含表头的导入模板（按赛程预填场次与队名，只需补填队内号码与得分）">下载导入模板</button>
+        <button class="mini-btn" id="tplBtn" style="margin-top:8px;" title="下载含表头的导入模板（按赛程预填场次与队名，含三四名/冠亚军决赛，只需补填队内号码与得分）">下载导入模板</button>
         <button class="mini-btn" id="snapSaveBtn" style="margin-top:8px;">保存快照</button>
         <button class="mini-btn" id="snapOpenBtn" style="margin-top:8px;">恢复至快照</button>
         <button class="mini-btn" id="cheerSumBtn" style="margin-top:8px;">啦啦队汇总</button>
         <button class="mini-btn" id="cheerDetBtn" style="margin-top:8px;">打分明细</button>
         <button class="mini-btn" id="liveScoreBtn" style="margin-top:8px;">实时录入得分</button>
-        <div style="font-size:11px;line-height:1.5;color:var(--txt-dim);margin-top:10px;">导入格式：每个比赛日一个工作表（表名=日期，如「8月17日」或「8.17」），表头为「场次 / 队名 / 队内号码 / 得分」。可先点「下载导入模板」获取带表头的空表。</div>
+        <div style="font-size:11px;line-height:1.5;color:var(--txt-dim);margin-top:10px;">导入格式：每个比赛日一个工作表（表名=日期，如「8月17日」或「8.17」），表头为「场次 / 队名 / 队内号码 / 得分」；决赛场次写「三四名决赛」「冠亚军决赛」。可先点「下载导入模板」获取带表头的空表（已含决赛场次）。</div>
       </div>
     </div>
   </div>
@@ -1845,7 +1845,7 @@ function dlTemplate(){
   // 同日期多场比赛合并到一个工作表（解析器按表头读取整表所有行）
   const byDate={};
   BASE.schedule.forEach(m=>{
-    if(m.isFinal) return;                        // 决赛为占位队名，不纳入每日模板
+    if(m.isFinal && (isPHTeam(m.home)||isPHTeam(m.away))) return;   // 占位队名的决赛不纳入模板；真实队名决赛（三四名/冠亚军）纳入
     (byDate[m.date]=byDate[m.date]||[]).push(m);
   });
   let sheets=0;
